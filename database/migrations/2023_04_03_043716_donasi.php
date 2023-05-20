@@ -12,20 +12,22 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('donasi', function (Blueprint $table) {
-            $table->id('d_id');
+            $table->id('id');
+            // $table->unsignedBigInteger('donatur');
+            // $table->foreign('donatur')->references('don_id')->on('donatur');
             // $table->unsignedBigInteger('konsumsi');
             // $table->foreign('konsumsi')->references('kd_id')->on('donasi_konsumsi');
             $table->unsignedBigInteger('donatur');
-            $table->foreign('donatur')->references('don_id')->on('donatur');
+            $table->foreign('donatur')->references('id')->on('donatur');
             $table->unsignedBigInteger('ngo_tujuan');
-            $table->foreign('ngo_tujuan')->references('ngo_id')->on('ngo');
+            $table->foreign('ngo_tujuan')->references('id')->on('ngo');
             $table->unsignedBigInteger('kota');
-            $table->foreign('kota')->references('kot_id')->on('kota');
+            $table->foreign('kota')->references('id')->on('kota');
             $table->string('d_nama_pickup', 200);
             $table->string('d_alamat_pickup', 200);
             $table->string('d_no_telp_pickup', 20);
             $table->unsignedBigInteger('status_donasi');
-            $table->foreign('status_donasi')->references('stdon_id')->on('status_donasi');
+            $table->foreign('status_donasi')->references('id')->on('status_donasi');
             // $table->unsignedBigInteger('pickup');
             // $table->foreign('pickup')->references('p_id')->on('pickup');
             $table->timestamps();

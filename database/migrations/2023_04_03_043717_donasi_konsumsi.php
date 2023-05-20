@@ -12,20 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('donasi_konsumsi', function (Blueprint $table){
-            $table->id('kd_id');
+            $table->id('id');
             $table->unsignedBigInteger('donasi');
-            $table->foreign('donasi')->references('d_id')->on('donasi')->onDelete('cascade');
-            $table->string('kd_nama', 200);
-            $table->binary('kd_photo');
-            $table->mediumtext('kd_deskripsi');
+            $table->foreign('donasi')->references('id')->on('donasi')->onDelete('cascade');
+            $table->string('nama', 200);
+            $table->binary('photo');
+            $table->mediumtext('deskripsi');
             $table->unsignedBigInteger('kategori');
-            $table->foreign('kategori')->references('kat_id')->on('kategori');
+            $table->foreign('kategori')->references('id')->on('kategori');
             $table->unsignedBigInteger('jenis');
-            $table->foreign('jenis')->references('jen_id')->on('jenis');
+            $table->foreign('jenis')->references('id')->on('jenis');
             $table->unsignedBigInteger('satuan');
-            $table->foreign('satuan')->references('sat_id')->on('satuan');
-            $table->integer('kd_kuantitas');
-            $table->date('kd_expired')->nullable();
+            $table->foreign('satuan')->references('id')->on('satuan');
+            $table->integer('kuantitas');
+            $table->date('expired')->nullable();
             $table->timestamps();
         });
     }

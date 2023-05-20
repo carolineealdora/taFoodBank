@@ -12,15 +12,14 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('donatur', function (Blueprint $table) {
-            $table->id('don_id');
-            $table->binary('don_photo');
-            $table->string('don_nama', 200);
-            $table->string('don_alamat', 200);
-            $table->string('don_no_id', 16);
-            $table->date('don_tanggal_lahir');
-            $table->string('don_no_telp', 20);
-            $table->string('don_email', 50)->unique();
-            $table->string('don_password', 60);
+            $table->id('id');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->binary('foto_profil');
+            $table->string('alamat', 200);
+            $table->string('no_identitas', 16);
+            $table->date('tanggal_lahir');
+            $table->string('no_telp', 20);
             $table->timestamps();
         });
     }

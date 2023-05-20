@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('status_donasi', function (Blueprint $table) {
-            $table->id('stdon_id');
-            $table->string('stdon_nama', 20);
+            $table->id('id');
+            $table->string('nama', 20);
             $table->timestamps();
         });
     }

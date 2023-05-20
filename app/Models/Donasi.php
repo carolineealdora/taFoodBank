@@ -10,7 +10,11 @@ class Donasi extends Model
     use HasFactory;
 
     protected $fillable =[
-
+        'foto_profil',
+        'alamat',
+        'no_telp',
+        'tanggal_lahir',
+        'no_identitas'
     ];
 
     public function pickup(){

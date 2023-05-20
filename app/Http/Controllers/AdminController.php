@@ -7,6 +7,8 @@ use Illuminate\Routing\Controller;
 
 class AdminController extends Controller
 {
+    protected $table = 'admin';
+
         public function login()
     {
         return view('admin/admin_login');

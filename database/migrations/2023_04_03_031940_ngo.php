@@ -12,16 +12,20 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('ngo', function (Blueprint $table) {
-            $table->id('ngo_id');
+            $table->id('id');
             $table->tinyInteger('ngo_status')->default(0);
             // $table->unsignedBigInteger('status');
             // $table->foreign('status')->references('stngo_id')->on('status_ngo');
-            $table->unsignedBigInteger('pic');
-            $table->foreign('pic')->references('pic_id')->on('pic');
+            // $table->unsignedBigInteger('pic');
+            // $table->foreign('pic')->references('pic_id')->on('pic');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
+            // $table->unsignedBigInteger('pic');
+            // $table->foreign('pic')->references('id')->on('users');
             $table->string('ngo_nama', 200);
             $table->string('ngo_alamat', 200);
             $table->unsignedBigInteger('kota');
-            $table->foreign('kota')->references('kot_id')->on('kota');
+            $table->foreign('kota')->references('id')->on('kota');
             $table->string('ngo_no_telp', 20);
             $table->string('ngo_email', 50)->unique();
             $table->string('ngo_password', 60);

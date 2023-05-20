@@ -7,10 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 
 class Donatur extends Model
 {
+    protected $table = 'donatur';
     use HasFactory;
 
     protected $fillable =[
-
+        'user_id',
+        'foto_profil',
+        'alamat',
+        'no_identitas',
+        'tanggal_lahir',
+        'no_telp'
     ];
 
     public function donasi(){

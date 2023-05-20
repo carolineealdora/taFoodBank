@@ -2,12 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Donatur;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Hash;
 
 class DonaturController extends Controller
 {
-    public function login()
+    public function login(Request $request)
     {
         return view('donatur/donatur_login');
     }
@@ -37,8 +40,38 @@ class DonaturController extends Controller
         return view('donatur/donatur_create_donasi');
     }
 
-    public function register()
+    public function register(Request $request)
     {
-        return view('donatur/donatur_register');
+        // return view('donatur/donatur_register');
+
+        // return json_encode('sampe sini kak');
+        $data_user = [
+            'nama'  => $request->nama,
+            'email' => $request->email,
+            'password' => Hash::make($request->password)
+        ];
+
+        $user = User::firstOrCreate($data_user);
+        $user->assignRole('donatur');
+
+        $data_donatur = [
+            'user_id'       => $user->id,
+            'foto_profil'   => $request->foto_profil,
+            'alamat'        => $request->alamat,
+            'no_telp'       => $request->no_telp,
+            'tanggal_lahir' => $request->tanggal_lahir,
+            'no_identitas'  => $request->no_identitas
+        ];
+
+        //bikin kondisi kalo email sama
+
+        $profile = Donatur::create($data_donatur);
+        return response()->json([
+            'status'    => 'ok',
+            'response'  => 'registered',
+            'message'   => 'Selamat! Anda telah terdaftar',
+            'data1'     => $profile,
+            'data2'      => $user,
+        ], 200);
     }
 }

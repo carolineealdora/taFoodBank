@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('satuan', function (Blueprint $table) {
-            $table->id('sat_id');
-            $table->string('sat_nama', 20);
+            $table->id('id');
+            $table->string('nama', 20);
             $table->timestamps();
         });
     }
