@@ -180,7 +180,10 @@
                       </div>
                     </li>
                   </ul>
-                <button class="btn btn-primary btn-sm ms-auto">Approve</button>
+                  <div class="row">
+                    <button class="btn btn-success btn-sm ms-auto col-md-6">Approve</button>
+                    <button class="btn btn-danger btn-sm ms-auto col-md-6">Reject</button>
+                  </div>
                 </div>
               </div>
             </div>
