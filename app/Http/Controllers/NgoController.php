@@ -16,11 +16,6 @@ class NgoController extends Controller
         return view('ngo/ngo_dashboard');
     }
 
-    public function dashboard()
-    {
-        return view('ngo/ngo_dashboard');
-    }
-
     public function donasi()
     {
         return view('ngo/ngo_donasi');

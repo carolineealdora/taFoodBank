@@ -220,7 +220,7 @@
                       </div>
                       <div class="form-group">
                         <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
-                        <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>                   
+                        <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
                       </div>
                     </div>
                     <div class="form-group col-md-6">
@@ -297,7 +297,7 @@
                 </div>
                 <div class="form-group">
                   <label for="WaktuExpired" class="form-control-label">Tanggal & Waktu Pick Up</label>
-                  <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>                   
+                  <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
                 </div>
                 <button class="btn btn-success btn-sm ms-auto col-12">Submit Data Pick Up Donasi</button>
               </div>
@@ -319,7 +319,7 @@
                 <p class="text-uppercase text-sm">Form Data Donasi</p>
                 <div class="row">
                   <div class="form-group">
-                    <label for="donatur_donasiFoto" class="form-control-label">Foto Pick Up Donasi</label>
+                    <label for="donatur_donasiFoto" class="form-control-label">Foto Pengiriman Donasi</label>
                     {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
                     <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()" multiple>
                     @error('AdminFoto')

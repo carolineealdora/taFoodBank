@@ -13,7 +13,14 @@ class LaporanDonasi extends Migration
      */
     public function up()
     {
-        //
+        Schema::create('laporan_donasi', function(Blueprint $table){
+            $table->id('id');
+            $table->unsignedBigInteger('donasi');
+            $table->foreign('donasi')->references('id')->on('donasi')->onDelete('cascade');
+            $table->binary('foto_laporan');
+            $table->mediumtext('deskripsi');
+            $table->timestamps();
+        });
     }
 
     /**

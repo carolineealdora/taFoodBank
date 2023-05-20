@@ -39,7 +39,6 @@ Route::prefix('donatur')->group(function () {
     Route::get('/detail-donasi', [DonaturController::class, 'detailDonasi'])->name('donatur.detail-donasi');
     Route::get('/create-donasi', [DonaturController::class, 'createDonasi'])->name('donatur.create-donasi');
     Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
-    Route::get('/register', [DonaturController::class, 'register'])->name('donatur.register');
 });
 
 // NGO

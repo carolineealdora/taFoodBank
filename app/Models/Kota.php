@@ -8,4 +8,10 @@ use Illuminate\Database\Eloquent\Model;
 class Kota extends Model
 {
     use HasFactory;
+
+    protected $table = 'kota';
+
+    protected $fillable = [
+        'nama'
+    ];
 }

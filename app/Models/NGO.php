@@ -7,8 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 class NGO extends Model
 {
+    use HasFactory;
+
     protected $table = 'ngo';
-    // use HasFactory;
 
     protected $fillable =[
         'ngo_status',

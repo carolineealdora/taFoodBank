@@ -9,7 +9,9 @@ class StatusDonasi extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
+    protected $table = 'status_donasi';
 
+    protected $fillable =[
+        'nama'
     ];
 }

@@ -10,11 +10,6 @@ use Illuminate\Support\Facades\Hash;
 
 class DonaturController extends Controller
 {
-    public function login(Request $request)
-    {
-        return view('donatur/donatur_login');
-    }
-
     public function dashboard()
     {
         return view('donatur/donatur_dashboard');
@@ -73,5 +68,9 @@ class DonaturController extends Controller
             'data1'     => $profile,
             'data2'      => $user,
         ], 200);
+    }
+
+    public function storeDonasi(Request $request){
+        
     }
 }

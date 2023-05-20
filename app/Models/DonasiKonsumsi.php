@@ -9,8 +9,18 @@ class DonasiKonsumsi extends Model
 {
     use HasFactory;
 
-    protected $fillable =[
+    protected $table = 'donasi_konsumsi';
 
+    protected $fillable =[
+        'donasi',
+        'nama',
+        'photo',
+        'deskripsi',
+        'kategori',
+        'jenis',
+        'satuan',
+        'kuantitas',
+        'expired'
     ];
 
     public function donasi(){

@@ -9,6 +9,8 @@ class Donasi extends Model
 {
     use HasFactory;
 
+    protected $table = 'donasi';
+
     protected $fillable =[
         'foto_profil',
         'alamat',

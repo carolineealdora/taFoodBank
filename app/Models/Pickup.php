@@ -9,9 +9,20 @@ class Pickup extends Model
 {
     use HasFactory;
 
-    
-    protected $fillable =[
+    protected $table = 'pickup';
 
+    protected $fillable =[
+        'donasi',
+        'nama',
+        'photo',
+        'deskripsi',
+        'kategori',
+        'jenis',
+        'satuan',
+        'kuantitas',
+        'expired',
+        'bukti_pickup',
+        'donasi_pickup'
     ];
 
     public function donasi(){
