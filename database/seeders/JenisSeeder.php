@@ -2,10 +2,10 @@
 
 namespace Database\Seeders;
 
-use App\Models\Kategori;
+use App\Models\Jenis;
 use Illuminate\Database\Seeder;
 
-class KategoriSeeder extends Seeder
+class JenisSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -14,13 +14,14 @@ class KategoriSeeder extends Seeder
      */
     public function run()
     {
-        $categories = [
+        $jeniss = [
             'Makanan',
-            'Minuman'
+            'Minuman',
+            'Barang'
         ];
 
-        foreach ($categories as $category) {
-            $toCategory = Kategori::firstOrCreate(['nama' => $category]);
+        foreach ($jeniss as $jenis) {
+            $toSatuan = Jenis::firstOrCreate(['nama' => $jenis]);
         }
     }
 }

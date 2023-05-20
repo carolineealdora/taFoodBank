@@ -24,11 +24,9 @@ return new class extends Migration
             // $table->foreign('pic')->references('id')->on('users');
             $table->string('ngo_nama', 200);
             $table->string('ngo_alamat', 200);
-            $table->unsignedBigInteger('kota');
-            $table->foreign('kota')->references('id')->on('kota');
+            $table->unsignedBigInteger('ngo_kota');
+            $table->foreign('ngo_kota')->references('id')->on('kota');
             $table->string('ngo_no_telp', 20);
-            $table->string('ngo_email', 50)->unique();
-            $table->string('ngo_password', 60);
             $table->timestamps();
         });
     }

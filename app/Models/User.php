@@ -3,16 +3,18 @@
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-//use Illuminate\Auth\Authenticatable as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
 use Illuminate\Notifications\Notifiable;
-// use Illuminate\Contracts\Auth\Authenticatable as Authenticatable;
-use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
+    protected $fillable =[
+        'nama',
+        'email',
+        'password',
+    ];
 
     /**
      * The attributes that are mass assignable.
@@ -37,4 +39,5 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    protected $guard_name = 'web';
 }

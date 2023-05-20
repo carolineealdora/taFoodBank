@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Donatur;
+use App\Models\User as ModelsUser;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Foundation\Auth\User;
@@ -46,9 +47,9 @@ class DonaturController extends Controller
             'password' => Hash::make($request->password)
         ];
 
-        $user = User::firstOrCreate($data_user);
+        $user = ModelsUser::firstOrCreate($data_user);
         $user->assignRole('donatur');
-
+        
         $data_donatur = [
             'user_id'       => $user->id,
             'foto_profil'   => $request->foto_profil,
@@ -59,14 +60,12 @@ class DonaturController extends Controller
         ];
 
         //bikin kondisi kalo email sama
-
         $profile = Donatur::create($data_donatur);
         return response()->json([
             'status'    => 'ok',
             'response'  => 'registered',
             'message'   => 'Selamat! Anda telah terdaftar',
-            'data1'     => $profile,
-            'data2'      => $user,
+            'data'     => $profile,
         ], 200);
     }
 
