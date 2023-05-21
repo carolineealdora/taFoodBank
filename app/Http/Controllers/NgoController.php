@@ -189,6 +189,9 @@ class NgoController extends Controller
 
         $user =  User::firstOrCreate($data_user);
         $user->assignRole('ngo');
+        $path = "images/profile";
+        $requestFile = $request->pic_foto;
+        $insertImage = File::fileUpload($requestFile, $path);
         $data_ngo = [
             'ngo_status'        => 1,
             'user_id'           => $user->id,
@@ -196,13 +199,12 @@ class NgoController extends Controller
             'ngo_alamat'        => $request->ngo_alamat,
             'ngo_kota'          => $request->ngo_kota,
             'ngo_no_telp'       => $request->ngo_no_telp,
-            'pic_foto'          => "1",
             'no_identitas'      => $request->no_identitas, 
+            'pic_foto'          => $insertImage
         ];
-        $path = "images";
-        $requestFile = $request->pic_foto;
+        
         $ngoCreate = NGO::create($data_ngo);
-        File::fileUpload($requestFile, $path, $ngoCreate->id);
+
         //getData
         $getDataNgo = NGO::find($ngoCreate->id);
         return response()->json([
