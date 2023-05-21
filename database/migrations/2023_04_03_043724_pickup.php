@@ -20,8 +20,6 @@ return new class extends Migration
             $table->mediumtext('deskripsi');
             $table->unsignedBigInteger('kategori');
             $table->foreign('kategori')->references('id')->on('kategori');
-            $table->unsignedBigInteger('jenis');
-            $table->foreign('jenis')->references('id')->on('jenis');
             $table->unsignedBigInteger('satuan');
             $table->foreign('satuan')->references('id')->on('satuan');
             $table->integer('kuantitas');
