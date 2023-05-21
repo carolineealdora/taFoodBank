@@ -15,9 +15,9 @@ class SatuanSeeder extends Seeder
     public function run()
     {
         $satuans = [
-            'Makanan',
-            'Minuman',
-            'Barang'
+            'Kilogram',
+            'Liter',
+            'Pieces'
         ];
 
         foreach ($satuans as $satuan) {

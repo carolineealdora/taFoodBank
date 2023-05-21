@@ -70,6 +70,18 @@ class DonaturController extends Controller
     }
 
     public function storeDonasi(Request $request){
-        
+        $donasi = $request->validate([
+            'ngo_tujuan'        => 'required',
+            'kota'              => 'required',
+            'd_nama_pickup'     => 'required|max:20',
+            'd_alamat_pickup'   => 'required|max:255',
+            'd_alamat_pickup'   => 'required|max:255',
+            'kota'          => 'image|file',
+            'ArtikelJudul' => 'required|max:255',
+            // 'ArtikelSlug' => 'required|unique',
+            'WaktuPembuatan' => 'required',
+            'ArtikelDeskripsi' => 'required',
+            'Author' => 'required'
+        ]);
     }
 }

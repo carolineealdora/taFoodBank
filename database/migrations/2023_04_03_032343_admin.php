@@ -14,10 +14,7 @@ return new class extends Migration
         Schema::create('admin', function (Blueprint $table) {
             $table->id('id');
             $table->binary('foto_profil');
-            // $table->string('nama', 200);
             $table->string('no_identitas', 16);
-            // $table->string('email', 50)->unique();
-            // $table->string('password', 60);
             $table->timestamps();
         });
     }

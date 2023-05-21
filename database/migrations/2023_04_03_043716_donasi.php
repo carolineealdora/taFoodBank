@@ -23,9 +23,9 @@ return new class extends Migration
             $table->foreign('ngo_tujuan')->references('id')->on('ngo');
             $table->unsignedBigInteger('kota');
             $table->foreign('kota')->references('id')->on('kota');
-            $table->string('d_nama_pickup', 200);
-            $table->string('d_alamat_pickup', 200);
-            $table->string('d_no_telp_pickup', 20);
+            $table->string('nama_pickup', 200);
+            $table->string('alamat_pickup', 200);
+            $table->string('no_telp_pickup', 20);
             $table->unsignedBigInteger('status_donasi');
             $table->foreign('status_donasi')->references('id')->on('status_donasi');
             // $table->unsignedBigInteger('pickup');

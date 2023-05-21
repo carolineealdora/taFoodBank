@@ -12,6 +12,8 @@ class Admin extends Model
     protected $table = 'admin';
 
     protected $fillable = [
-        'id'
+        'id',
+        'foto_profil',
+        'no_identitas'
     ];
 }
