@@ -37,7 +37,7 @@
                   </div>
                   <div class="form-group">
                     <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
-                    <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>                   
+                    <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
                   </div>
                 </div>
                 <div class="form-group col-md-6">
@@ -46,13 +46,6 @@
                     <select class="form-control" id="kategoriDonasi">
                       <option>Makanan</option>
                       <option>Minuman</option>
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label for="jenisDonasi">Jenis</label>
-                    <select class="form-control" id="jenisDonasi">
-                      <option>Daging</option>
-                      <option>Susu</option>
                     </select>
                   </div>
                   <div class="form-group">
@@ -145,7 +138,7 @@
                       <span class="mb-2 text-xs">NGO Tujuan: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
                           <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
                           <span class="mb-2 text-xs">Pickup Location - Kota: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                          <span class="mb-2 text-xs">Pickup Location - Alamat Lengkap: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>                     
+                          <span class="mb-2 text-xs">Pickup Location - Alamat Lengkap: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
                     </div>
                     <div class="ms-auto text-end">
                       <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i>Delete</a>

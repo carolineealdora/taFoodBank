@@ -17,7 +17,7 @@ class LaporanDonasi extends Migration
             $table->id('id');
             $table->unsignedBigInteger('donasi');
             $table->foreign('donasi')->references('id')->on('donasi')->onDelete('cascade');
-            $table->binary('foto_laporan');
+            $table->string('foto_laporan');
             $table->mediumtext('deskripsi');
             $table->timestamps();
         });

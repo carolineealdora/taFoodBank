@@ -14,6 +14,8 @@ class VerifyCsrfToken extends Middleware
     protected $except = [
         //
         'http://127.0.0.1:8000/donatur/register',
-        'http://127.0.0.1:8000/user/login'
+        'http://127.0.0.1:8000/user/login',
+        'http://127.0.0.1:8000/donatur/store',
+        'http://127.0.0.1:8000/ngo/register'
     ];
 }

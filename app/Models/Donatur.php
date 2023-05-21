@@ -22,4 +22,8 @@ class Donatur extends Model
     public function donasi(){
         return $this->hasMany(Donasi::class);
     }
+
+    public function users(){
+        return $this->belongsTo(User::class);
+    }
 }

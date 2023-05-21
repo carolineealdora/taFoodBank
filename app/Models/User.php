@@ -10,6 +10,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class User extends Authenticatable
 {
     use HasFactory, Notifiable, HasRoles;
+
+    protected $table = 'users';
+
     protected $fillable =[
         'nama',
         'email',
@@ -39,9 +42,13 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
     protected $guard_name = 'web';
 
     public function ngo(){
         return $this->hasOne(NGO::class);
+    }
+    public function donatur(){
+        return $this->hasOne(Donatur::class);
     }
 }

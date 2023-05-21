@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('admin', function (Blueprint $table) {
             $table->id('id');
-            $table->binary('foto_profil');
+            $table->string('foto_profil');
             $table->string('no_identitas', 16);
             $table->timestamps();
         });

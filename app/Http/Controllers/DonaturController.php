@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
+use App\Models\User;
+use App\Helpers\File;
+use App\Models\Donasi;
 use App\Models\Donatur;
-use App\Models\User as ModelsUser;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Foundation\Auth\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 
 class DonaturController extends Controller
@@ -49,7 +52,7 @@ class DonaturController extends Controller
 
         $user = ModelsUser::firstOrCreate($data_user);
         $user->assignRole('donatur');
-        
+
         $data_donatur = [
             'user_id'       => $user->id,
             'foto_profil'   => $request->foto_profil,
@@ -70,18 +73,63 @@ class DonaturController extends Controller
     }
 
     public function storeDonasi(Request $request){
-        $donasi = $request->validate([
-            'ngo_tujuan'        => 'required',
-            'kota'              => 'required',
-            'd_nama_pickup'     => 'required|max:20',
-            'd_alamat_pickup'   => 'required|max:255',
-            'd_alamat_pickup'   => 'required|max:255',
-            'kota'          => 'image|file',
-            'ArtikelJudul' => 'required|max:255',
-            // 'ArtikelSlug' => 'required|unique',
-            'WaktuPembuatan' => 'required',
-            'ArtikelDeskripsi' => 'required',
-            'Author' => 'required'
-        ]);
+        // $donasi = $request->validate([
+        //     'ngo_tujuan'        => 'required',
+        //     'kota'              => 'required',
+        //     'nama_pickup'     => 'required|max:20',
+        //     'alamat_pickup'   => 'required|max:255',
+        //     'alamat_pickup'   => 'required|max:255',
+        //     'kota'          => 'image|file'
+        // ]);
+
+        try{
+            $email = Auth::user()->email;
+
+            $user = User::with('donatur')->where('email', $email)->first();
+
+            $id_donatur = $user->donatur->id;
+            $data = [
+                "donatur"           => $id_donatur,
+                "ngo_tujuan"        => $request->ngo_tujuan,
+                "kota"              => $request->kota,
+                "nama_pickup"       => $request->nama_pickup,
+                "alamat_pickup"     => $request->alamat_pickup,
+                "no_telp_pickup"    => $request->no_telp_pickup,
+                "status_donasi"     => 1
+            ];
+
+            $donasi = Donasi::create($data);
+            return $donasi;
+            foreach($request->donasi_konsumsi as $donasi_konsumsi){
+                $path = "images/donasi";
+                $requestFile = $request->photo;
+                $insertImage = File::fileUpload($requestFile, $path);
+                $data = [
+                    "donasi"    => $donasi->id,
+                    "nama"      => $donasi_konsumsi->nama,
+                    "photo"     => $donasi_konsumsi->$insertImage,
+                    "deskripsi" => $donasi_konsumsi->deskripsi,
+                    "kategori"  => $donasi_konsumsi->kategori,
+                    "satuan"    => $donasi_konsumsi->satuan,
+                    "kuantitas" => $donasi_konsumsi->kuantitas,
+                    "expired"   => Carbon::now(),
+                    // "expired"   => $donasi_konsumsi->datenow,
+                ];
+
+                DonasiKonsumsi::insert($data);
+
+                return response()->json([
+                    'status'    => 'ok',
+                    'response'  => 'created',
+                    'message'   => 'Selamat! Donasi telah terkirim.',
+                    'route'     => route('donatur/donasi')
+                ], 200);
+            }
+        } catch (Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'response' => 'failed',
+            ], 500);
+        }
     }
 }

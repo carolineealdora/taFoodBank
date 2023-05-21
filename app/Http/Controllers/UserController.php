@@ -17,7 +17,7 @@ class UserController extends Controller
 
         if($login == 1){
             $user = Auth::user()->roles[0]->name;
-            //return $user;
+
             if($user == "admin"){
                 return response()->json([
                     'status'    => 'ok',
