@@ -21,7 +21,7 @@ return new class extends Migration
             $table->unsignedBigInteger('ngo_kota');
             $table->foreign('ngo_kota')->references('id')->on('kota');
             $table->string('ngo_no_telp', 20);
-            $table->binary('pic_foto');
+            $table->string('pic_foto');
             $table->string('no_identitas', 16);
             $table->timestamps();
         });

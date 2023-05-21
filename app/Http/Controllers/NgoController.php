@@ -5,10 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Donasi;
 use App\Models\NGO;
 use App\Models\Pickup;
-use App\Models\User as ModelsUser;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Foundation\Auth\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
@@ -187,7 +186,7 @@ class NgoController extends Controller
             'password' => Hash::make($request->password)
         ];
 
-        $user = ModelsUser::firstOrCreate($data_user);
+        $user =  User::firstOrCreate($data_user);
         $user->assignRole('ngo');
         $data_ngo = [
             'ngo_status'        => 1,
@@ -196,6 +195,8 @@ class NgoController extends Controller
             'ngo_alamat'        => $request->ngo_alamat,
             'ngo_kota'          => $request->ngo_kota,
             'ngo_no_telp'       => $request->ngo_no_telp,
+            'pic_foto'          => $request->pic_foto,
+            'no_identitas'      => $request->no_identitas, 
         ];
 
         $profile = NGO::create($data_ngo);
