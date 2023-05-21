@@ -17,7 +17,9 @@ class NGO extends Model
         'ngo_alamat',
         'ngo_kota',
         'ngo_no_telp',
-        'user_id'
+        'user_id',
+        'pic_foto',
+        'no_identitas'
     ];
 
     public function pic(){

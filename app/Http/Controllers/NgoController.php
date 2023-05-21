@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Helpers\File;
 use App\Models\Donasi;
 use App\Models\NGO;
 use App\Models\Pickup;
@@ -195,16 +196,20 @@ class NgoController extends Controller
             'ngo_alamat'        => $request->ngo_alamat,
             'ngo_kota'          => $request->ngo_kota,
             'ngo_no_telp'       => $request->ngo_no_telp,
-            'pic_foto'          => $request->pic_foto,
+            'pic_foto'          => "1",
             'no_identitas'      => $request->no_identitas, 
         ];
-
-        $profile = NGO::create($data_ngo);
+        $path = "images";
+        $requestFile = $request->pic_foto;
+        $ngoCreate = NGO::create($data_ngo);
+        File::fileUpload($requestFile, $path, $ngoCreate->id);
+        //getData
+        $getDataNgo = NGO::find($ngoCreate->id);
         return response()->json([
             'status'    => 'ok',
             'response'  => 'registered',
             'message'   => 'Selamat! NGO telah terdaftar.',
-            'data'     => $profile
+            'data'     => $getDataNgo
         ], 200);
     }
 }
