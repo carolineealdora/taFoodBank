@@ -26,5 +26,7 @@ class NGO extends Model
         return $this->belongsTo(PIC::class);
     }
 
-
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
 }

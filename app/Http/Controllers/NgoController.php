@@ -27,8 +27,10 @@ class NgoController extends Controller
         try {
             //whos login
             $user = Auth::user();
-            //get donasi by user login
-            $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo", "donatur")->where("ngo.user_id", $user->id)->get();
+            //get ngo id
+            $getUser = User::with("ngo")->where('email', $user->email)->first();
+            //get donasi for ngo
+            $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo", "donatur")->where("ngo", $getUser->ngo->id)->get();
             return response()->json([
                 'status' => 'ok',
                 'response' => 'get-donasi',
@@ -48,7 +50,7 @@ class NgoController extends Controller
     {
         try {
             //get detail donasi
-            $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo")->where("d_id", $id)->first();
+            $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo")->where("id", $id)->first();
             return response()->json([
                 'status' => 'ok',
                 'response' => 'get-donasi',
@@ -79,10 +81,10 @@ class NgoController extends Controller
                 'expired' => $request->expired,
                 'status_donasi' => $request->status_donasi,
             ];
-            $updateDonasiStatus = Donasi::find("d_id", $id)->update(['status_donasi' => $request->status_donasi]);
+            Donasi::find("id", $id)->update(['status_donasi' => $request->status_donasi]);
             if ($request->status_donasi == 2) {
                 //insert to pickup
-                $insertPickup = Pickup::store($data);
+                Pickup::store($data);
                 return response()->json([
                     'status' => 'ok',
                     'response' => 'updated-donasi',
@@ -109,8 +111,10 @@ class NgoController extends Controller
         try {
             //whos login
             $user = Auth::user();
-            //get donasi by user login
-            $getDataPickup = Donasi::with("pickup", "status_donasi", "kota", "ngo", "donator")->where("ngo.user_id", $user->id)->get();
+            //get ngo id
+            $getUser = User::with("ngo")->where('email', $user->email)->first();
+            //get donasi for ngo
+            $getDataPickup = Donasi::with("pickup", "status_donasi", "kota", "ngo", "donator")->where("ngo", $getUser->ngo->id)->get();
             return response()->json([
                 'status' => 'ok',
                 'response' => 'get-donasi',
@@ -125,7 +129,7 @@ class NgoController extends Controller
         }
     }
 
-    public function editPickup(Request $request, $id)
+    public function editPickup(Request $request)
     {
         try {
             foreach ($request->data as $data) {

@@ -40,4 +40,8 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
     ];
     protected $guard_name = 'web';
+
+    public function ngo(){
+        return $this->hasOne(NGO::class);
+    }
 }
