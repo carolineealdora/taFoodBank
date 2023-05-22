@@ -8,6 +8,7 @@ use App\Helpers\File;
 use App\Models\Donasi;
 use App\Models\Donatur;
 use Illuminate\Http\Request;
+use App\Models\DonasiKonsumsi;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -73,15 +74,6 @@ class DonaturController extends Controller
     }
 
     public function storeDonasi(Request $request){
-        // $donasi = $request->validate([
-        //     'ngo_tujuan'        => 'required',
-        //     'kota'              => 'required',
-        //     'nama_pickup'     => 'required|max:20',
-        //     'alamat_pickup'   => 'required|max:255',
-        //     'alamat_pickup'   => 'required|max:255',
-        //     'kota'          => 'image|file'
-        // ]);
-
         try{
             $email = Auth::user()->email;
 
@@ -95,28 +87,27 @@ class DonaturController extends Controller
                 "nama_pickup"       => $request->nama_pickup,
                 "alamat_pickup"     => $request->alamat_pickup,
                 "no_telp_pickup"    => $request->no_telp_pickup,
-                "status_donasi"     => 1
+                "status_donasi"     => 1,
             ];
 
             $donasi = Donasi::create($data);
-            return $donasi;
+            // return $request->donasi_konsumsi;
             foreach($request->donasi_konsumsi as $donasi_konsumsi){
                 $path = "images/donasi";
                 $requestFile = $request->photo;
                 $insertImage = File::fileUpload($requestFile, $path);
                 $data = [
                     "donasi"    => $donasi->id,
-                    "nama"      => $donasi_konsumsi->nama,
-                    "photo"     => $donasi_konsumsi->$insertImage,
-                    "deskripsi" => $donasi_konsumsi->deskripsi,
-                    "kategori"  => $donasi_konsumsi->kategori,
-                    "satuan"    => $donasi_konsumsi->satuan,
-                    "kuantitas" => $donasi_konsumsi->kuantitas,
-                    "expired"   => Carbon::now(),
-                    // "expired"   => $donasi_konsumsi->datenow,
+                    "nama"      => $donasi_konsumsi['nama'],
+                    "photo"     => $insertImage,
+                    "deskripsi" => $donasi_konsumsi['deskripsi'],
+                    "kategori"  => $donasi_konsumsi['kategori'],
+                    "satuan"    => $donasi_konsumsi['satuan'],
+                    "kuantitas" => $donasi_konsumsi['kuantitas'],
+                    "expired"   => $donasi_konsumsi['expired']
                 ];
 
-                DonasiKonsumsi::insert($data);
+                DonasiKonsumsi::create($data);
 
                 return response()->json([
                     'status'    => 'ok',
@@ -130,6 +121,8 @@ class DonaturController extends Controller
                 'status' => 'error',
                 'response' => 'failed',
             ], 500);
-        }
+
     }
+
+
 }

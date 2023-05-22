@@ -12,11 +12,13 @@ class Donasi extends Model
     protected $table = 'donasi';
 
     protected $fillable =[
-        'foto_profil',
-        'alamat',
-        'no_telp',
-        'tanggal_lahir',
-        'no_identitas'
+        'donatur',
+        'ngo_tujuan',
+        'nama_pickup',
+        'alamat_pickup',
+        'no_telp_pickup',
+        'kota',
+        'status_donasi'
     ];
 
     public function pickup(){

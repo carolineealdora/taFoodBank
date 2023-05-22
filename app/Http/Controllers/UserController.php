@@ -37,7 +37,7 @@ class UserController extends Controller
                     'status'    => 'ok',
                     'response'  => 'login-user',
                     'message'   => 'Log in berhasil',
-                    'route'     => route('ngo/dashboard')
+                    'route'     => route('donatur/dashboard')
                 ], 200);
             }
         }else{

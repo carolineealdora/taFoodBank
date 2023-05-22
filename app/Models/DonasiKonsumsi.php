@@ -2,8 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\Donasi;
+use App\Models\Satuan;
+use App\Models\Kategori;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class DonasiKonsumsi extends Model
 {
@@ -17,7 +20,6 @@ class DonasiKonsumsi extends Model
         'photo',
         'deskripsi',
         'kategori',
-        'jenis',
         'satuan',
         'kuantitas',
         'expired'
@@ -29,10 +31,6 @@ class DonasiKonsumsi extends Model
 
     public function kategori(){
         return $this->belongsTo(Kategori::class);
-    }
-
-    public function jenis(){
-        return $this->belongsTo(Jenis::class);
     }
 
     public function satuan(){
