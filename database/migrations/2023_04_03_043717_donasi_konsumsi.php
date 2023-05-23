@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('donasi');
             $table->foreign('donasi')->references('id')->on('donasi')->onDelete('cascade');
             $table->string('nama', 200);
-            $table->string('photo');
+            $table->string('photo', 200);
             $table->mediumtext('deskripsi');
             $table->unsignedBigInteger('kategori');
             $table->foreign('kategori')->references('id')->on('kategori');

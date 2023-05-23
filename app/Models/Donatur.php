@@ -12,7 +12,7 @@ class Donatur extends Model
 
     protected $fillable =[
         'user_id',
-        'foto_profil',
+        'foto',
         'alamat',
         'no_identitas',
         'tanggal_lahir',

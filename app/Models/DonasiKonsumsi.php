@@ -14,6 +14,8 @@ class DonasiKonsumsi extends Model
 
     protected $table = 'donasi_konsumsi';
 
+    protected $primaryKey = 'id';
+
     protected $fillable =[
         'donasi',
         'nama',
@@ -26,7 +28,7 @@ class DonasiKonsumsi extends Model
     ];
 
     public function donasi(){
-        return $this->belongsTo(Donasi::class);
+        return $this->hasMany(Donasi::class);
     }
 
     public function kategori(){

@@ -139,4 +139,20 @@ class AdminController extends Controller
     //     return view('admin/admin_create_statusDonasi');
     // }
 
+    public function deleteDonasi(){
+
+    }
+
+    public function getNGO(){
+
+    }
+
+    public function getDonatur(){
+
+    }
+
+    public function getDonasi(){
+
+    }
+
 }

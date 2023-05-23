@@ -2,14 +2,21 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\NGO;
+use App\Models\Kota;
+use App\Models\Donatur;
+use App\Models\StatusDonasi;
+use App\Models\DonasiKonsumsi;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Donasi extends Model
 {
     use HasFactory;
 
     protected $table = 'donasi';
+
+    protected $primaryKey = 'id';
 
     protected $fillable =[
         'donatur',
@@ -26,7 +33,7 @@ class Donasi extends Model
     }
 
     public function donasi_konsumsi(){
-        return $this->hasMany(DonasiKonsumsi::class);
+        return $this->belongsTo(DonasiKonsumsi::class);
     }
 
     public function status_donasi(){

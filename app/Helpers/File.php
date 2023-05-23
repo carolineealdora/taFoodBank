@@ -1,4 +1,4 @@
-<?php 
+<?php
 namespace App\Helpers;
 
 use App\Models\Donatur;
@@ -12,6 +12,7 @@ class File{
             $path,
             $requestFile
         );
+
         return $path;
     }
 }

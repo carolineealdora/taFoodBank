@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Throwable;
 use Carbon\Carbon;
 use App\Models\User;
 use App\Helpers\File;
@@ -43,20 +44,21 @@ class DonaturController extends Controller
     public function register(Request $request)
     {
         // return view('donatur/donatur_register');
-
-        // return json_encode('sampe sini kak');
         $data_user = [
             'nama'  => $request->nama,
             'email' => $request->email,
             'password' => Hash::make($request->password)
         ];
 
-        $user = ModelsUser::firstOrCreate($data_user);
+        $user = User::firstOrCreate($data_user);
         $user->assignRole('donatur');
 
+        $path = "images/donatur";
+        $requestFile = $request->foto;
+        $insertImage = File::fileUpload($requestFile, $path);
         $data_donatur = [
             'user_id'       => $user->id,
-            'foto_profil'   => $request->foto_profil,
+            'foto'          => $insertImage,
             'alamat'        => $request->alamat,
             'no_telp'       => $request->no_telp,
             'tanggal_lahir' => $request->tanggal_lahir,
@@ -75,10 +77,8 @@ class DonaturController extends Controller
 
     public function storeDonasi(Request $request){
         try{
-            $email = Auth::user()->email;
-
-            $user = User::with('donatur')->where('email', $email)->first();
-
+            //$email = Auth::user()->email;
+            $user = User::with('donatur')->where('email', $request->email)->first();
             $id_donatur = $user->donatur->id;
             $data = [
                 "donatur"           => $id_donatur,
@@ -91,13 +91,19 @@ class DonaturController extends Controller
             ];
 
             $donasi = Donasi::create($data);
-            // return $request->donasi_konsumsi;
-            foreach($request->donasi_konsumsi as $donasi_konsumsi){
+
+            $konsumsi = $request->donasi_konsumsi;
+            //return $konsumsi;
+            foreach($konsumsi as $donasi_konsumsi){
+               // return $donasi_konsumsi;
                 $path = "images/donasi";
-                $requestFile = $request->photo;
+                $requestFile = $donasi_konsumsi['photo'];
+                //return $requestFile;
                 $insertImage = File::fileUpload($requestFile, $path);
+
+                // return $insertImage;
                 $data = [
-                    "donasi"    => $donasi->id,
+                    "donasi"    => $donasi['id'],
                     "nama"      => $donasi_konsumsi['nama'],
                     "photo"     => $insertImage,
                     "deskripsi" => $donasi_konsumsi['deskripsi'],
@@ -107,22 +113,124 @@ class DonaturController extends Controller
                     "expired"   => $donasi_konsumsi['expired']
                 ];
 
-                DonasiKonsumsi::create($data);
+                // return $data;
+
+                $create = DonasiKonsumsi::create($data);
+                // return $create;
 
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'created',
                     'message'   => 'Selamat! Donasi telah terkirim.',
-                    'route'     => route('donatur/donasi')
+                    // 'route'     => route('donatur/donasi')
                 ], 200);
             }
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => 'failed',
+                'response' => $e,
+                // 'message' => $e,
             ], 500);
+
+        }
+    }
+
+    public function editDonasi(Request $request, $id){
+        try{
+            $data = [
+                "ngo_tujuan"        => $request->ngo_tujuan,
+                "kota"              => $request->kota,
+                "nama_pickup"       => $request->nama_pickup,
+                "alamat_pickup"     => $request->alamat_pickup,
+                "no_telp_pickup"    => $request->no_telp_pickup,
+            ];
+
+            $donasi = Donasi::find($id)->update($data);
+            // return $donasi;
+            //bikin request bisa passing id (bikin tag hidden buat idnya)
+            foreach($request->donasi_konsumsi as $donasi_konsumsi){
+                $konsumsi_photo = DonasiKonsumsi::where('id', $donasi_konsumsi['id'])->get();
+                return $konsumsi_photo;
+                if($donasi_konsumsi['photo'] !== null){ //kondisi saat foto berubah
+                    unlink($konsumsi_photo->photo);
+                    $path = "images/donasi";
+                    $requestFile = $request->photo;
+                    // return $requestFile;
+                    $insertImage = File::fileUpload($requestFile, $path);
+                    $data = [
+                        "donasi"    => $donasi->id,
+                        "nama"      => $donasi_konsumsi['nama'],
+                        "photo"     => $insertImage,
+                        "deskripsi" => $donasi_konsumsi['deskripsi'],
+                        "kategori"  => $donasi_konsumsi['kategori'],
+                        "satuan"    => $donasi_konsumsi['satuan'],
+                        "kuantitas" => $donasi_konsumsi['kuantitas'],
+                        "expired"   => $donasi_konsumsi['expired']
+                    ];
+
+                    DonasiKonsumsi::find($donasi_konsumsi['id'])->update($data);
+
+                    return response()->json([
+                        'status'    => 'ok',
+                        'response'  => 'created',
+                        'message'   => 'Selamat! Donasi telah terkirim.',
+                        // 'route'     => route('donatur/donasi')
+                    ], 200);
+                }else{
+                    $data = [
+                        "donasi"    => $donasi->id,
+                        "nama"      => $donasi_konsumsi['nama'],
+                        "deskripsi" => $donasi_konsumsi['deskripsi'],
+                        "kategori"  => $donasi_konsumsi['kategori'],
+                        "satuan"    => $donasi_konsumsi['satuan'],
+                        "kuantitas" => $donasi_konsumsi['kuantitas'],
+                        "expired"   => $donasi_konsumsi['expired']
+                    ];
+
+                    DonasiKonsumsi::find($donasi_konsumsi['id'])->update($data);
+
+                    return response()->json([
+                        'status'    => 'ok',
+                        'response'  => 'created',
+                        'message'   => 'Selamat! Donasi telah terkirim.',
+                        // 'route'     => route('donatur/donasi')
+                    ], 200);
+                }
+            }
+        } catch (Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'response' => $e,
+            ], 500);
+
+        }
+    }
+
+    public function getList($id){
+        try{
+            $getList = Donasi::find($id)->with("donasi_konsumsi");
+            return $getList;
+        }catch (Throwable $e){
+            return response()->json([
+                'status' => 'error',
+                'response' => $e,
+            ], 500);
+        }
+    }
+
+    public function getDetail(){
 
     }
 
-
+    public function deleteDonasi($id){
+        try{
+            $delete = Donasi::find($id)->delete();
+            return $delete;
+        }catch (Throwable $e){
+            return response()->json([
+                'status' => 'error',
+                'response' => $e,
+            ], 500);
+        }
+    }
 }

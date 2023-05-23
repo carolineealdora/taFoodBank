@@ -39,7 +39,7 @@ Route::prefix('donatur')->group(function () {
     Route::get('/detail-donasi', [DonaturController::class, 'detailDonasi'])->name('donatur.detail-donasi');
     Route::get('/create-donasi', [DonaturController::class, 'createDonasi'])->name('donatur.create-donasi');
     Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
-    Route::post('/store', [DonaturController::class, 'storeDonasi'])->name('donatur.storeDonasi');
+    //Route::post('/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');
 });
 
 // NGO
@@ -51,7 +51,6 @@ Route::prefix('ngo')->group(function () {
     Route::get('/detail-donasi', [NgoController::class, 'detailDonasi'])->name('ngo.detail-donasi');
     Route::post('/register', [NgoController::class, 'register'])->name('ngo.register');
     //API NGO
-    Route::get('/list-donasi', [NgoController::class, 'listDonasi'])->name('ngo.listDonasi');
 });
 
 // Admin
