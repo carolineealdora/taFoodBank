@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 class UserController extends Controller
-{
+{    
     public function login(Request $request){
         $login = Auth::attempt([
             'email'     => $request->email,
@@ -32,7 +32,7 @@ class UserController extends Controller
                     'status'    => 'ok',
                     'response'  => 'login-user',
                     'message'   => 'Log in berhasil',
-                    'route'     => Auth::user()
+                    'route'     => route('ngo.dashboard'),
                 ], 200);
             }else if($user == "donatur"){
                 return response()->json([

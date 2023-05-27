@@ -20,6 +20,14 @@ class NgoController extends Controller
         return view('ngo/ngo_dashboard');
     }
 
+    public function showLoginForm(){
+        return view('ngo.ngo_login');
+    }
+
+    public function showRegisterForm(){
+        return view('ngo.ngo_register');
+    }
+
     public function listDonasi()
     {
         //get all data donasi
