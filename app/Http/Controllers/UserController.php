@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Throwable;
 
 class UserController extends Controller
 {
@@ -24,21 +25,21 @@ class UserController extends Controller
                     'status'    => 'ok',
                     'response'  => 'login-user',
                     'message'   => 'Log in berhasil',
-                    'route'     => route('admin/dashboard')
+                    'route'     => Auth::user()
                 ], 200);
             }else if($user == "ngo"){
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'login-user',
                     'message'   => 'Log in berhasil',
-                    'route'     => route('ngo/dashboard')
+                    'route'     => Auth::user()
                 ], 200);
             }else if($user == "donatur"){
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'login-user',
                     'message'   => 'Log in berhasil',
-                    'route'     => route('donatur/dashboard')
+                    //'route'     => route('donatur/dashboard')
                 ], 200);
             }
         }else{

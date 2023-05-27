@@ -15,7 +15,6 @@ use Throwable;
 
 class NgoController extends Controller
 {
-
     public function dashboard()
     {
         return view('ngo/ngo_dashboard');
@@ -30,23 +29,23 @@ class NgoController extends Controller
             //get ngo id
             $getUser = User::with("ngo")->where('email', $user->email)->first();
             //get donasi for ngo
-            $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo", "donatur")->where("ngo", $getUser->ngo->id)->get();
+            $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo", "donatur")->where("ngo_tujuan", $getUser->ngo->id)->get();
             return response()->json([
                 'status' => 'ok',
-                'response' => 'get-donasi',
+                'response' => 'get-donasi', 
                 'message' => 'Success Get Donasi Data!',
                 'data' => $getDataDonasi
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'failed',
-                'response' => 'failed',
+                'response' => 'failed',     
                 'message' => $e,
             ], 500);
         }
     }
 
-    public function show($id)
+    public function showDonasi($id)
     {
         try {
             //get detail donasi
@@ -61,43 +60,50 @@ class NgoController extends Controller
             return response()->json([
                 'status' => 'error',
                 'response' => 'failed',
+            ], 500);    
+        }
+    }
+    public function donasiApprove($id)
+    {
+        try {
+            Donasi::where("id", $id)->update(['status_donasi' => 2]);
+            $getData = Donasi::with("donasi_konsumsi")->where("id", $id)->get();
+            return $getData;
+            $data = [
+                'donasi' => $getData->donasi,
+                'nama' => $getData->nama,
+                'photo' => $getData->photo,
+                'deskripsi ' => $getData->deskripsi,
+                'kategori' => $getData->kategori,
+                'jenis' => $getData->jenis,
+                'satuan' => $getData->satuan,
+                'kuantitas' => $getData->kuantitas,
+                'expired' => $getData->expired,
+                'status_donasi' => $getData->status_donasi,
+            ];
+            Pickup::store($data);
+            return response()->json([
+                'status' => 'ok',
+                'response' => 'updated-donasi',
+                'message' => 'Data Berhasil Di-Approve!',
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'status' => 'error',
+                'response' => 'failed',
             ], 500);
         }
     }
-    public function approvalDonasi(Request $request, $id)
-    {
-        try {
-            //general request
-            $data = [
-                'id' => $request->id,
-                'donasi' => $request->donasi,
-                'nama' => $request->nama,
-                'photo' => $request->photo,
-                'deskripsi ' => $request->deskripsi,
-                'kategori' => $request->kategori,
-                'jenis' => $request->jenis,
-                'satuan' => $request->satuan,
-                'kuantitas' => $request->kuantitas,
-                'expired' => $request->expired,
-                'status_donasi' => $request->status_donasi,
-            ];
-            Donasi::find("id", $id)->update(['status_donasi' => $request->status_donasi]);
-            if ($request->status_donasi == 2) {
-                //insert to pickup
-                Pickup::store($data);
-                return response()->json([
-                    'status' => 'ok',
-                    'response' => 'updated-donasi',
-                    'message' => 'Data Berhasil Di-Approve!',
-                ], 200);
-            } else {
-                return response()->json([
-                    'status' => 'ok',
-                    'response' => 'updated-donasi',
-                    'message' => 'Data Berhasil Di-reject',
-                ], 200);
-            }
-        } catch (Throwable $e) {
+
+    public function donasiCancel($id){
+        try{
+            Donasi::find("id", $id)->update(['status_donasi' => 3]);
+            return response()->json([
+                'status' => 'ok',
+                'response' => 'updated-donasi',
+                'message' => 'Status Berhasil diubah!',
+            ], 200);
+        }catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
                 'response' => 'failed',
@@ -112,7 +118,7 @@ class NgoController extends Controller
             //whos login
             $user = Auth::user();
             //get ngo id
-            $getUser = User::with("ngo")->where('email', $user->email)->first();
+            $getUser = User::with("ngo")->where('email', "ngoTest@gmail.com")->first();
             //get donasi for ngo
             $getDataPickup = Donasi::with("pickup", "status_donasi", "kota", "ngo", "donator")->where("ngo", $getUser->ngo->id)->get();
             return response()->json([
