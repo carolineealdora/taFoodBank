@@ -1,9 +1,10 @@
 <?php
 
-use App\Http\Controllers\DonaturController;
-use App\Http\Controllers\NgoController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\NgoController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\DonaturController;
 
 /*
 |--------------------------------------------------------------------------
@@ -19,11 +20,13 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
 
 Route::post('ngo/register', [NgoController::class, 'register'])->name('ngo.register');
 Route::post('donatur/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');
 
-Route::get('donatur/donasi/{id}', [DonaturController::class, 'getList'])->name('donatur.getList');
+Route::get('donatur/donasi', [DonaturController::class, 'getList'])->name('donatur.getList');
+Route::get('donatur/donasi/{id}', [DonaturController::class, 'getDetail'])->name('donatur.detailDonasi');
 Route::delete('donasi/delete/{id}', [DonaturController::class, 'deleteDonasi'])->name('donatur.deleteDonasi');
 
 
@@ -34,3 +37,6 @@ Route::delete('admin/delete/{id}', [DonaturController::class, 'deleteDonasi'])->
 Route::get('ngo/list-donasi', [NgoController::class, 'listDonasi'])->name('ngo.listDonasi');
 
 Route::post('donatur/store', [DonaturController::class, 'storeDonasi'])->name('donatur.storeDonasi');
+
+
+Route::post('user/edit', [UserController::class, 'edit'])->name('user.edit');

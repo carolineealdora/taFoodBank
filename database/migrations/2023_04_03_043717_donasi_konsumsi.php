@@ -12,19 +12,19 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('donasi_konsumsi', function (Blueprint $table){
-            $table->id('id');
-            $table->unsignedBigInteger('donasi');
-            $table->foreign('donasi')->references('id')->on('donasi')->onDelete('cascade');
-            $table->string('nama', 200);
-            $table->string('photo', 200);
-            $table->mediumtext('deskripsi');
-            $table->unsignedBigInteger('kategori');
-            $table->foreign('kategori')->references('id')->on('kategori');
-            $table->unsignedBigInteger('satuan');
-            $table->foreign('satuan')->references('id')->on('satuan');
-            $table->integer('kuantitas');
-            $table->date('expired')->nullable();
-            $table->timestamps();
+        $table->id('id');
+        $table->unsignedBigInteger('donasi_id');
+        $table->foreign('donasi_id')->references('id')->on('donasi')->onDelete('cascade');
+        $table->string('nama', 200);
+        $table->string('photo', 200);
+        $table->mediumtext('deskripsi');
+        $table->unsignedBigInteger('kategori');
+        $table->foreign('kategori')->references('id')->on('kategori');
+        $table->unsignedBigInteger('satuan');
+        $table->foreign('satuan')->references('id')->on('satuan');
+        $table->integer('kuantitas');
+        $table->date('expired')->nullable();
+        $table->timestamps();
         });
     }
 

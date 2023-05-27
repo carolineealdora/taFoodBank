@@ -43,36 +43,44 @@ class DonaturController extends Controller
 
     public function register(Request $request)
     {
-        // return view('donatur/donatur_register');
-        $data_user = [
-            'nama'  => $request->nama,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ];
+        try{
+            // return view('donatur/donatur_register');
+            $data_user = [
+                'nama1'  => $request->nama,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ];
 
-        $user = User::firstOrCreate($data_user);
-        $user->assignRole('donatur');
+            $user = User::firstOrCreate($data_user);
+            $user->assignRole('donatur');
 
-        $path = "images/donatur";
-        $requestFile = $request->foto;
-        $insertImage = File::fileUpload($requestFile, $path);
-        $data_donatur = [
-            'user_id'       => $user->id,
-            'foto'          => $insertImage,
-            'alamat'        => $request->alamat,
-            'no_telp'       => $request->no_telp,
-            'tanggal_lahir' => $request->tanggal_lahir,
-            'no_identitas'  => $request->no_identitas
-        ];
+            $path = "images/donatur";
+            $requestFile = $request->foto;
+            $insertImage = File::fileUpload($requestFile, $path);
+            $data_donatur = [
+                'user_id'       => $user->id,
+                'foto'          => $insertImage,
+                'alamat'        => $request->alamat,
+                'no_telp'       => $request->no_telp,
+                'tanggal_lahir' => $request->tanggal_lahir,
+                'no_identitas'  => $request->no_identitas
+            ];
 
-        //bikin kondisi kalo email sama
-        $profile = Donatur::create($data_donatur);
-        return response()->json([
-            'status'    => 'ok',
-            'response'  => 'registered',
-            'message'   => 'Selamat! Anda telah terdaftar',
-            'data'     => $profile,
-        ], 200);
+            //bikin kondisi kalo email sama
+            $profile = Donatur::create($data_donatur);
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'registered',
+                'message'   => 'Selamat! Anda telah terdaftar',
+                'data'     => $user,
+            ], 200);
+        }catch(Throwable $e){
+            return response()->json([
+                'status' => 'error',
+                'response' => $e
+            ], 500);
+        }
+
     }
 
     public function storeDonasi(Request $request){
@@ -131,7 +139,6 @@ class DonaturController extends Controller
                 'response' => $e,
                 // 'message' => $e,
             ], 500);
-
         }
     }
 
@@ -150,7 +157,7 @@ class DonaturController extends Controller
             //bikin request bisa passing id (bikin tag hidden buat idnya)
             foreach($request->donasi_konsumsi as $donasi_konsumsi){
                 $konsumsi_photo = DonasiKonsumsi::where('id', $donasi_konsumsi['id'])->get();
-                return $konsumsi_photo;
+                // return $konsumsi_photo;
                 if($donasi_konsumsi['photo'] !== null){ //kondisi saat foto berubah
                     unlink($konsumsi_photo->photo);
                     $path = "images/donasi";
@@ -206,9 +213,9 @@ class DonaturController extends Controller
         }
     }
 
-    public function getList($id){
+    public function getList(){
         try{
-            $getList = Donasi::find($id)->with("donasi_konsumsi");
+            $getList = Donasi::with("donasi_konsumsi")->get();
             return $getList;
         }catch (Throwable $e){
             return response()->json([
@@ -218,8 +225,16 @@ class DonaturController extends Controller
         }
     }
 
-    public function getDetail(){
-
+    public function getDetail($id){
+        try{
+            $getDetail = Donasi::with("donasi_konsumsi")->find($id);
+            return $getDetail;
+        }catch(Throwable $e){
+            return response()->json([
+                'status' => 'error',
+                'response' => $e,
+            ], 500);
+        }
     }
 
     public function deleteDonasi($id){

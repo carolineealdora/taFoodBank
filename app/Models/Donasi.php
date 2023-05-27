@@ -33,7 +33,7 @@ class Donasi extends Model
     }
 
     public function donasi_konsumsi(){
-        return $this->belongsTo(DonasiKonsumsi::class);
+        return $this->hasMany(DonasiKonsumsi::class);
     }
 
     public function status_donasi(){
