@@ -44,6 +44,8 @@ Route::prefix('donatur')->group(function () {
 
 // NGO
 Route::prefix('ngo')->group(function () {
+    Route::get('/show-login', [NgoController::class, 'showLoginForm'])->name('ngo.showLogin');
+    Route::get('/show-register', [NgoController::class, 'showRegisterForm'])->name('ngo.showRegister');
     Route::get('/login', [NgoController::class, 'login'])->name('ngo.login');
     Route::get('/dashboard', [NgoController::class, 'dashboard'])->name('ngo.dashboard');
     Route::get('/donasi', [NgoController::class, 'donasi'])->name('ngo.donasi');
