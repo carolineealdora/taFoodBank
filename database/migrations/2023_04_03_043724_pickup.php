@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('pickup', function(Blueprint $table){
             $table->id('id');
-            $table->unsignedBigInteger('donasi');
-            $table->foreign('donasi')->references('id')->on('donasi')->onDelete('cascade');
+            $table->unsignedBigInteger('donasi_id');
+            $table->foreign('donasi_id')->references('id')->on('donasi')->onDelete('cascade');
             $table->string('nama', 200);
             $table->string('photo');
             $table->mediumtext('deskripsi');

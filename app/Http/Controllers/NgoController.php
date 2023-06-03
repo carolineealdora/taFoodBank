@@ -136,7 +136,7 @@ class NgoController extends Controller
                 //general request
                 $request = [
                     'id' => $data->id,
-                    'donasi' => $data->donasi,
+                    'donasi_id' => $data->donasi,
                     'nama' => $data->nama,
                     'photo' => $data->photo,
                     'deskripsi ' => $data->deskripsi,
@@ -193,9 +193,9 @@ class NgoController extends Controller
 
         $user =  User::firstOrCreate($data_user);
         $user->assignRole('ngo');
-        $path = "images/profile";
+        $path = "images/ngo";
         $requestFile = $request->pic_foto;
-        $insertImage = File::fileUpload($requestFile, $path);
+        // $insertImage = File::fileUpload($requestFile, $path);
         $data_ngo = [
             'ngo_status'        => 1,
             'user_id'           => $user->id,
@@ -203,10 +203,11 @@ class NgoController extends Controller
             'ngo_alamat'        => $request->ngo_alamat,
             'ngo_kota'          => $request->ngo_kota,
             'ngo_no_telp'       => $request->ngo_no_telp,
-            'no_identitas'      => $request->no_identitas, 
-            'pic_foto'          => $insertImage
+            'no_identitas'      => $request->no_identitas,
+            // 'pic_foto'          => $insertImage
+            'pic_foto'          => 'tes'
         ];
-        
+
         $ngoCreate = NGO::create($data_ngo);
 
         //getData

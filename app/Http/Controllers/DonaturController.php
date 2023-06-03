@@ -46,7 +46,7 @@ class DonaturController extends Controller
         try{
             // return view('donatur/donatur_register');
             $data_user = [
-                'nama1'  => $request->nama,
+                'nama'  => $request->nama,
                 'email' => $request->email,
                 'password' => Hash::make($request->password)
             ];
@@ -85,6 +85,7 @@ class DonaturController extends Controller
 
     public function storeDonasi(Request $request){
         try{
+            // return $request;
             //$email = Auth::user()->email;
             $user = User::with('donatur')->where('email', $request->email)->first();
             $id_donatur = $user->donatur->id;
@@ -104,16 +105,17 @@ class DonaturController extends Controller
             //return $konsumsi;
             foreach($konsumsi as $donasi_konsumsi){
                // return $donasi_konsumsi;
-                $path = "images/donasi";
-                $requestFile = $donasi_konsumsi['photo'];
+                // $path = "images/donasi";
+                // $requestFile = $donasi_konsumsi['photo'];
                 //return $requestFile;
-                $insertImage = File::fileUpload($requestFile, $path);
+                // $insertImage = File::fileUpload($requestFile, $path);
 
                 // return $insertImage;
                 $data = [
-                    "donasi"    => $donasi['id'],
+                    "donasi_id"    => $donasi['id'],
                     "nama"      => $donasi_konsumsi['nama'],
-                    "photo"     => $insertImage,
+                    // "photo"     => $insertImage,
+                    "photo"     => 'tes',
                     "deskripsi" => $donasi_konsumsi['deskripsi'],
                     "kategori"  => $donasi_konsumsi['kategori'],
                     "satuan"    => $donasi_konsumsi['satuan'],

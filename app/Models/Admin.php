@@ -16,4 +16,8 @@ class Admin extends Model
         'foto_profil',
         'no_identitas'
     ];
+
+    public function users(){
+        return $this->belongsTo(User::class);
+    }
 }

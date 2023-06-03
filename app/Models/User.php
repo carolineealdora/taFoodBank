@@ -50,7 +50,12 @@ class User extends Authenticatable
     public function ngo(){
         return $this->hasOne(NGO::class);
     }
+
     public function donatur(){
         return $this->hasOne(Donatur::class);
+    }
+    
+    public function admin(){
+        return $this->hasOne(Admin::class);
     }
 }

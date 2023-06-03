@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Helpers\File;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -64,36 +65,69 @@ class UserController extends Controller
 
     public function edit(Request $request){
         try{
+            // return "sampe sini";
             //$email = Auth::user()->email;
-            // $user = User::with('donatur')->where('email', $request->email)->first();
+            // return $request->email;
+            // $user = User::where('email', $request->email)->first();
+            $user = User::where('email', $request->email)->first();
+            // return $user;
 
-            $data_credentials = [
-                "email"     => $request->email_new,
-                "password"  => Hash::make($request->password)
-            ];
+            if($request->password == null){
+                $data_credentials = [
+                    "email"     => $request->req_email
+                ];
+            }else{
+                $data_credentials = [
+                    "email"     => $request->req_email,
+                    "password"  => Hash::make($request->password)
+                ];
+            }
 
             User::find($user['id'])->update($data_credentials);
 
+
+            $donatur_profil = User::with('donatur')->where('email', $request['req_email'])->first();
+            // return ["'" . $donatur_profil->donatur['foto'] . "'", "sampe sini"];
+
+            return unlink("'public/" . $donatur_profil->donatur['foto'] . "'");
+
+            $path = "images/donatur";
+            $requestFile = $request->foto;
+            $insertImage = File::fileUpload($requestFile, $path);
+
+            $data = [
+                "foto"          => $insertImage,
+                "nama"          => $request->nama,
+                "no_identitas"  => $request->no_identitas,
+                "tanggal_lahir" => $request->tanggal_lahir,
+                "no_telp"       => $request->no_telp,
+                "alamat"        => $request->alamat
+            ];
+
+            Donatur::find($user['id'])->update($data);
+
+            return "selesai";
             $data = [];
-            if($role == 'donatur'){
-                $donatur_profil = User::with('donatur')->where('email', $request['email_new'])->get();
-                unlink($donatur_profil['foto']);
-                $path = "images/donatur";
-                $requestFile = $request->foto;
-                $insertImage = File::fileUpload($requestFile, $path);
+            if($user->hasRole('donatur')){
+                // $donatur_profil = User::with('donatur')->where('email', $request['req_email'])->get();
+                // return [$donatur_profil, "sampe sini"];
+                // unlink($donatur_profil['foto']);
+                // $path = "images/donatur";
+                // $requestFile = $request->foto;
+                // $insertImage = File::fileUpload($requestFile, $path);
 
-                $data = [
-                    "foto"          => $insertImgae,
-                    "nama"          => $request->nama,
-                    "no_identitas"  => $request->no_identitas,
-                    "tanggal_lahir" => $request->tanggal_lahir,
-                    "no_telp"       => $request->no_telp,
-                    "alamat"        => $request->alamat
-                ];
+                // $data = [
+                //     "foto"          => $insertImgae,
+                //     "nama"          => $request->nama,
+                //     "no_identitas"  => $request->no_identitas,
+                //     "tanggal_lahir" => $request->tanggal_lahir,
+                //     "no_telp"       => $request->no_telp,
+                //     "alamat"        => $request->alamat
+                // ];
 
-                Donatur::find($user['id'])->update($data);
+                // Donatur::find($user['id'])->update($data);
             }else if ($role == 'ngo'){
-                $ngo_profil = User::with('ngo')->where('email', $request['email_new'])->get();
+                $ngo_profil = User::with('ngo')->where('email', $request['req_email'])->get();
                 unlink($ngo_profil['foto']);
                 $path = "images/profile";
                 $requestFile = $request->foto;
@@ -112,7 +146,7 @@ class UserController extends Controller
 
                 NGO::find($user['id'])->update($data_ngo);
             }else if ($role == 'admin'){
-                $admin_profil = User::with('admin')->where('email', $request['email_new'])->get();
+                $admin_profil = User::with('admin')->where('email', $request['req_email'])->get();
                 unlink($admin_profil['foto_profil']);
                 $path = "images/admin";
                 $requestFile = $request->foto;
