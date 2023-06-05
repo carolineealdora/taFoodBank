@@ -20,7 +20,7 @@ use App\Http\Controllers\DonaturController;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
+//Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
 
 Route::post('donatur/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');
 

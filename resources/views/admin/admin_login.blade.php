@@ -45,7 +45,6 @@
 <script>
   $('#login-form').on('submit', function(event) {
     event.preventDefault();
-    console.log("test")
     let dataForm = new FormData($(this)[0]);
 
     $.ajax({
@@ -56,7 +55,6 @@
       cache: false,
       processData: false,
       success: function(data) {
-        console.log(data);
         Swal.fire({
           title: 'Berhasil!',
           type: "success",

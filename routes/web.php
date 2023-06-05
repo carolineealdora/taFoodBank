@@ -33,13 +33,14 @@ Route::prefix('user')->group(function () {
 // Donatur
 Route::prefix('donatur')->group(function () {
     Route::get('/show-login', [DonaturController::class, 'showLoginForm'])->name('donatur.showLogin');
+    Route::get('/show-register', [DonaturController::class, 'showRegisterForm'])->name('donatur.showRegister');
     Route::get('/login', [DonaturController::class, 'login'])->name('donatur.login');
+    Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
     Route::get('/dashboard', [DonaturController::class, 'dashboard'])->name('donatur.dashboard');
     Route::get('/donasi', [DonaturController::class, 'donasi'])->name('donatur.donasi');
     Route::get('/profile', [DonaturController::class, 'profile'])->name('donatur.profile');
     Route::get('/detail-donasi', [DonaturController::class, 'detailDonasi'])->name('donatur.detail-donasi');
     Route::get('/create-donasi', [DonaturController::class, 'createDonasi'])->name('donatur.create-donasi');
-    Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
     //Route::post('/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');
 });
 

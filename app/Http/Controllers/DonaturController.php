@@ -21,6 +21,11 @@ class DonaturController extends Controller
         return view('donatur.donatur_login');
     }
 
+    public function showRegisterForm()
+    {
+        return view('donatur.donatur_register');
+    }
+
     public function dashboard()
     {
         return view('donatur/donatur_dashboard');
@@ -49,7 +54,6 @@ class DonaturController extends Controller
     public function register(Request $request)
     {
         try{
-            // return view('donatur/donatur_register');
             $data_user = [
                 'nama'  => $request->nama,
                 'email' => $request->email,
@@ -72,17 +76,17 @@ class DonaturController extends Controller
             ];
 
             //bikin kondisi kalo email sama
-            $profile = Donatur::create($data_donatur);
+            Donatur::create($data_donatur);
             return response()->json([
                 'status'    => 'ok',
-                'response'  => 'registered',
-                'message'   => 'Selamat! Anda telah terdaftar',
-                'data'     => $user,
+                'response'  => 'register-donatur',
+                'message'   => 'Register telah berhasil',
+                'route'     => route('donatur.showLogin')
             ], 200);
         }catch(Throwable $e){
             return response()->json([
-                'status' => 'error',
-                'response' => $e
+                'status'    => 'failed',
+                'message'   => 'Terdapat kesalahan!'
             ], 500);
         }
 

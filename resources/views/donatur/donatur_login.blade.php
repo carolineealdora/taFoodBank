@@ -28,7 +28,7 @@
               <div class="card-footer text-center pt-0 px-lg-2 px-1">
                 <p class="mb-4 text-sm mx-auto">
                   Belum memiliki email dan password yang terdaftar?
-                  <a href="{{ URL::route('donatur.register') }}" class="text-primary text-gradient font-weight-bold">Daftar Terlebih Dulu</a>
+                  <a href="{{ URL::route('donatur.showRegister') }}" class="text-primary text-gradient font-weight-bold">Daftar Terlebih Dulu</a>
                 </p>
               </div>
             </div>
@@ -51,7 +51,6 @@
 <script>
   $('#login-form').on('submit', function(event) {
     event.preventDefault();
-    console.log("test")
     let dataForm = new FormData($(this)[0]);
 
     $.ajax({
@@ -62,7 +61,6 @@
       cache: false,
       processData: false,
       success: function(data) {
-        console.log(data);
         Swal.fire({
           title: 'Berhasil!',
           type: "success",

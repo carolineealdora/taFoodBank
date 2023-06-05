@@ -18,48 +18,48 @@
       <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
         <div class="card z-index-0">
           <div class="card-body">
-            <form role="form">
+            <form  id="register-form" action="{{route('donatur.register')}}" method="post" enctype="multipart/form-data"  role="form">
               <div class="form-group mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Foto Profil <span class="mb-2 text-xs font-weight-light">(opsional)</span></label>
               {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-              <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
+              <input id="foto" name="foto" class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
               @error('AdminFoto')
                 <p class="text-danger">{{ $message }}</p>
               @enderror
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Nama Lengkap</label>
-                <input type="text" class="form-control" placeholder="Name" aria-label="Name">
+                <input id="nama" name="nama" type="text" class="form-control" placeholder="Name" aria-label="Name">
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Alamat Lengkap</label>
-                <input type="text" class="form-control" placeholder="Alamat" aria-label="Alamat">
+                <input id="alamat" name="alamat" type="text" class="form-control" placeholder="Alamat" aria-label="Alamat">
               </div>
               <div class="mb-3">
-                <label for="donatur_donasiFoto" class="form-control-label">Nama Lengkap</label>
-                <input type="text" class="form-control" placeholder="Nomor Identitas (KTP)" aria-label="Nomor Identitas">
+                <label for="donatur_donasiFoto" class="form-control-label">Nomor Identitas (KTP)</label>
+                <input id="no_identitas" name="no_identitas" type="text" class="form-control" placeholder="Nomor Identitas (KTP)" aria-label="Nomor Identitas">
               </div>
               {{-- ambil dari form donasi --}}
               <div class="mb-3"> 
                 <div class="form-group">
                   <label for="donatur_donasiFoto" class="form-control-label">Tanggal Lahir</label>
-                  <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>                   
+                  <input id="tanggal_lahir" name="tanggal_lahir" class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>                   
                 </div>
               </div>
               <div class="mb-3"> 
                 <label for="donatur_donasiFoto" class="form-control-label">Nomor Telepon</label>
-                <input type="text" class="form-control" placeholder="Nomor Telepon" aria-label="Nomor Telepon">
+                <input id="no_telp" name="no_telp" type="text" class="form-control" placeholder="Nomor Telepon" aria-label="Nomor Telepon">
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Email</label>
-                <input type="email" class="form-control" placeholder="Email" aria-label="Email">
+                <input id="email" name="email" type="email" class="form-control" placeholder="Email" aria-label="Email">
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Password</label>
-                <input type="password" class="form-control" placeholder="Password" aria-label="Password">
+                <input id="password" name="password" type="password" class="form-control" placeholder="Password" aria-label="Password">
               </div>
               <div class="text-center">
-                <button type="button" class="btn bg-gradient-dark w-100 my-4 mb-2">Daftar</button>
+                <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Daftar</button>
               </div>
               <p class="text-sm mt-3 mb-0">Sudah punya akun? Langsung <a href="javascript:;" class="text-dark font-weight-bolder"> Log in</a></p>
             </form>
@@ -69,4 +69,45 @@
     </div>
   </div>
 </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script>
+  $('#register-form').on('submit', function(event) {
+    event.preventDefault();
+    let dataForm = new FormData($(this)[0]);
+
+    $.ajax({
+      url: $(this).attr("action"),
+      method: "POST",
+      data: dataForm,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(data) {
+        console.log(data);
+        Swal.fire({
+          title: 'Berhasil!',
+          type: "success",
+          text: data.message,
+          showConfirmButton: false,
+        });
+        setTimeout(function() {
+          Swal.close();
+          window.location.href = data.route;
+        }, 2000);
+      },
+
+      error: (data) => {
+        if (data.status == "failed") {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+        }
+      }
+    });
+  });
+</script>
 @endsection
