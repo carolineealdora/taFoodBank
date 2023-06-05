@@ -49,11 +49,11 @@ Route::prefix('ngo')->group(function () {
     Route::get('/show-login', [NgoController::class, 'showLoginForm'])->name('ngo.showLogin');
     Route::get('/show-register', [NgoController::class, 'showRegisterForm'])->name('ngo.showRegister');
     Route::get('/login', [NgoController::class, 'login'])->name('ngo.login');
+    Route::post('/register', [NgoController::class, 'register'])->name('ngo.register');
     Route::get('/dashboard', [NgoController::class, 'dashboard'])->name('ngo.dashboard');
     Route::get('/donasi', [NgoController::class, 'donasi'])->name('ngo.donasi');
     Route::get('/profile', [NgoController::class, 'profile'])->name('ngo.profile');
     Route::get('/detail-donasi', [NgoController::class, 'detailDonasi'])->name('ngo.detail-donasi');
-    Route::post('/register', [NgoController::class, 'register'])->name('ngo.register');
     //API NGO
 });
 

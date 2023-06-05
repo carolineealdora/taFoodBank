@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\File;
 use App\Models\Donasi;
+use App\Models\Kota;
 use App\Models\NGO;
 use App\Models\Pickup;
 use App\Models\User;
@@ -20,12 +21,15 @@ class NgoController extends Controller
         return view('ngo/ngo_dashboard');
     }
 
-    public function showLoginForm(){
+    public function showLoginForm()
+    {
         return view('ngo.ngo_login');
     }
 
-    public function showRegisterForm(){
-        return view('ngo.ngo_register');
+    public function showRegisterForm()
+    {
+        $kota = Kota::all();
+        return view('ngo.ngo_register', ["kota" => $kota]);
     }
 
     public function listDonasi()
@@ -40,14 +44,14 @@ class NgoController extends Controller
             $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo", "donatur")->where("ngo_tujuan", $getUser->ngo->id)->get();
             return response()->json([
                 'status' => 'ok',
-                'response' => 'get-donasi', 
+                'response' => 'get-donasi',
                 'message' => 'Success Get Donasi Data!',
                 'data' => $getDataDonasi
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'failed',
-                'response' => 'failed',     
+                'response' => 'failed',
                 'message' => $e,
             ], 500);
         }
@@ -68,7 +72,7 @@ class NgoController extends Controller
             return response()->json([
                 'status' => 'error',
                 'response' => 'failed',
-            ], 500);    
+            ], 500);
         }
     }
     public function donasiApprove($id)
@@ -103,15 +107,16 @@ class NgoController extends Controller
         }
     }
 
-    public function donasiCancel($id){
-        try{
+    public function donasiCancel($id)
+    {
+        try {
             Donasi::find("id", $id)->update(['status_donasi' => 3]);
             return response()->json([
                 'status' => 'ok',
                 'response' => 'updated-donasi',
                 'message' => 'Status Berhasil diubah!',
             ], 200);
-        }catch (Throwable $e) {
+        } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
                 'response' => 'failed',
@@ -198,39 +203,41 @@ class NgoController extends Controller
 
     public function register(Request $request)
     {
-        // return view('ngo/ngo_register');
-        $data_user = [
-            'nama'  => $request->nama,
-            'email' => $request->email,
-            'password' => Hash::make($request->password)
-        ];
+        try {
+            $data_user = [
+                'nama'  => $request->nama,
+                'email' => $request->email,
+                'password' => Hash::make($request->password)
+            ];
 
-        $user =  User::firstOrCreate($data_user);
-        $user->assignRole('ngo');
-        $path = "images/ngo";
-        $requestFile = $request->pic_foto;
-        // $insertImage = File::fileUpload($requestFile, $path);
-        $data_ngo = [
-            'ngo_status'        => 1,
-            'user_id'           => $user->id,
-            'ngo_nama'          => $request->ngo_nama,
-            'ngo_alamat'        => $request->ngo_alamat,
-            'ngo_kota'          => $request->ngo_kota,
-            'ngo_no_telp'       => $request->ngo_no_telp,
-            'no_identitas'      => $request->no_identitas,
-            // 'pic_foto'          => $insertImage
-            'pic_foto'          => 'tes'
-        ];
+            $user =  User::firstOrCreate($data_user);
+            $user->assignRole('ngo');
+            $path = "images/ngo";
+            $requestFile = $request->pic_foto;
+            $insertImage = File::fileUpload($requestFile, $path);
+            $data_ngo = [
+                'ngo_status'        => 1,
+                'user_id'           => $user->id,
+                'ngo_nama'          => $request->ngo_nama,
+                'ngo_alamat'        => $request->ngo_alamat,
+                'ngo_kota'          => $request->ngo_kota,
+                'ngo_no_telp'       => $request->ngo_no_telp,
+                'no_identitas'      => $request->no_identitas,
+                'pic_foto'          => $insertImage
+            ];
 
-        $ngoCreate = NGO::create($data_ngo);
-
-        //getData
-        $getDataNgo = NGO::find($ngoCreate->id);
-        return response()->json([
-            'status'    => 'ok',
-            'response'  => 'registered',
-            'message'   => 'Selamat! NGO telah terdaftar.',
-            'data'     => $getDataNgo
-        ], 200);
+            NGO::create($data_ngo);
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'register-ngo',
+                'message'   => 'Register telah berhasil',
+                'route'     => route('ngo.showLogin')
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => $e
+            ], 500);
+        }
     }
 }

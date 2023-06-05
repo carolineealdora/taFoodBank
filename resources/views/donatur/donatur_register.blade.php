@@ -61,7 +61,7 @@
               <div class="text-center">
                 <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Daftar</button>
               </div>
-              <p class="text-sm mt-3 mb-0">Sudah punya akun? Langsung <a href="javascript:;" class="text-dark font-weight-bolder"> Log in</a></p>
+              <p class="text-sm mt-3 mb-0">Sudah punya akun? Langsung <a href="{{ URL::route('donatur.showLogin') }}" class="text-dark font-weight-bolder"> Log in</a></p>
             </form>
           </div>
         </div>

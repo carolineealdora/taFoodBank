@@ -44,7 +44,7 @@ Route::post('user/edit', [UserController::class, 'edit'])->name('user.edit');
 
 
 //NGO
-Route::post('ngo/register', [NgoController::class, 'register'])->name('ngo.register');
+//Route::post('ngo/register', [NgoController::class, 'register'])->name('ngo.register');
 Route::get('ngo/list-donasi', [NgoController::class, 'listDonasi'])->name('ngo.listDonasi');
 Route::get('ngo/list-donasi/{id}', [NgoController::class, 'showDonasi'])->name('ngo.detailDonasi');
 Route::put('ngo/donasi-approve/{id}', [NgoController::class, 'donasiApprove'])->name('ngo.donasiApprove');
