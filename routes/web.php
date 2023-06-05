@@ -32,6 +32,7 @@ Route::prefix('user')->group(function () {
 
 // Donatur
 Route::prefix('donatur')->group(function () {
+    Route::get('/show-login', [DonaturController::class, 'showLoginForm'])->name('donatur.showLogin');
     Route::get('/login', [DonaturController::class, 'login'])->name('donatur.login');
     Route::get('/dashboard', [DonaturController::class, 'dashboard'])->name('donatur.dashboard');
     Route::get('/donasi', [DonaturController::class, 'donasi'])->name('donatur.donasi');
@@ -57,6 +58,7 @@ Route::prefix('ngo')->group(function () {
 
 // Admin
 Route::prefix('admin')->group(function () {
+    Route::get('/show-login', [AdminController::class, 'showLoginForm'])->name('admin.showLogin');
     Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
     Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');

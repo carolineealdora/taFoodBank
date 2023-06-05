@@ -16,6 +16,11 @@ use Illuminate\Support\Facades\Hash;
 
 class DonaturController extends Controller
 {
+    public function showLoginForm()
+    {
+        return view('donatur.donatur_login');
+    }
+
     public function dashboard()
     {
         return view('donatur/donatur_dashboard');

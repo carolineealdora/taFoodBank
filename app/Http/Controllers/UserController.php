@@ -26,7 +26,7 @@ class UserController extends Controller
                     'status'    => 'ok',
                     'response'  => 'login-user',
                     'message'   => 'Log in berhasil',
-                    'route'     => Auth::user()
+                    'route'     => route('admin.dashboard')
                 ], 200);
             }else if($user == "ngo"){
                 return response()->json([
@@ -40,7 +40,7 @@ class UserController extends Controller
                     'status'    => 'ok',
                     'response'  => 'login-user',
                     'message'   => 'Log in berhasil',
-                    //'route'     => route('donatur/dashboard')
+                    'route'     => route('donatur.dashboard')
                 ], 200);
             }
         }else{

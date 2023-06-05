@@ -9,7 +9,12 @@ class AdminController extends Controller
 {
     protected $table = 'admin';
 
-        public function login()
+    public function showLoginForm()
+    {
+        return view('admin.admin_login');
+    }
+
+    public function login()
     {
         return view('admin/admin_login');
     }

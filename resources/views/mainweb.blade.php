@@ -49,7 +49,7 @@
                     </div>
                     <p class="text-muted" style="margin-top: 30px;">Ingin langsung menjadi donatur?</p>
                     <div class="button-get-started">
-                        <a href="" class="btn btn-danger btn-fill btn-md">Log in Donatur</a>
+                        <a href="{{ URL::route('donatur.showLogin') }}" class="btn btn-danger btn-fill btn-md">Log in Donatur</a>
                     </div>
                 </div>
             </div>
@@ -77,7 +77,7 @@
                     </div>
                     <p class="text-muted" style="margin-top: 30px;">Ingin mendaftarkan NGO Anda?</p>
                     <div class="button-get-started">
-                        <a href="#gaia" class="btn btn-danger btn-fill btn-md">Log in NGO</a>
+                        <a href="{{ URL::route('ngo.showLogin') }}" class="btn btn-danger btn-fill btn-md">Log in NGO</a>
                     </div>
                 </div>
             </div>
@@ -205,7 +205,7 @@
                 </p>
             </div>
             <div class="button-get-started">
-                <a href="" class="btn btn-danger btn-fill btn-md">Log in Donatur Di sini</a>
+                <a href="{{ URL::route('donatur.showLogin') }}" class="btn btn-danger btn-fill btn-md">Log in Donatur Di sini</a>
             </div>
         </div>
 
@@ -226,7 +226,7 @@
                     Melalui sistem web FoodBank Kita, NGO dapat terhubung dengan donatur secara lebih mudah. Pengelolaan data donasi yang diterima serta pelaporan hasil distribusi donasi juga dapat dilakukan melalui sistem FoodBank Kita. </p>
             </div>
             <div class="button-get-started">
-                <a href="#gaia" class="btn btn-danger btn-fill btn-md">Log in NGO Di sini</a>
+                <a href="{{ URL::route('ngo.showLogin') }}" class="btn btn-danger btn-fill btn-md">Log in NGO Di sini</a>
             </div>
         </div>
     </div>

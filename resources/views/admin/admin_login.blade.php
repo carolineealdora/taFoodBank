@@ -13,19 +13,15 @@
                 <p class="mb-0">Silahkan Masukkan Email dan Password yang Telah Terdaftar</p>
               </div>
               <div class="card-body">
-                <form role="form">
+                <form id="login-form" role="form" action="{{route('user.login')}}" method="post"  role="form">
                   <div class="mb-3">
-                    <input type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
+                    <input id="email" name="email" type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
                   </div>
                   <div class="mb-3">
-                    <input type="email" class="form-control form-control-lg" placeholder="Password" aria-label="Password">
+                    <input id="password" name="password" type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password">
                   </div>
-                  <!-- <div class="form-check form-switch">
-                    <input class="form-check-input" type="checkbox" id="rememberMe">
-                    <label class="form-check-label" for="rememberMe">Remember me</label>
-                  </div> -->
                   <div class="text-center">
-                    <button type="button" class="btn btn-lg btn-success btn-lg w-100 mt-4 mb-0">Log in</button>
+                    <button type="submit" class="btn btn-lg btn-success btn-lg w-100 mt-4 mb-0">Log in</button>
                   </div>
                 </form>
               </div>
@@ -44,4 +40,46 @@
     </div>
   </section>
 </main>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<script>
+  $('#login-form').on('submit', function(event) {
+    event.preventDefault();
+    console.log("test")
+    let dataForm = new FormData($(this)[0]);
+
+    $.ajax({
+      url: $(this).attr("action"),
+      method: "POST",
+      data: dataForm,
+      contentType: false,
+      cache: false,
+      processData: false,
+      success: function(data) {
+        console.log(data);
+        Swal.fire({
+          title: 'Berhasil!',
+          type: "success",
+          text: data.message,
+          showConfirmButton: false,
+        });
+        setTimeout(function() {
+          Swal.close();
+          window.location.href = data.route;
+        }, 2000);
+      },
+
+      error: (data) => {
+        if (data.status == "fail-verif") {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: data.message,
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+        }
+      }
+    });
+  });
+</script>
 @endsection
