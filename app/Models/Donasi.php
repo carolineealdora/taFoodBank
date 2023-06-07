@@ -37,18 +37,18 @@ class Donasi extends Model
     }
 
     public function status_donasi(){
-        return $this->belongsTo(StatusDonasi::class);
+        return $this->belongsTo(StatusDonasi::class, "id");
     }
 
     public function kota(){
-        return $this->belongsTo(Kota::class);
+        return $this->belongsTo(Kota::class, "id");
     }
 
     public function ngo(){
-        return $this->belongsTo(NGO::class);
+        return $this->belongsTo(NGO::class, "id");
     }
 
     public function donatur(){
-        return $this->belongsTo(Donatur::class);
+        return $this->belongsTo(Donatur::class, "id");
     }
 }

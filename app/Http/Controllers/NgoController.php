@@ -11,6 +11,7 @@ use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
 
@@ -34,29 +35,6 @@ class NgoController extends Controller
 
     public function listDonasi()
     {
-        //get all data donasi
-        try {
-            //whos login
-            $user = Auth::user();
-            //get ngo id
-            $getUser = User::with("ngo")->where('email', $user->email)->first();
-            //get donasi for ngo
-            $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo", "donatur")->where("ngo_tujuan", $getUser->ngo->id)->get();
-            return response()->json([
-                'status' => 'ok',
-                'response' => 'get-donasi',
-                'response' => 'get-donasi',
-                'message' => 'Success Get Donasi Data!',
-                'data' => $getDataDonasi
-            ], 200);
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 'failed',
-                'response' => 'failed',
-                'response' => 'failed',
-                'message' => $e,
-            ], 500);
-        }
     }
 
     public function showDonasi($id)
@@ -186,7 +164,14 @@ class NgoController extends Controller
     }
     public function donasi()
     {
-        return view('ngo/ngo_donasi');
+
+        //whos login
+        $user = Auth::user();
+        //get ngo id
+        $getUser = User::with("ngo")->where('email', $user->email)->first();
+        //get donasi for ngo
+        $getData = DB::table("views_donasi")->where("ngo_tujuan", $getUser->ngo->id)->get();
+        return view('ngo/ngo_donasi', ['data' => $getData]);
     }
 
     public function profile()

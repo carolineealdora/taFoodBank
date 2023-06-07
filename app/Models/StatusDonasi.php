@@ -11,7 +11,14 @@ class StatusDonasi extends Model
 
     protected $table = 'status_donasi';
 
+    protected $primaryKey = 'id';
+    
     protected $fillable =[
         'nama'
     ];
+    
+    public function donasi(){
+        return $this->hasOne(Donasi::class);
+    }
+
 }
