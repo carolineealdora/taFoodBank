@@ -45,12 +45,14 @@ class NgoController extends Controller
             return response()->json([
                 'status' => 'ok',
                 'response' => 'get-donasi',
+                'response' => 'get-donasi',
                 'message' => 'Success Get Donasi Data!',
                 'data' => $getDataDonasi
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'failed',
+                'response' => 'failed',
                 'response' => 'failed',
                 'message' => $e,
             ], 500);
@@ -75,6 +77,7 @@ class NgoController extends Controller
             ], 500);
         }
     }
+
     public function donasiApprove($id)
     {
         try {
@@ -216,7 +219,7 @@ class NgoController extends Controller
             $requestFile = $request->pic_foto;
             $insertImage = File::fileUpload($requestFile, $path);
             $data_ngo = [
-                'ngo_status'        => 1,
+                'ngo_status'        => 0,
                 'user_id'           => $user->id,
                 'ngo_nama'          => $request->ngo_nama,
                 'ngo_alamat'        => $request->ngo_alamat,

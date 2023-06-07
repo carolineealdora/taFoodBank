@@ -13,6 +13,8 @@ use App\Models\DonasiKonsumsi;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\File as facadesFile;
 
 class DonaturController extends Controller
 {
@@ -80,7 +82,7 @@ class DonaturController extends Controller
             return response()->json([
                 'status'    => 'ok',
                 'response'  => 'register-donatur',
-                'message'   => 'Register telah berhasil',
+                'message'   => 'Selamat! Anda telah terdaftar',
                 'route'     => route('donatur.showLogin')
             ], 200);
         }catch(Throwable $e){
@@ -94,7 +96,6 @@ class DonaturController extends Controller
 
     public function storeDonasi(Request $request){
         try{
-            // return $request;
             //$email = Auth::user()->email;
             $user = User::with('donatur')->where('email', $request->email)->first();
             $id_donatur = $user->donatur->id;
@@ -111,31 +112,24 @@ class DonaturController extends Controller
             $donasi = Donasi::create($data);
 
             $konsumsi = $request->donasi_konsumsi;
-            //return $konsumsi;
             foreach($konsumsi as $donasi_konsumsi){
-               // return $donasi_konsumsi;
-                // $path = "images/donasi";
-                // $requestFile = $donasi_konsumsi['photo'];
-                //return $requestFile;
-                // $insertImage = File::fileUpload($requestFile, $path);
-
-                // return $insertImage;
+                // return $donasi_konsumsi;
+                $path = "images/donasi";
+                $requestFile = $donasi_konsumsi['photo'];
+                // return $requestFile;
+                $insertImage = File::fileUpload($requestFile, $path);
                 $data = [
-                    "donasi_id"    => $donasi['id'],
-                    "nama"      => $donasi_konsumsi['nama'],
-                    // "photo"     => $insertImage,
-                    "photo"     => 'tes',
-                    "deskripsi" => $donasi_konsumsi['deskripsi'],
-                    "kategori"  => $donasi_konsumsi['kategori'],
-                    "satuan"    => $donasi_konsumsi['satuan'],
-                    "kuantitas" => $donasi_konsumsi['kuantitas'],
-                    "expired"   => $donasi_konsumsi['expired']
+                    "donasi_id"     => $donasi['id'],
+                    "nama"          => $donasi_konsumsi['nama'],
+                    "photo"         => $insertImage,
+                    "deskripsi"     => $donasi_konsumsi['deskripsi'],
+                    "kategori"      => $donasi_konsumsi['kategori'],
+                    "satuan"        => $donasi_konsumsi['satuan'],
+                    "kuantitas"     => $donasi_konsumsi['kuantitas'],
+                    "expired"       => $donasi_konsumsi['expired']
                 ];
 
-                // return $data;
-
                 $create = DonasiKonsumsi::create($data);
-                // return $create;
 
                 return response()->json([
                     'status'    => 'ok',
@@ -156,8 +150,8 @@ class DonaturController extends Controller
     public function editDonasi(Request $request, $id){
         try{
             $data = [
-                "ngo_tujuan"        => $request->ngo_tujuan,
-                "kota"              => $request->kota,
+                // "ngo_tujuan"        => $request->ngo_tujuan,
+                // "kota"              => $request->kota,
                 "nama_pickup"       => $request->nama_pickup,
                 "alamat_pickup"     => $request->alamat_pickup,
                 "no_telp_pickup"    => $request->no_telp_pickup,
@@ -168,15 +162,19 @@ class DonaturController extends Controller
             //bikin request bisa passing id (bikin tag hidden buat idnya)
             foreach($request->donasi_konsumsi as $donasi_konsumsi){
                 $konsumsi_photo = DonasiKonsumsi::where('id', $donasi_konsumsi['id'])->get();
-                // return $konsumsi_photo;
                 if($donasi_konsumsi['photo'] !== null){ //kondisi saat foto berubah
-                    unlink($konsumsi_photo->photo);
+                    // return $konsumsi_photo[0]['photo'];
+                    // unlink($konsumsi_photo[0]['photo']);
+                    // facadesFile::delete($konsumsi_photo[0]['photo']);
+                    File::delete($konsumsi_photo[0]['photo']);
+
                     $path = "images/donasi";
-                    $requestFile = $request->photo;
-                    // return $requestFile;
+                    $requestFile = $donasi_konsumsi['photo'];
+                    // return $tes = [$requestFile, 'ini'];
                     $insertImage = File::fileUpload($requestFile, $path);
+                    // return $insertImage;
                     $data = [
-                        "donasi"    => $donasi->id,
+                        // "donasi"    => $id,
                         "nama"      => $donasi_konsumsi['nama'],
                         "photo"     => $insertImage,
                         "deskripsi" => $donasi_konsumsi['deskripsi'],
@@ -185,6 +183,8 @@ class DonaturController extends Controller
                         "kuantitas" => $donasi_konsumsi['kuantitas'],
                         "expired"   => $donasi_konsumsi['expired']
                     ];
+
+                    // return $data;
 
                     DonasiKonsumsi::find($donasi_konsumsi['id'])->update($data);
 

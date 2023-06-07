@@ -15,5 +15,13 @@ class File{
 
         return $path;
     }
+
+    public static function delete($path)
+    {
+        // Storage::delete('public/storage/' . $path);
+        Storage::disk('public')->delete($path);
+
+        return 1;
+    }
 }
 ?>

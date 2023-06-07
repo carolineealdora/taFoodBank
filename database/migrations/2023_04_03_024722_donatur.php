@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('donatur', function (Blueprint $table) {
             $table->id('id');
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('foto');
             $table->string('alamat', 200);
             $table->string('no_identitas', 16);

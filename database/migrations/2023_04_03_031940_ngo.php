@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id('id');
             $table->tinyInteger('ngo_status')->default(0);
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->string('ngo_nama', 200);
             $table->string('ngo_alamat', 200);
             $table->unsignedBigInteger('ngo_kota');

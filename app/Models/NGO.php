@@ -5,7 +5,6 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use App\Models\User;
-use App\Models\PIC;
 
 class NGO extends Model
 {
@@ -23,10 +22,6 @@ class NGO extends Model
         'pic_foto',
         'no_identitas'
     ];
-
-    public function pic(){
-        return $this->belongsTo(PIC::class);
-    }
 
     public function user(){
         return $this->belongsTo(User::class);
