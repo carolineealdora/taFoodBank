@@ -53,9 +53,10 @@ Route::prefix('ngo')->group(function () {
     Route::post('/register', [NgoController::class, 'register'])->name('ngo.register');
     Route::get('/dashboard', [NgoController::class, 'dashboard'])->name('ngo.dashboard');
     Route::get('/donasi', [NgoController::class, 'donasi'])->name('ngo.donasi');
+    Route::get('/detail-donasi/{id}', [NgoController::class, 'detailDonasi'])->name('ngo.detail-donasi');
+    Route::put('/donasi-approve/{id}', [NgoController::class, 'donasiApprove'])->name('ngo.donasiApprove');
+    Route::put('/donasi-cancel/{id}', [NgoController::class, 'donasiCancel'])->name('ngo.donasiCancel');
     Route::get('/profile', [NgoController::class, 'profile'])->name('ngo.profile');
-    Route::get('/detail-donasi', [NgoController::class, 'detailDonasi'])->name('ngo.detail-donasi');
-    //API NGO
 });
 
 // Admin

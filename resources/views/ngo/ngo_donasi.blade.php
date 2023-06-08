@@ -46,7 +46,7 @@
                       <span class="text-secondary text-xs font-weight-bold">{{$item->tanggal}}</span>
                     </td>
                     <td class="align-middle">
-                      <a href="{{ URL::route('ngo.detail-donasi') }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                      <a href="{{ URL::route('ngo.detail-donasi', ['id' => $item->id]) }}" class="text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
                         Detail
                       </a>
                     </td>
@@ -59,6 +59,5 @@
         </div>
       </div>
     </div>
-
   {{-- </div> --}}
 @endsection

@@ -40,7 +40,7 @@ class Donasi extends Model
         return $this->belongsTo(StatusDonasi::class, "id");
     }
 
-    public function kota(){
+    public function kotaData(){
         return $this->belongsTo(Kota::class, "id");
     }
 
@@ -48,7 +48,7 @@ class Donasi extends Model
         return $this->belongsTo(NGO::class, "id");
     }
 
-    public function donatur(){
-        return $this->belongsTo(Donatur::class, "id");
+    public function donaturData(){
+        return $this->belongsTo(Donatur::class, "donatur");
     }
 }

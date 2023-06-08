@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Helpers\File;
 use App\Models\Donasi;
+use App\Models\DonasiKonsumsi;
 use App\Models\Kota;
 use App\Models\NGO;
 use App\Models\Pickup;
@@ -33,10 +34,6 @@ class NgoController extends Controller
         return view('ngo.ngo_register', ["kota" => $kota]);
     }
 
-    public function listDonasi()
-    {
-    }
-
     public function showDonasi($id)
     {
         try {
@@ -60,30 +57,32 @@ class NgoController extends Controller
     {
         try {
             Donasi::where("id", $id)->update(['status_donasi' => 2]);
-            $getData = Donasi::with("donasi_konsumsi")->where("id", $id)->get();
-            return $getData;
-            $data = [
-                'donasi' => $getData->donasi,
-                'nama' => $getData->nama,
-                'photo' => $getData->photo,
-                'deskripsi ' => $getData->deskripsi,
-                'kategori' => $getData->kategori,
-                'jenis' => $getData->jenis,
-                'satuan' => $getData->satuan,
-                'kuantitas' => $getData->kuantitas,
-                'expired' => $getData->expired,
-                'status_donasi' => $getData->status_donasi,
-            ];
-            Pickup::store($data);
+            $getData = Donasi::with("donasi_konsumsi")->where("id", $id)->first();
+            $getDataKonsumsi = $getData->donasi_konsumsi;
+            foreach($getDataKonsumsi as $item){
+                $data = [
+                    'donasi' => $item['donasi']->id,
+                    'nama' => $item['nama'],
+                    'photo' => $item['photo'],
+                    'deskripsi' => $item['deskripsi'],
+                    'kategori' => $item['kategori'],
+                    'satuan' => $item['satuan'],
+                    'kuantitas' => $item['kuantitas'],
+                    'expired' => $item['expired'],
+                ];
+                Pickup::create($data);
+            }
             return response()->json([
-                'status' => 'ok',
-                'response' => 'updated-donasi',
-                'message' => 'Data Berhasil Di-Approve!',
+                'status'    => 'ok',
+                'response'  => 'approve-donasi',
+                'message'   => 'Status Berhasil Diubah!',
+                'route'     => route('ngo.detail-donasi', $id)
             ], 200);
-        } catch (Throwable $e) {
+        } 
+        catch (Throwable $e) {
             return response()->json([
-                'status' => 'error',
-                'response' => 'failed',
+                'status' => 'failed',
+                'message' => 'Status Gagal Diubah',
             ], 500);
         }
     }
@@ -91,16 +90,17 @@ class NgoController extends Controller
     public function donasiCancel($id)
     {
         try {
-            Donasi::find("id", $id)->update(['status_donasi' => 3]);
+            Donasi::where("id", $id)->update(['status_donasi' => 3]);
             return response()->json([
-                'status' => 'ok',
-                'response' => 'updated-donasi',
-                'message' => 'Status Berhasil diubah!',
+                'status'    => 'ok',
+                'response'  => 'reject-donasi',
+                'message'   => 'Status Berhasil Diubah!',
+                'route'     => route('ngo.detail-donasi', $id)
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
-                'status' => 'error',
-                'response' => 'failed',
+                'status' => 'failed',
+                'message' => 'Status Gagal Diubah',
             ], 500);
         }
     }
@@ -123,8 +123,8 @@ class NgoController extends Controller
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
-                'status' => 'error',
-                'response' => 'failed',
+                'status' => 'failed',
+                'response' => $e,
             ], 500);
         }
     }
@@ -179,9 +179,20 @@ class NgoController extends Controller
         return view('ngo/ngo_profile');
     }
 
-    public function detailDonasi()
+    public function detailDonasi($id)
     {
-        return view('ngo/ngo_detail_donasi');
+        $dataDonasi = Donasi::with("donaturData", "ngo", "kotaData")->where("id", $id)->first();
+        //informasi user
+        $userId = $dataDonasi->donaturData->user_id;
+        $userData = User::where("id", $userId)->first();
+        //informasi donasi konsumsi
+        $dataDonasiKonsumsi = DonasiKonsumsi::with("donasi", "kategoriData", "satuanData")->where("donasi_id", $id)->get();
+        $data = [
+            "dataDonasi" => $dataDonasi,
+            "dataUser" => $userData,   
+            "dataDonKom" => $dataDonasiKonsumsi,
+        ];
+        return view('ngo/ngo_detail_donasi', $data);
     }
 
     public function createDonasi()

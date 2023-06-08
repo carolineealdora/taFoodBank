@@ -7,9 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 
 class Donatur extends Model
 {
-    protected $table = 'donatur';
     use HasFactory;
 
+    protected $table = 'donatur';
+    
+    protected $primaryKey = 'id';
+    
     protected $fillable =[
         'user_id',
         'foto',

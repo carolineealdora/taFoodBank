@@ -36,7 +36,7 @@
               <ul class="nav nav-pills nav-fill p-1" role="tablist">
                 <li class="nav-item">
                   <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#all-status" role="tab" aria-controls="preview" aria-selected="true">
-                  <i class="ni ni-badge text-sm me-2"></i> All Status
+                    <i class="ni ni-badge text-sm me-2"></i> All Status
                   </a>
                 </li>
                 <li class="nav-item">
@@ -46,7 +46,7 @@
                 </li>
                 <li class="nav-item">
                   <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#pickedup" role="tab" aria-controls="preview" aria-selected="true">
-                  <i class="ni ni-badge text-sm me-2"></i> Data Pick Up Donasi
+                    <i class="ni ni-badge text-sm me-2"></i> Data Pick Up Donasi
                   </a>
                 </li>
                 <li class="nav-item">
@@ -131,10 +131,10 @@
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        <h6 class="text-sm">Nama Donatur</h6>
-                        <span class="mb-2 text-xs">Alamat: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                        <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                        <span class="mb-2 text-xs">Email: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
+                        <h6 class="text-sm">Nama Donatur: {{$dataUser->nama}} </h6>
+                        <span class="mb-2 text-xs">Alamat: <span class="text-dark font-weight-bold ms-sm-2">{{$dataDonasi->donaturData->alamat}}</span></span>
+                        <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">{{$dataDonasi->donaturData->no_telp}}</span></span>
+                        <span class="mb-2 text-xs">Email: <span class="text-dark ms-sm-2 font-weight-bold">{{$dataUser->email}}</span></span>
                       </div>
                     </li>
                   </ul>
@@ -144,15 +144,16 @@
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        <h6 class="text-sm">Pick Up Location - Kota</h6>
-                        <span class="mb-2 text-xs">Nama: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                        <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                        <span class="mb-2 text-xs">Alamat: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
+                        <h6 class="text-sm">Pick Up Location - {{$dataDonasi->kotaData->nama}}</h6>
+                        <span class="mb-2 text-xs">Nama: <span class="text-dark font-weight-bold ms-sm-2">{{$dataDonasi->nama_pickup}}</span></span>
+                        <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">{{$dataDonasi->no_telp_pickup}}</span></span>
+                        <span class="mb-2 text-xs">Alamat: <span class="text-dark ms-sm-2 font-weight-bold">{{$dataDonasi->alamat_pickup}}</span></span>
                       </div>
                     </li>
                   </ul>
                 </div>
                 <p class="text-uppercase text-sm">Data Donasi</p>
+                @foreach($dataDonKom as $item)
                 <div class="card-body pt-2 p-3">
                   {{-- <p class="text-uppercase text-sm">Data Donasi</p> --}}
                   <ul class="list-group">
@@ -161,30 +162,32 @@
                         <div class="mb-2">
                           <img src="{{asset('assets\backendweb\img\team-1.jpg')}}" class="avatar avatar-lg me-3" alt="user1">
                         </div>
-                        <h6 class="mb-2 text-sm">Nama Makanan/Minuman</h6>
-                        <span class="mb-2 text-xs">Submitted at: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                        <span class="mb-2 text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span><br>
+                        <h6 class="mb-2 text-sm">Nama {{$item->nama}}</h6>
+                        <span class="mb-2 text-xs">Submitted at: <span class="text-dark font-weight-bold ms-sm-2">{{$item->created_at}}</span></span>
+                        <span class="mb-2 text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">{{$item->deskripsi}}</span></span><br>
                         <div class="row">
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                            <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->expired}}</span></span><br>
                           </div>
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            <span class="mb-2 text-xs">Jenis: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->kategoriData->nama}}</span></span><br>
                           </div>
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                            <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->kuantitas}}</span></span><br>
+                            <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->satuanData->nama}}</span></span><br>
                           </div>
                         </div>
                       </div>
                     </li>
                   </ul>
-                  <div class="row">
-                    <button class="btn btn-success btn-sm ms-auto col-md-6">Approve</button>
-                    <button class="btn btn-danger btn-sm ms-auto col-md-6">Reject</button>
-                  </div>
                 </div>
+                @endforeach
+                @if($dataDonasi->status_donasi == 1)
+                <div class="row">
+                  <button id="{{$dataDonasi->id}}" class="btn btn-success btn-sm ms-auto col-md-6 approve">Approve</button>
+                  <button id="{{$dataDonasi->id}}" class="btn btn-danger btn-sm ms-auto col-md-6 reject">Reject</button>
+                </div>
+                @endif
               </div>
             </div>
           </div>
@@ -215,11 +218,11 @@
                       </div>
                       <div class="form-group">
                         <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
-                      {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                      <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
-                      @error('AdminFoto')
+                        {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
+                        <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
+                        @error('AdminFoto')
                         <p class="text-danger">{{ $message }}</p>
-                      @enderror
+                        @enderror
                       </div>
                       <div class="form-group">
                         <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
@@ -295,7 +298,7 @@
                   {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
                   <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
                   @error('AdminFoto')
-                    <p class="text-danger">{{ $message }}</p>
+                  <p class="text-danger">{{ $message }}</p>
                   @enderror
                 </div>
                 <div class="form-group">
@@ -326,7 +329,7 @@
                     {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
                     <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()" multiple>
                     @error('AdminFoto')
-                      <p class="text-danger">{{ $message }}</p>
+                    <p class="text-danger">{{ $message }}</p>
                     @enderror
                   </div>
                   <div class="form-group">
@@ -336,10 +339,151 @@
                 </div>
                 <button class="btn btn-success btn-sm ms-auto">Upload</button>
               </div>
-              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-@endsection
+  </div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script type="text/javascript">
+    $(document).on('click', '.approve', function() {
+      let id = $(this).attr("id");
+      let route_url = "{{ URL::route('ngo.donasiApprove', ':id') }}"
+      route_url = route_url.replace(':id', id);
+
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      event.preventDefault();
+      Swal.fire({
+        title: "Apakah anda yakin?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            type: "PUT",
+            url: route_url,
+            success: function(data) {
+              console.log(data)
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              console.log(data)
+              if (data.responseJSON.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.responseJSON.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          })
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: 'Status Gagal Diubah!',
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    })
+
+    $(document).on('click', '.reject', function() {
+      let id = $(this).attr("id");
+      let route_url = "{{ URL::route('ngo.donasiCancel', ':id') }}"
+      route_url = route_url.replace(':id', id);
+
+      $.ajaxSetup({
+        headers: {
+          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+      });
+
+      event.preventDefault();
+      Swal.fire({
+        title: "Apakah anda yakin?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            type: "PUT",
+            url: route_url,
+            success: function(data) {
+              console.log(data)
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              console.log(data)
+              if (data.responseJSON.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.responseJSON.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          })
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: 'Status Gagal Diubah!',
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    })
+  </script>
+  @endsection

@@ -88,6 +88,5 @@ Route::post('user/edit', [UserController::class, 'edit'])->name('user.edit');
 //Route::post('ngo/register', [NgoController::class, 'register'])->name('ngo.register');
 Route::get('ngo/list-donasi', [NgoController::class, 'listDonasi'])->name('ngo.listDonasi');
 Route::get('ngo/list-donasi/{id}', [NgoController::class, 'showDonasi'])->name('ngo.detailDonasi');
-Route::put('ngo/donasi-approve/{id}', [NgoController::class, 'donasiApprove'])->name('ngo.donasiApprove');
-Route::put('ngo/donasi-cancel/{id}', [NgoController::class, 'donasiCancel'])->name('ngo.donasiCancel');
+
 Route::get('ngo/data-pickup/{id}', [NgoController::class, 'getDataPickup'])->name('ngo.dataPickup');

@@ -17,12 +17,9 @@ class Pickup extends Model
         'photo',
         'deskripsi',
         'kategori',
-        'jenis',
         'satuan',
         'kuantitas',
         'expired',
-        'bukti_pickup',
-        'donasi_pickup'
     ];
 
     public function donasi(){
