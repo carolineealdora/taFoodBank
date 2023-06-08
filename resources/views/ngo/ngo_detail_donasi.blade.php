@@ -35,7 +35,7 @@
             <div class="nav-wrapper position-relative end-0 mt-1">
               <ul class="nav nav-pills nav-fill p-1" role="tablist">
                 <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#all-status" role="tab" aria-controls="preview" aria-selected="true">
+                  <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#all-status" role="tab" aria-controls="preview" aria-selected="true">
                     <i class="ni ni-badge text-sm me-2"></i> All Status
                   </a>
                 </li>
@@ -45,12 +45,12 @@
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#pickedup" role="tab" aria-controls="preview" aria-selected="true">
+                  <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#pickedup" role="tab" aria-controls="code" aria-selected="false">
                     <i class="ni ni-badge text-sm me-2"></i> Data Pick Up Donasi
                   </a>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#pelaporan" role="tab" aria-controls="code" aria-selected="false">
+                  <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#pelaporan" role="tab" aria-controls="code" aria-selected="false">
                     <i class="ni ni-laptop text-sm me-2"></i> Pelaporan Distribusi Donasi
                   </a>
                 </li>
@@ -112,7 +112,7 @@
           </div>
         </div>
       </div>
-      <div class="tab-pane fade show active" id="submitted" role="tabpanel" aria-labelledby="submitted-tab">
+      <div class="tab-pane fade show" id="submitted" role="tabpanel" aria-labelledby="submitted-tab">
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -160,7 +160,7 @@
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
                         <div class="mb-2">
-                          <img src="{{asset('assets\backendweb\img\team-1.jpg')}}" class="avatar avatar-lg me-3" alt="user1">
+                          <img src="{{ asset('storage/'.$item->photo) }}" class="avatar avatar-lg me-3" alt="user1">
                         </div>
                         <h6 class="mb-2 text-sm">Nama {{$item->nama}}</h6>
                         <span class="mb-2 text-xs">Submitted at: <span class="text-dark font-weight-bold ms-sm-2">{{$item->created_at}}</span></span>
@@ -170,12 +170,13 @@
                             <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->expired}}</span></span><br>
                           </div>
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->kategoriData->nama}}</span></span><br>
-                          </div>
-                          <div class="form-group col-4">
                             <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->kuantitas}}</span></span><br>
                             <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->satuanData->nama}}</span></span><br>
                           </div>
+                          <div class="form-group col-4">
+                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->kategoriData->nama}}</span></span><br>
+                          </div>
+
                         </div>
                       </div>
                     </li>
@@ -193,7 +194,7 @@
           </div>
         </div>
       </div>
-      <div class="tab-pane fade show active" id="pickedup" role="tabpanel" aria-labelledby="pickedup-tab">
+      <div class="tab-pane fade show" id="pickedup" role="tabpanel" aria-labelledby="pickedup-tab">
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -203,61 +204,7 @@
                 </div>
               </div>
               <div class="card-body">
-                <p class="text-uppercase text-sm">Form Pick Up Donasi</p>
                 <div class="card-body">
-                  <p class="text-uppercase text-sm">Form Data Donasi</p>
-                  <div class="row">
-                    <div class="form-group col-md-6">
-                      <div class="form-group">
-                        <label for="example-text-input" class="form-control-label">Nama Makanan/Minuman</label>
-                        <input class="form-control" type="text" value="lucky.jesse">
-                      </div>
-                      <div class="form-group">
-                        <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
-                        <input class="form-control" type="text" value="lucky.jesse">
-                      </div>
-                      <div class="form-group">
-                        <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
-                        {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                        <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
-                        @error('AdminFoto')
-                        <p class="text-danger">{{ $message }}</p>
-                        @enderror
-                      </div>
-                      <div class="form-group">
-                        <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
-                        <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
-                      </div>
-                    </div>
-                    <div class="form-group col-md-6">
-                      <div class="form-group">
-                        <label for="kategoriDonasi">Kategori</label>
-                        <select class="form-control" id="kategoriDonasi">
-                          <option>Makanan</option>
-                          <option>Minuman</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="jenisDonasi">Jenis</label>
-                        <select class="form-control" id="jenisDonasi">
-                          <option>Daging</option>
-                          <option>Susu</option>
-                        </select>
-                      </div>
-                      <div class="form-group">
-                        <label for="example-text-input" class="form-control-label">Kuantitas</label>
-                        <input class="form-control" type="text" value="lucky.jesse">
-                      </div>
-                      <div class="form-group">
-                        <label for="satuanDonasi">Satuan</label>
-                        <select class="form-control" id="satuanDonasi">
-                          <option>Kilogram</option>
-                          <option>Liter</option>
-                        </select>
-                      </div>
-                    </div>
-                  </div>
-                  <button class="btn btn-primary btn-sm ms-auto">Simpan</button>
                   {{-- <hr class="horizontal dark"> --}}
                   <div class="card-body pt-2 p-3">
                     {{-- <p class="text-uppercase text-sm">Data Donasi</p> --}}
@@ -285,7 +232,7 @@
                         </div>
                         <div class="ms-auto text-end">
                           <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                          <a class="btn btn-link text-dark px-3 mb-0" href="javascript:;"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</a>
+                          <button type="button" class="btn btn-link text-dark px-3 mb-0" data-bs-toggle="modal" data-bs-target="#formModal"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</button>
                         </div>
                       </li>
                     </ul>
@@ -293,14 +240,6 @@
                 </div>
                 <hr class="horizontal dark">
                 <p class="text-uppercase text-sm">Bukti Pick Up Donasi</p>
-                <div class="form-group">
-                  <label for="donatur_donasiFoto" class="form-control-label">Foto Pick Up Donasi</label>
-                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                  <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
-                  @error('AdminFoto')
-                  <p class="text-danger">{{ $message }}</p>
-                  @enderror
-                </div>
                 <div class="form-group">
                   <label for="WaktuExpired" class="form-control-label">Tanggal & Waktu Pick Up</label>
                   <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
@@ -311,7 +250,7 @@
           </div>
         </div>
       </div>
-      <div class="tab-pane fade show active" id="pelaporan" role="tabpanel" aria-labelledby="pelaporan-tab">
+      <div class="tab-pane fade show" id="pelaporan" role="tabpanel" aria-labelledby="pelaporan-tab">
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -345,6 +284,73 @@
       </div>
     </div>
   </div>
+  <!-- Form Modal -->
+  <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" class="text-uppercase text-sm">Form Data Donasi</h5>
+        </div>
+        <div class="modal-body">
+          <form action="">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label for="example-text-input" class="form-control-label">Nama Makanan/Minuman</label>
+                  <input class="form-control" type="text" value="lucky.jesse">
+                </div>
+                <div class="form-group">
+                  <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
+                  <input class="form-control" type="text" value="lucky.jesse">
+                </div>
+                <div class="form-group">
+                  <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
+                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
+                  <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
+                  @error('AdminFoto')
+                  <p class="text-danger">{{ $message }}</p>
+                  @enderror
+                </div>
+                <div class="form-group">
+                  <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
+                  <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label for="kategoriDonasi">Kategori</label>
+                  <select class="form-control" id="kategoriDonasi">
+                    <option>Makanan</option>
+                    <option>Minuman</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="jenisDonasi">Jenis</label>
+                  <select class="form-control" id="jenisDonasi">
+                    <option>Daging</option>
+                    <option>Susu</option>
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="example-text-input" class="form-control-label">Kuantitas</label>
+                  <input class="form-control" type="text" value="lucky.jesse">
+                </div>
+                <div class="form-group">
+                  <label for="satuanDonasi">Satuan</label>
+                  <select class="form-control" id="satuanDonasi">
+                    <option>Kilogram</option>
+                    <option>Liter</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button class="btn btn-primary btn-sm ms-auto">Simpan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Form Modal -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
   <script type="text/javascript">

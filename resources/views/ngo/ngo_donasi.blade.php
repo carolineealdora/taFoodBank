@@ -17,7 +17,7 @@
                     <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Donasi Makanan/Minuman</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Status</th>
                     <th class="text-center text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Tanggal & Waktu</th>
-                    <th class="text-secondary opacity-7"></th>
+                    <th class="text-secondary text-uppercase text-secondary text-xxs font-weight-bolderopacity-7">Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -31,7 +31,7 @@
                       </div>
                     </td>
                     <td>
-                      <p class="text-xs font-weight-bold mb-0">{{$item->donasi_konsumsi}}</p>
+                      <span class="text-secondary text-xs font-weight-bold mb-0">{{$item->donasi_konsumsi}}</sp>
                     </td>
                     @if($item->status_donasi == "submitted")
                     <td class="align-middle text-center text-sm">
@@ -40,6 +40,10 @@
                     @elseif($item->status_donasi == "approved")
                     <td class="align-middle text-center text-sm">
                       <span class="badge badge-sm bg-gradient-success">{{$item->status_donasi}}</span>
+                    </td>
+                    @elseif($item->status_donasi == "rejected")
+                    <td class="align-middle text-center text-sm">
+                      <span class="badge badge-sm bg-gradient-danger">{{$item->status_donasi}}</span>
                     </td>
                     @endif
                     <td class="align-middle text-center">

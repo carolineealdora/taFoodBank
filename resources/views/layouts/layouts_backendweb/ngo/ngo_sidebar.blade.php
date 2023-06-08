@@ -39,7 +39,7 @@
         </li>
       </ul>
     </div>
-    <div class="sidenav-footer mx-3 ">
+    <div class="sidenav-footer mx-3 position-absolute bottom-0 end-0">
       <a href="https://www.creative-tim.com/learning-lab/bootstrap/license/argon-dashboard" target="_blank" class="btn btn-dark btn-sm w-100 mb-3">Log out</a>
     </div>
   </aside>
