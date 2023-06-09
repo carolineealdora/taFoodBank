@@ -5,15 +5,18 @@ namespace App\Http\Controllers;
 use App\Helpers\File;
 use App\Models\Donasi;
 use App\Models\DonasiKonsumsi;
+use App\Models\Kategori;
 use App\Models\Kota;
 use App\Models\NGO;
 use App\Models\Pickup;
+use App\Models\Satuan;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Throwable;
 
 class NgoController extends Controller
@@ -59,11 +62,11 @@ class NgoController extends Controller
             Donasi::where("id", $id)->update(['status_donasi' => 2]);
             $getData = Donasi::with("donasi_konsumsi")->where("id", $id)->first();
             $getDataKonsumsi = $getData->donasi_konsumsi;
-            foreach($getDataKonsumsi as $item){
+            foreach ($getDataKonsumsi as $item) {
                 $data = [
                     'donasi' => $item['donasi']->id,
                     'nama' => $item['nama'],
-                    'photo' => $item['photo'],
+                    'photo' => "default",
                     'deskripsi' => $item['deskripsi'],
                     'kategori' => $item['kategori'],
                     'satuan' => $item['satuan'],
@@ -78,8 +81,7 @@ class NgoController extends Controller
                 'message'   => 'Status Berhasil Diubah!',
                 'route'     => route('ngo.detail-donasi', $id)
             ], 200);
-        }
-        catch (Throwable $e) {
+        } catch (Throwable $e) {
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Status Gagal Diubah',
@@ -129,36 +131,48 @@ class NgoController extends Controller
         }
     }
 
-    public function editPickup(Request $request)
+    public function editPickup(Request $request, $id)
     {
         try {
-            foreach ($request->data as $data) {
-                //general request
-                $request = [
-                    'id' => $data->id,
-                    'donasi_id' => $data->donasi,
-                    'nama' => $data->nama,
-                    'photo' => $data->photo,
-                    'deskripsi ' => $data->deskripsi,
-                    'kategori' => $data->kategori,
-                    'jenis' => $data->jenis,
-                    'satuan' => $data->satuan,
-                    'kuantitas' => $data->kuantitas,
-                    'expired' => $data->expired,
-                    'waktu_pickup' => $request->waktu_pickup
-                ];
+            $dataPickup = Pickup::find($id)->first();
+            $photo = $dataPickup->photo;
+            $requestFile = $request->donasiFoto;
+            if ($requestFile !== null && $requestFile !== 'undefined') {
+                File::delete($photo);
+                $path = "images/pickup";
+                $insertImage = File::fileUpload($requestFile, $path);
 
-                Pickup::find($data->id)->update($request);
-            };
+                $data = [
+                    'nama' => $request->nama,
+                    'photo' => $insertImage,
+                    'deskripsi' => $request->deskripsi,
+                    'kategori' => $request->kategori,
+                    'satuan' => $request->satuan,
+                    'kuantitas' => $request->kuantitas,
+                    'expired' => $request->expired,
+                ];
+            } else {
+                $data = [
+                    'nama' => $request->nama,
+                    'deskripsi' => $request->deskripsi,
+                    'kategori' => $request->kategori,
+                    'satuan' => $request->satuan,
+                    'kuantitas' => $request->kuantitas,
+                    'expired' => $request->expired,
+                ];
+            }
+            Pickup::find($id)->update($data);
+
             return response()->json([
-                'status' => 'ok',
-                'response' => 'updated-pickup',
-                'message' => 'Data Berhasil Di-Approve!',
+                'status'    => 'ok',
+                'response'  => 'updated-donkom',
+                'message'   => 'Update Data Telah Berhasil!',
+                'route'     => route('ngo.detail-donasi', $id)
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
-                'status' => 'error',
-                'response' => 'failed',
+                'status'    => 'failed',
+                'message'   => 'Update Data Gagal!'
             ], 500);
         }
     }
@@ -188,12 +202,59 @@ class NgoController extends Controller
         $userData = User::where("id", $userId)->first();
         //informasi donasi konsumsi
         $dataDonasiKonsumsi = DonasiKonsumsi::with("donasi", "kategoriData", "satuanData")->where("donasi_id", $id)->get();
+        //informasi data pickup
+        $dataPickup = Pickup::with("donasiData", "dataKategori", "dataSatuan")->where("donasi", $id)->get();
+        //constanta untuk form
+        $kategori = Kategori::get();
+        $satuan = Satuan::get();
         $data = [
             "dataDonasi" => $dataDonasi,
             "dataUser" => $userData,
             "dataDonKom" => $dataDonasiKonsumsi,
+            "dataPickup" => $dataPickup,
+            "kategori" => $kategori,
+            "satuan" => $satuan
         ];
         return view('ngo/ngo_detail_donasi', $data);
+    }
+
+    public function addTimePickup(Request $request, $id)
+    {
+        try {
+            $data = [
+                "waktu_pickup" => $request->WaktuPembuatan,
+            ];
+            Pickup::where("donasi", $id)->update($data);
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'updated-donkom',
+                'message'   => 'Update Data Telah Berhasil!',
+                'route'     => route('ngo.detail-donasi', $id)
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => 'Update Data Gagal!'
+            ], 500);
+        }
+    }
+
+    public function deletePickup($id)
+    {
+        try {
+            Pickup::find($id)->delete();
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'delete-pickup',
+                'message'   => 'Data Berhasil Dihapus!',
+                'route'     => route('ngo.detail-donasi', $id)
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => 'Data Gagal Dihapus!'
+            ], 500);
+        }
     }
 
     public function createDonasi()
@@ -252,8 +313,9 @@ class NgoController extends Controller
         return redirect('ngo/show-login');
     }
 
-    public function getProfile(){
-        try{
+    public function getProfile()
+    {
+        try {
             //check user logged in
             $user = Auth::user();
 
@@ -271,7 +333,7 @@ class NgoController extends Controller
             ];
 
             return view('ngo/ngo_profile', ['data' => $data]);
-        }catch(Throwable $e){
+        } catch (Throwable $e) {
             return response()->json([
                 'status'    => 'failed',
                 'message'   => 'Terdapat kesalahan!'
@@ -279,8 +341,9 @@ class NgoController extends Controller
         }
     }
 
-    public function editProfile(Request $request){
-        try{
+    public function editProfile(Request $request)
+    {
+        try {
             //check user logged in
             $user = Auth::user();
 
@@ -290,11 +353,11 @@ class NgoController extends Controller
             $getNgo = NGO::where('user_id', $getData['id'])->first();
 
             //edit
-            if($request->password == null){
+            if ($request->password == null) {
                 $data_credentials = [
                     "nama"      => $request->nama,
                 ];
-            }else{
+            } else {
                 $data_credentials = [
                     "nama"      => $request->nama,
                     "password"  => Hash::make($request->password)
@@ -302,7 +365,7 @@ class NgoController extends Controller
             }
 
 
-            if($request['pic_foto'] !== null && $request['pic_foto'] !== 'undefined'){ //kondisi saat foto berubah
+            if ($request['pic_foto'] !== null && $request['pic_foto'] !== 'undefined') { //kondisi saat foto berubah
                 File::delete($getNgo->pic_foto);
 
                 $path = "images/ngo";
@@ -313,7 +376,7 @@ class NgoController extends Controller
                     "no_identitas"      => $request->no_identitas,
                     "pic_foto"          => $insertImage
                 ];
-            }else{
+            } else {
                 $data = [
                     "no_identitas"      => $request->no_identitas
                 ];
@@ -327,7 +390,7 @@ class NgoController extends Controller
                 'message'   => 'Selamat! Data profile telah diubah.',
                 'route'     => route('ngo.profile')
             ], 200);
-        }catch(Throwable $e){
+        } catch (Throwable $e) {
             return response()->json([
                 'status'    => 'failed',
                 'message'   => 'Terdapat kesalahan!'

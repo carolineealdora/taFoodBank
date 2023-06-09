@@ -22,19 +22,15 @@ class Pickup extends Model
         'expired',
     ];
 
-    public function donasi(){
+    public function donasiData(){
         return $this->belongsTo(Donasi::class);
     }
 
-    public function kategori(){
-        return $this->belongsTo(Kategori::class);
+    public function dataKategori(){
+        return $this->belongsTo(Kategori::class, "kategori");
     }
 
-    public function jenis(){
-        return $this->belongsTo(Jenis::class);
-    }
-
-    public function satuan(){
-        return $this->belongsTo(Satuan::class);
+    public function dataSatuan(){
+        return $this->belongsTo(Satuan::class, "satuan");
     }
 }

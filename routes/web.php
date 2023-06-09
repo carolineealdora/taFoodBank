@@ -60,6 +60,9 @@ Route::prefix('ngo')->group(function () {
     Route::get('/detail-donasi/{id}', [NgoController::class, 'detailDonasi'])->name('ngo.detail-donasi');
     Route::put('/donasi-approve/{id}', [NgoController::class, 'donasiApprove'])->name('ngo.donasiApprove');
     Route::put('/donasi-cancel/{id}', [NgoController::class, 'donasiCancel'])->name('ngo.donasiCancel');
+    Route::post('/edit-pickup/{id}', [NgoController::class, 'editPickup'])->name('ngo.editPickup');
+    Route::post('/waktu-pickup/{id}', [NgoController::class, 'addTimePickup'])->name('ngo.addTimePickup');
+    Route::delete('/delete-pickup/{id}', [NgoController::class, 'deletePickup'])->name('ngo.deletePickup');
     Route::get('/profile', [NgoController::class, 'getProfile'])->name('ngo.profile');
     Route::post('/edit-profile', [NgoController::class, 'editProfile'])->name('ngo.edit-profile');
     Route::get('/logout', [DonaturController::class, 'logout'])->name('ngo.logout');

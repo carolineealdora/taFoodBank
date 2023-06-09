@@ -204,6 +204,7 @@
                 </div>
               </div>
               <div class="card-body">
+                @foreach($dataPickup as $pickup)
                 <div class="card-body">
                   {{-- <hr class="horizontal dark"> --}}
                   <div class="card-body pt-2 p-3">
@@ -211,40 +212,52 @@
                     <ul class="list-group">
                       <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                         <div class="d-flex flex-column">
+                          @if($pickup->photo !='default')
                           <div class="mb-2">
-                            <img src="{{asset('assets\backendweb\img\team-1.jpg')}}" class="avatar avatar-lg me-3" alt="user1">
+                            <img src="{{ asset('storage/'.$pickup->photo) }}" class="avatar avatar-lg me-3" alt="user1">
                           </div>
-                          <h6 class="text-sm">Nama Makanan/Minuman</h6>
-                          <span class="text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span><br>
+                          @else
+                          <div class="mb-2">
+                            <img src="{{asset('assets\dummy.png')}}" class="avatar avatar-lg me-3" alt="user1">
+                          </div>
+                          @endif
+                          <h6 class="text-sm">Nama {{$pickup->nama}}</h6>
+                          <span class="text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">{{$pickup->deskripsi}}</span></span><br>
                           <div class="row">
                             <div class="form-group col-4">
-                              <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                              <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold"></span>{{$pickup->expired}}</span><br>
                             </div>
                             <div class="form-group col-4">
-                              <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                              <span class="mb-2 text-xs">Jenis: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                              <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">{{$pickup->kuantitas}}</span></span><br>
+                              <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">{{$pickup->dataSatuan->nama}}</span></span><br>
                             </div>
                             <div class="form-group col-4">
-                              <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                              <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                              <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{$pickup->dataKategori->nama}}</span></span><br>
                             </div>
                           </div>
                         </div>
+                        @if($pickup->waktu_pickup == "")
                         <div class="ms-auto text-end">
-                          <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i>Delete</a>
-                          <button type="button" class="btn btn-link text-dark px-3 mb-0" data-bs-toggle="modal" data-bs-target="#formModal"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</button>
+                          <a class="delete-confirm btn btn-link text-danger text-gradient px-3 mb-0" href="{{ URL::route('ngo.deletePickup', ['id' => $pickup->id]) }}"><i class="far fa-trash-alt me-2"></i>Delete</a>
+                          <button action="" id="{{$pickup->id}}" value="{{$pickup}}" type="button" class="open-modal btn btn-link text-dark px-3 mb-0" data-bs-toggle="modal" data-bs-target="#formModal"><i class="fas fa-pencil-alt text-dark me-2" aria-hidden="true"></i>Edit</button>
                         </div>
+                        @endif
                       </li>
                     </ul>
                   </div>
                 </div>
+                @endforeach
                 <hr class="horizontal dark">
+                @if($dataPickup[0]->waktu_pickup == "")
                 <p class="text-uppercase text-sm">Bukti Pick Up Donasi</p>
-                <div class="form-group">
-                  <label for="WaktuExpired" class="form-control-label">Tanggal & Waktu Pick Up</label>
-                  <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
-                </div>
-                <button class="btn btn-success btn-sm ms-auto col-12">Submit Data Pick Up Donasi</button>
+                <form id="add-tanggal-form" action="{{ URL::route('ngo.addTimePickup', ['id' => $dataDonasi->id]) }}" method="post" role="form">
+                  <div class="form-group">
+                    <label for="WaktuExpired" class="form-control-label">Tanggal & Waktu Pick Up</label>
+                    <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="datetime-local" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
+                  </div>
+                  <button type="submit" class="btn btn-success btn-sm ms-auto col-12">Submit</button>
+                </form>
+                @endif
               </div>
             </div>
           </div>
@@ -292,16 +305,16 @@
           <h5 class="modal-title" class="text-uppercase text-sm">Form Data Donasi</h5>
         </div>
         <div class="modal-body">
-          <form action="">
+          <form id="edit-form" action="" method="post" enctype="multipart/form-data" role="form">
             <div class="row">
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Nama Makanan/Minuman</label>
-                  <input class="form-control" type="text" value="lucky.jesse">
+                  <input id="nama" name="nama" class="form-control" type="text" value="">
                 </div>
                 <div class="form-group">
                   <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
-                  <input class="form-control" type="text" value="lucky.jesse">
+                  <input id="deskripsi" name="deskripsi" class="form-control" type="text" value="">
                 </div>
                 <div class="form-group">
                   <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
@@ -313,38 +326,33 @@
                 </div>
                 <div class="form-group">
                   <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
-                  <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
+                  <input id="expired" name="expired" class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="" required>
                 </div>
               </div>
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label for="kategoriDonasi">Kategori</label>
-                  <select class="form-control" id="kategoriDonasi">
-                    <option>Makanan</option>
-                    <option>Minuman</option>
-                  </select>
-                </div>
-                <div class="form-group">
-                  <label for="jenisDonasi">Jenis</label>
-                  <select class="form-control" id="jenisDonasi">
-                    <option>Daging</option>
-                    <option>Susu</option>
+                  <select id="kategori" name="kategori" class="form-control" id="kategoriDonasi">
+                    @foreach($kategori as $category)
+                    <option value="{{$category->id}}">{{$category->nama}}</option>
+                    @endforeach
                   </select>
                 </div>
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Kuantitas</label>
-                  <input class="form-control" type="text" value="lucky.jesse">
+                  <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="">
                 </div>
                 <div class="form-group">
                   <label for="satuanDonasi">Satuan</label>
-                  <select class="form-control" id="satuanDonasi">
-                    <option>Kilogram</option>
-                    <option>Liter</option>
+                  <select id="satuan" name="satuan" class="form-control" id="satuanDonasi">
+                    @foreach($satuan as $metric)
+                    <option value="{{$metric->id}}">{{$metric->nama}}</option>
+                    @endforeach
                   </select>
                 </div>
               </div>
             </div>
-            <button class="btn btn-primary btn-sm ms-auto">Simpan</button>
+            <button type="submit" id="action" value="" class="confirm btn btn-primary btn-sm ms-auto">Simpan</button>
           </form>
         </div>
       </div>
@@ -353,17 +361,164 @@
   <!-- End Form Modal -->
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  </script>
+
   <script type="text/javascript">
+    $(document).on('click', '.open-modal', function(event) {
+      var id = $(this).attr('id');
+      var value = $(this).attr('value');
+      var jsonify = JSON.parse(value)
+      document.getElementById("nama").setAttribute("value", jsonify.nama);
+      document.getElementById("deskripsi").setAttribute("value", jsonify.deskripsi);
+      document.getElementById("expired").setAttribute("value", jsonify.expired);
+      document.getElementById("kuantitas").setAttribute("value", jsonify.kuantitas);
+      const $selectKategori = document.querySelector('#kategori');
+      $selectKategori.value = jsonify.kategori
+      const $selectSatuan = document.querySelector('#satuan');
+      $selectSatuan.value = jsonify.satuan
+      document.getElementById("edit-form").setAttribute("action", id);
+    })
+
+    $('#edit-form').on('submit', function(event) {
+      event.preventDefault();
+      var id = $(this).attr('action');
+      let route_url = "{{ URL::route('ngo.editPickup', ':id') }}"
+      route_url = route_url.replace(':id', id);
+
+      let dataForm = new FormData($(this)[0]);
+      Swal.fire({
+        title: "Apakah Data yang anda masukan benar?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            url: route_url,
+            type: "POST",
+            data: dataForm,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              if (data.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          });
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: "Update Data Gagal!",
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    });
+
+    $('#add-tanggal-form').on('submit', function(event) {
+      event.preventDefault();
+
+      let dataForm = new FormData($(this)[0]);
+      Swal.fire({
+        title: "Apakah Data yang anda masukan benar?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            url: $(this).attr("action"),
+            type: "POST",
+            data: dataForm,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              if (data.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          });
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: "Update Data Gagal!",
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    });
+
     $(document).on('click', '.approve', function() {
       let id = $(this).attr("id");
       let route_url = "{{ URL::route('ngo.donasiApprove', ':id') }}"
       route_url = route_url.replace(':id', id);
-
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
 
       event.preventDefault();
       Swal.fire({
@@ -428,12 +583,6 @@
       let route_url = "{{ URL::route('ngo.donasiCancel', ':id') }}"
       route_url = route_url.replace(':id', id);
 
-      $.ajaxSetup({
-        headers: {
-          'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-        }
-      });
-
       event.preventDefault();
       Swal.fire({
         title: "Apakah anda yakin?",
@@ -482,6 +631,64 @@
           Swal.fire({
             title: 'Perhatian!',
             text: 'Status Gagal Diubah!',
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    })
+
+    $(document).on('click', '.delete-confirm', function() {
+      event.preventDefault();
+      Swal.fire({
+        title: "Apakah anda yakin Ingin Menghapus Data?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            type: "DELETE",
+            url: $(this).attr("href"),
+            success: function(data) {
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              console.log(data)
+              if (data.responseJSON.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.responseJSON.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          })
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: 'Data Gagal Dihapus!',
             icon: 'error',
             confirmButtonText: 'Oke'
           });
