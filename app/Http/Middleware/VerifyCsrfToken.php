@@ -17,6 +17,7 @@ class VerifyCsrfToken extends Middleware
         'http://127.0.0.1:8000/user/login',
         'http://127.0.0.1:8000/donatur/store',
         'http://127.0.0.1:8000/ngo/register',
+        'http://127.0.0.1:8000/api/ngo/edit-profile',
         'http://127.0.0.1:8000/ngo/donasi-approve/1',
         'http://127.0.0.1:8000/ngo/donasi-cancel/1',
     ];

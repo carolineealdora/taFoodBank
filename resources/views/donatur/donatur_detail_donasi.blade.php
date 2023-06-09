@@ -11,7 +11,6 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Current Status</p>
                 <h5 class="font-weight-bolder">
-                  Picked Up
                 </h5>
                 <p class="mb-0">
                   diperbarui pada
@@ -60,6 +59,8 @@
         </div>
       </div>
     </div>
+    {{-- {{$data}} --}}
+    {{-- @for($data as $item) --}}
     <div class="tab-content mt-3">
       <div class="tab-pane fade show active" id="all-status" role="tabpanel" aria-labelledby="all-status-tab">
         <div class="row">
@@ -78,8 +79,8 @@
                     <li class="list-group-item border-0 d-flex p-4 mb-0 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-sm">Submitted oleh Donatur</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
+                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">{{ $donasi_konsumsi }}</span></span>
+                    </div>
                     </li>
                     <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
@@ -147,7 +148,7 @@
                     </div>
                     <div class="form-group">
                       <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
-                      <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>                   
+                      <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
                     </div>
                   </div>
                   <div class="form-group col-md-6">
@@ -180,27 +181,26 @@
                 </div>
                 <button class="btn btn-primary btn-sm ms-auto">Simpan</button>
                 {{-- <hr class="horizontal dark"> --}}
+                @foreach ($donasi_konsumsi as $item)
                 <div class="card-body pt-2 p-3">
-                  {{-- <p class="text-uppercase text-sm">Data Donasi</p> --}}
+                  <p class="text-uppercase text-sm">Data Donasi</p>
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
                         <div class="mb-2">
                           <img src="{{asset('assets\backendweb\img\team-1.jpg')}}" class="avatar avatar-lg me-3" alt="user1">
                         </div>
-                        <h6 class="text-sm">Nama Makanan/Minuman</h6>
-                        <span class="text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span><br>
+                        <h6 class="text-sm">{{ $item->nama }}</h6>
+                        <span class="text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">{{ $item->deskripsi }}</span></span><br>
                         <div class="row">
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                            <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->expired }}</span></span><br>
                           </div>
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            <span class="mb-2 text-xs">Jenis: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                          </div>
+                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->kategori }}</span></span><br>                          </div>
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                            <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->kuantitas }}</span></span><br>
+                            <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->satuan }}</span></span><br>
                           </div>
                         </div>
                       </div>
@@ -211,6 +211,7 @@
                     </li>
                   </ul>
                 </div>
+                @endforeach
                 <hr class="horizontal dark">
                 <p class="text-uppercase text-sm">Form Pickup Donasi</p>
                 <div class="form-group">
@@ -255,7 +256,7 @@
                         <span class="mb-2 text-xs">NGO Tujuan: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
                             <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
                             <span class="mb-2 text-xs">Pickup Location - Kota: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                            <span class="mb-2 text-xs">Pickup Location - Alamat Lengkap: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>                     
+                            <span class="mb-2 text-xs">Pickup Location - Alamat Lengkap: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
                       </div>
                       <div class="ms-auto text-end">
                         <a class="btn btn-link text-danger text-gradient px-3 mb-0" href="javascript:;"><i class="far fa-trash-alt me-2"></i>Delete</a>
@@ -289,12 +290,12 @@
                       <li class="list-group-item border-0 d-flex p-4 mb-1 bg-gray-100 border-radius-lg">
                         <div class="d-flex flex-column">
                             {{-- <h6 class="text-sm">Data Pickup</h6> --}}
-                            <span class="mb-2 text-xs">Tanggal & Waktu Pick Up: <span class="text-dark ms-sm-2 font-weight-bold">27/03/2023 - 10:10:00</span></span>
-                            <span class="mb-2 text-xs">NGO Tujuan: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                            <span class="mb-2 text-xs">Nama: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                              <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                              <span class="mb-2 text-xs">Pickup Location - Kota: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                              <span class="mb-2 text-xs">Pickup Location - Alamat Lengkap: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>                     
+                            <span class="mb-2 text-xs">Tanggal & Waktu Pick Up: <span class="text-dark ms-sm-2 font-weight-bold">{{ $donasi }}</span></span>
+                            <span class="mb-2 text-xs">NGO Tujuan: <span class="text-dark ms-sm-2 font-weight-bold">{{ $donasi->ngo_tujuan }}</span></span>
+                            <span class="mb-2 text-xs">Nama: <span class="text-dark ms-sm-2 font-weight-bold">{{ $donasi->nama_pickup }}</span></span>
+                              <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">{{ $donasi->no_telp_pickup }}</span></span>
+                              <span class="mb-2 text-xs">Pickup Location - Kota: <span class="text-dark ms-sm-2 font-weight-bold">{{ $donasi->ngo_tujuan }}</span></span>
+                              <span class="mb-2 text-xs">Pickup Location - Alamat Lengkap: <span class="text-dark ms-sm-2 font-weight-bold">{{ $donasi->alamat_pickup }}</span></span>
                         </div>
                       </li>
                     </ul>
@@ -349,7 +350,7 @@
                         {{-- <div class="gallery" id="gallery"> --}}
                           <div class="row">
                             <div class="col-auto mb-2">
-                              <a href="{{asset('assets\backendweb\img\team-2.jpg')}}" data-pswp-width="1669" 
+                              <a href="{{asset('assets\backendweb\img\team-2.jpg')}}" data-pswp-width="1669"
                               data-pswp-height="2500">
                                 <img src="{{asset('assets\backendweb\img\team-2.jpg')}}" class="avatar avatar-lg" alt="buktifotopickedup">
                               </a>
@@ -370,7 +371,7 @@
                           <h6 class="text-sm">Deskripsi</h6>
                           <span class="text-xs"><span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span><br>
                         </div>
-                      </div>  
+                      </div>
                     </li>
                   </ul>
                 </div>

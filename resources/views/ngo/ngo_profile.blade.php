@@ -9,8 +9,8 @@
         <ul class="list-group">
           <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
             <div class="d-flex flex-column">
-              <h6 class="text-sm">Nama NGO</h6>
-              <span class="mb-2 text-xs">Kota Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
+              <h6 class="text-sm">{{ $data->nama_ngo }}</h6>
+              <span class="mb-2 text-xs">Kota Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">{{ $data->nama_ngo }}</span></span>
               <div class="row">
                 <span class="mb-2 text-xs">Alamat Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
                 <span class="mb-2 text-xs">Nomor Telepon Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
@@ -29,7 +29,7 @@
     <div class="row gx-4">
       <div class="col-auto">
         <div class="avatar avatar-xl position-relative">
-            <a href="{{asset('assets\backendweb\img\team-2.jpg')}}" data-pswp-width="1669" 
+            <a href="{{asset('assets\backendweb\img\team-2.jpg')}}" data-pswp-width="1669"
             data-pswp-height="2500">
               <img src="{{asset('assets\backendweb\img\team-2.jpg')}}" class="avatar avatar-lg" alt="profilePIC">
             </a>

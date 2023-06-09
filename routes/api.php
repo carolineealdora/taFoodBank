@@ -62,11 +62,12 @@ Route::post('admin/edit-satuan/{id}', [AdminController::class, 'editSatuan'])->n
 Route::delete('admin/delete-satuan/{id}', [AdminController::class, 'deleteSatuan'])->name('admin.delete-satuan');
 Route::get('admin/satuan', [AdminController::class, 'getListSatuan'])->name('admin.get-list-satuan');
 
-
+//donatur
 Route::post('/donatur/register', [DonaturController::class, 'register'])->name('donatur.register');
 Route::post('donatur/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');
-Route::get('donatur/donasi', [DonaturController::class, 'getList'])->name('donatur.getList');
-Route::get('donatur/donasi/{id}', [DonaturController::class, 'getDetail'])->name('donatur.detailDonasi');
+Route::post('donatur/edit-profile', [DonaturController::class, 'editProfile'])->name('donatur.editProfile');
+// Route::get('donatur/donasi', [DonaturController::class, 'getList'])->name('donatur.donasi');
+Route::get('donatur/donasi/{id}', [DonaturController::class, 'getDetailDonasi'])->name('donatur.detailDonasi');
 Route::post('donatur/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');
 // Route::get('donatur/donasi/{id}', [DonaturController::class, 'getList'])->name('donatur.getList');
 Route::delete('donasi/delete/{id}', [DonaturController::class, 'deleteDonasi'])->name('donatur.deleteDonasi');
@@ -85,7 +86,8 @@ Route::post('user/edit', [UserController::class, 'edit'])->name('user.edit');
 
 
 //NGO
-//Route::post('ngo/register', [NgoController::class, 'register'])->name('ngo.register');
+Route::post('ngo/register', [NgoController::class, 'register'])->name('ngo.register');
+// Route::post('ngo/edit-profile', [NgoController::class, 'editProfile'])->name('ngo.editProfile');
 Route::get('ngo/list-donasi', [NgoController::class, 'listDonasi'])->name('ngo.listDonasi');
 Route::get('ngo/list-donasi/{id}', [NgoController::class, 'showDonasi'])->name('ngo.detailDonasi');
 

@@ -14,7 +14,7 @@ class CreateeDonasiViews extends Migration
      */
     public function up()
     {
-        DB::statement("Create View views_donasi As select dk.id, u.nama as nama_user, dk.nama as donasi_konsumsi, sd.nama as status_donasi, d.ngo_tujuan, d.donatur as donatur, dk.created_at as tanggal from donasi_konsumsi dk inner join donasi as d on dk.donasi_id =  d.id inner join status_donasi sd on sd.id = d.status_donasi inner join donatur dt on dt.id = d.donatur inner join users u on dt.user_id = u.id;");
+        DB::statement("Create View views_donasi As select dk.id, u.nama as nama_user, dk.nama as donasi_konsumsi, sd.nama as status_donasi, d.ngo_tujuan, dk.donasi_id as donasi, d.donatur as donatur, dk.created_at as tanggal from donasi_konsumsi dk inner join donasi as d on dk.donasi_id =  d.id inner join status_donasi sd on sd.id = d.status_donasi inner join donatur dt on dt.id = d.donatur inner join users u on dt.user_id = u.id;");
     }
 
     /**

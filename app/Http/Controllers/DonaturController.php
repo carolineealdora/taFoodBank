@@ -7,12 +7,15 @@ use Carbon\Carbon;
 use App\Models\User;
 use App\Helpers\File;
 use App\Models\Donasi;
+use App\Models\Pickup;
 use App\Models\Donatur;
 use Illuminate\Http\Request;
 use App\Models\DonasiKonsumsi;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File as facadesFile;
 
@@ -33,20 +36,20 @@ class DonaturController extends Controller
         return view('donatur/donatur_dashboard');
     }
 
-    public function donasi()
-    {
-        return view('donatur/donatur_donasi');
-    }
+    // public function donasi()
+    // {
+    //     return view('donatur/donatur_donasi');
+    // }
 
-    public function profile()
-    {
-        return view('donatur/donatur_profile');
-    }
+    // public function profile()
+    // {
+    //     return view('donatur/donatur_profile');
+    // }
 
-    public function detailDonasi()
-    {
-        return view('donatur/donatur_detail_donasi');
-    }
+    // public function detailDonasi()
+    // {
+    //     return view('donatur/donatur_detail_donasi');
+    // }
 
     public function createDonasi()
     {
@@ -92,6 +95,98 @@ class DonaturController extends Controller
             ], 500);
         }
 
+    }
+
+    public function getProfile(){
+        try{
+            //check user logged in
+            $user = Auth::user();
+
+            // get data donatur berdasarkan id user logged in
+            $getData= User::with("donatur")->where('email', $user->email)->first();
+
+            return view('donatur/donatur_profile', ['data' => $getData]);
+        }catch(Throwable $e){
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => 'Terdapat kesalahan!'
+            ], 500);
+        }
+    }
+
+    public function editProfile(Request $request){
+        try{
+            //check user logged in
+            $user = Auth::user();
+
+            // get data donatur berdasarkan id user logged in
+            $getData = User::where('email', $request->email)->first();
+            $getDonatur = Donatur::where('user_id', $getData['id'])->first();
+
+            //edit
+            if($request->password == null){
+                $data_credentials = [
+                    "nama"      => $request->nama,
+                    "email"     => $request->req_email
+                ];
+            }else{
+                $data_credentials = [
+                    "nama"      => $request->nama,
+                    "email"     => $request->req_email,
+                    "password"  => Hash::make($request->password)
+                ];
+            }
+
+            User::find($getData['id'])->update($data_credentials);
+
+            if($request['foto'] !== null){ //kondisi saat foto berubah
+                File::delete($getDonatur->foto);
+
+                $path = "images/donatur";
+                $requestFile = $request['foto'];
+                $insertImage = File::fileUpload($requestFile, $path);
+
+                $data = [
+                    "foto"              => $request->insertImage,
+                    "alamat"            => $request->alamat,
+                    "no_identitas"      => $request->no_identitas,
+                    "tanggal_lahir"     => $request->tanggal_lahir,
+                    "no_telp"           => $request->no_telp
+                ];
+            }else{
+                $data = [
+                    "alamat"            => $request->alamat,
+                    "no_identitas"      => $request->no_identitas,
+                    "tanggal_lahir"     => $request->tanggal_lahir,
+                    "no_telp"           => $request->no_telp
+                ];
+            }
+
+            Donatur::find($getDonatur['id'])->update($data);
+
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'created',
+                'message'   => 'Selamat! Data profile telah diubah.',
+                // 'route'     => route('donatur/donasi')
+            ], 200);
+        }catch(Throwable $e){
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => 'Terdapat kesalahan!'
+            ], 500);
+        }
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('donatur/show-login');
     }
 
     public function storeDonasi(Request $request){
@@ -186,7 +281,7 @@ class DonaturController extends Controller
 
                     // return $data;
 
-                    DonasiKonsumsi::find($donasi_konsumsi['id'])->update($data);
+                    // DonasiKonsumsi::find($donasi_konsumsi['id'])->update($data);
 
                     return response()->json([
                         'status'    => 'ok',
@@ -196,7 +291,7 @@ class DonaturController extends Controller
                     ], 200);
                 }else{
                     $data = [
-                        "donasi"    => $donasi->id,
+                        // "donasi"    => $donasi->id,
                         "nama"      => $donasi_konsumsi['nama'],
                         "deskripsi" => $donasi_konsumsi['deskripsi'],
                         "kategori"  => $donasi_konsumsi['kategori'],
@@ -205,7 +300,6 @@ class DonaturController extends Controller
                         "expired"   => $donasi_konsumsi['expired']
                     ];
 
-                    DonasiKonsumsi::find($donasi_konsumsi['id'])->update($data);
 
                     return response()->json([
                         'status'    => 'ok',
@@ -214,6 +308,8 @@ class DonaturController extends Controller
                         // 'route'     => route('donatur/donasi')
                     ], 200);
                 }
+
+                DonasiKonsumsi::find($donasi_konsumsi['id'])->update($data);
             }
         } catch (Throwable $e) {
             return response()->json([
@@ -224,10 +320,18 @@ class DonaturController extends Controller
         }
     }
 
-    public function getList(){
+    public function getListDonasi(){
         try{
-            $getList = Donasi::with("donasi_konsumsi")->get();
-            return $getList;
+            //check user logged in
+            $user = Auth::user();
+
+            // get data ngo berdasarkan id user logged in
+            $getUser = User::with("donatur")->where('email', $user->email)->first();
+
+            //get list donasi berdasarkan id ngo
+            $getData = DB::table("views_donasi")->where("donatur", $getUser->donatur->id)->get();
+            // return $getData;
+            return view('donatur/donatur_donasi', ['data' => $getData]);
         }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',
@@ -236,10 +340,19 @@ class DonaturController extends Controller
         }
     }
 
-    public function getDetail($id){
+    public function getDetailDonasi($id){
         try{
-            $getDetail = Donasi::with("donasi_konsumsi")->find($id);
-            return $getDetail;
+            $getDonasi = Donasi::with("kota")->find($id);
+            $getDonasiKonsumsi = DonasiKonsumsi::where('donasi_id', $id)->get();
+            $getPickup = Pickup::where('donasi_id', $id)->get();
+            // return $getDonasiKonsumsi;
+            $data = [
+                'donasi' => $getDonasi,
+                'donasi_konsumsi' => $getDonasiKonsumsi
+                // 'pickup' => $
+            ];
+            // return $data['donasi'];
+            return view('donatur/donatur_detail_donasi', $data);
         }catch(Throwable $e){
             return response()->json([
                 'status' => 'error',

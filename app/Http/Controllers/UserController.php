@@ -11,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 use Throwable;
 
 class UserController extends Controller
-{    
+{
     public function login(Request $request){
         $login = Auth::attempt([
             'email'     => $request->email,

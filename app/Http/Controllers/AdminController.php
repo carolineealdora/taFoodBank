@@ -147,6 +147,64 @@ class AdminController extends Controller
         return view('admin/admin_detail_status_donasi');
     }
 
+    public function getProfile(){
+        try{
+            //check user logged in
+            $user = Auth::user();
+
+            // get data donatur berdasarkan id user logged in
+            $getData = User::where('email', $request->email)->first();
+            $getAdmin = Admin::where('user_id', $getData['id'])->first();
+
+            //edit
+            if($request->password == null){
+                $data_credentials = [
+                    "nama"      => $request->nama,
+                    "email"     => $request->req_email
+                ];
+            }else{
+                $data_credentials = [
+                    "nama"      => $request->nama,
+                    "email"     => $request->req_email,
+                    "password"  => Hash::make($request->password)
+                ];
+            }
+
+            User::find($getData['id'])->update($data_credentials);
+
+            if($request['foto_profil'] !== null){ //kondisi saat foto berubah
+                File::delete($getAdmin->foto);
+
+                $path = "images/donatur";
+                $requestFile = $request['foto_profil'];
+                $insertImage = File::fileUpload($requestFile, $path);
+
+                $data = [
+                    "foto_profil"       => $request->insertImage,
+                    "no_identitas"      => $request->no_identitas
+                ];
+            }else{
+                $data = [
+                    "no_identitas"      => $request->no_identitas
+                ];
+            }
+
+            Admin::find($getAdmin['id'])->update($data);
+
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'created',
+                'message'   => 'Selamat! Data profile telah diubah.',
+                // 'route'     => route('donatur/donasi')
+            ], 200);
+        }catch(Throwable $e){
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => 'Terdapat kesalahan!'
+            ], 500);
+        }
+    }
+
     public function approveNGO(Request $request, $id){
         try {
             if($request->ngo_status == 1){
@@ -503,7 +561,7 @@ class AdminController extends Controller
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'error',
-                    'message'   => 'Tidak dapat menghapus data kota. Data digunakan dalam data donasi',
+                    'message'   => 'Tidak dapat menghapus data kota. Data digunakan dalam data lain',
                     // 'route'     => route('donatur/donasi')
                 ], 200);
             }
@@ -610,7 +668,7 @@ class AdminController extends Controller
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'error',
-                    'message'   => 'Tidak dapat menghapus data kategori. Data digunakan dalam data donasi',
+                    'message'   => 'Tidak dapat menghapus data kategori. Data digunakan dalam data lain',
                     // 'route'     => route('donatur/donasi')
                 ], 200);
             }
@@ -716,7 +774,7 @@ class AdminController extends Controller
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'error',
-                    'message'   => 'Tidak dapat menghapus data satuan. Data digunakan dalam data donasi',
+                    'message'   => 'Tidak dapat menghapus data satuan. Data digunakan dalam data lain',
                     // 'route'     => route('donatur/donasi')
                 ], 200);
             }

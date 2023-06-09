@@ -164,12 +164,13 @@ class NgoController extends Controller
     }
     public function donasi()
     {
-
-        //whos login
+        //check user logged in
         $user = Auth::user();
-        //get ngo id
+
+        // get data ngo berdasarkan id user logged in
         $getUser = User::with("ngo")->where('email', $user->email)->first();
-        //get donasi for ngo
+
+        //get list donasi berdasarkan id ngo
         $getData = DB::table("views_donasi")->where("ngo_tujuan", $getUser->ngo->id)->get();
         return view('ngo/ngo_donasi', ['data' => $getData]);
     }
@@ -236,6 +237,104 @@ class NgoController extends Controller
             return response()->json([
                 'status'    => 'failed',
                 'message'   => $e
+            ], 500);
+        }
+    }
+
+    public function getProfile(){
+        try{
+            //check user logged in
+            $user = Auth::user();
+
+            // get data donatur berdasarkan id user logged in
+            $getData= User::with("ngo", "kota")->where('email', $user->email)->first();
+
+            return view('ngo/ngo_profile', ['data' => $getData]);
+//
+            $getNGO = NGO::with("kota")->find($id);
+            $getDonasiKonsumsi = DonasiKonsumsi::where('donasi_id', $id)->get();
+            $getPickup = Pickup::where('donasi_id', $id)->get();
+            // return $getDonasiKonsumsi;
+            $data = [
+                'donasi' => $getDonasi,
+                'donasi_konsumsi' => $getDonasiKonsumsi
+                // 'pickup' => $
+            ];
+            // return $data['donasi'];
+            return view('donatur/donatur_detail_donasi', $data);
+        }catch(Throwable $e){
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => 'Terdapat kesalahan!'
+            ], 500);
+        }
+    }
+
+    public function editProfile(Request $request){
+        try{
+            //check user logged in
+            $user = Auth::user();
+
+            // get data donatur berdasarkan id user logged in
+            $getData = User::where('email', $request->email)->first();
+
+            $getNgo = NGO::where('user_id', $getData['id'])->first();
+
+            // return $getNgo;
+
+            //edit
+            if($request->password == null){
+                $data_credentials = [
+                    "nama"      => $request->nama,
+                    "email"     => $request->req_email
+                ];
+            }else{
+                $data_credentials = [
+                    "nama"      => $request->nama,
+                    "email"     => $request->req_email,
+                    "password"  => Hash::make($request->password)
+                ];
+            }
+
+            User::find($getData['id'])->update($data_credentials);
+
+            if($request['pic_foto'] !== null){ //kondisi saat foto berubah
+                File::delete($getDonatur->foto);
+
+                $path = "images/ngo";
+                $requestFile = $request['pic_foto'];
+                $insertImage = File::fileUpload($requestFile, $path);
+
+                $data = [
+                    "ngo_nama"          => $request->ngo_nama,
+                    "ngo_alamat"        => $request->ngo_alamat,
+                    "ngo_kota"          => $request->ngo_kota,
+                    "ngo_no_telp"       => $request->ngo_no_telp,
+                    "no_identitas"      => $request->no_identitas,
+                    "pic_foto"          => $request->pic_foto
+                ];
+            }else{
+                $data = [
+                    "ngo_nama"          => $request->ngo_nama,
+                    "ngo_alamat"        => $request->ngo_alamat,
+                    "ngo_kota"          => $request->ngo_kota,
+                    "ngo_no_telp"       => $request->ngo_no_telp,
+                    "no_identitas"      => $request->no_identitas
+                ];
+            }
+
+            NGO::find($getNgo['id'])->update($data);
+
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'created',
+                'message'   => 'Selamat! Data profile telah diubah.',
+                // 'route'     => route('donatur/donasi')
+            ], 200);
+        }catch(Throwable $e){
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => 'Terdapat kesalahan!'
             ], 500);
         }
     }

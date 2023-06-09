@@ -7,7 +7,7 @@
       <div class="row gx-4">
         <div class="col-auto">
           <div class="avatar avatar-xl position-relative">
-              <a href="{{asset('assets\backendweb\img\team-2.jpg')}}" data-pswp-width="1669" 
+              <a href="{{asset('assets\backendweb\img\team-2.jpg')}}" data-pswp-width="1669"
               data-pswp-height="2500">
                 <img src="{{asset('assets\backendweb\img\team-2.jpg')}}" class="avatar avatar-lg" alt="profilePIC">
               </a>
@@ -77,31 +77,31 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Nama</label>
-                  <input class="form-control" type="text" value="lucky.jesse">
+                  <input class="form-control" type="text" value="{{ $data->nama }}">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Nomor Identitas</label>
-                  <input class="form-control" type="text" value="lucky.jesse">
+                  <input class="form-control" type="text" value="{{ $data['donatur']->no_identitas }}">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Tanggal Lahir</label>
-                  <input class="form-control" type="text" value="lucky.jesse">
+                  <input class="form-control" type="text" value="{{ $data['donatur']->tanggal_lahir }}">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Nomor Telepon</label>
-                  <input class="form-control" type="text" value="lucky.jesse">
+                  <input class="form-control" type="text" value="{{ $data['donatur']->no_telp }}">
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Alamat Lengkap</label>
-                    <input class="form-control" type="text" value="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09">
+                    <input class="form-control" type="text" value="{{ $data['donatur']->alamat }}">
                 </div>
                 </div>
             </div>
@@ -111,13 +111,13 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Email</label>
-                  <input class="form-control" type="email" value="Email">
+                  <input class="form-control" type="email" value="{{ $data->email }}">
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Password</label>
-                  <input class="form-control" type="password" value="Password">
+                  <input class="form-control" type="password" value="">
                 </div>
               </div>
             </div>

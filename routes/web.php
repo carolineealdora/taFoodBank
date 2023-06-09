@@ -37,12 +37,15 @@ Route::prefix('donatur')->group(function () {
     Route::get('/login', [DonaturController::class, 'login'])->name('donatur.login');
     Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
     Route::get('/dashboard', [DonaturController::class, 'dashboard'])->name('donatur.dashboard');
-    Route::get('/donasi', [DonaturController::class, 'donasi'])->name('donatur.donasi');
-    Route::get('/profile', [DonaturController::class, 'profile'])->name('donatur.profile');
-    Route::get('/detail-donasi', [DonaturController::class, 'detailDonasi'])->name('donatur.detail-donasi');
+    // Route::get('/donasi', [DonaturController::class, 'donasi'])->name('donatur.donasi');
+    Route::get('/donasi', [DonaturController::class, 'getListDonasi'])->name('donatur.donasi');
+    Route::get('/profile', [DonaturController::class, 'getProfile'])->name('donatur.profile');
+    // Route::get('/detail-donasi', [DonaturController::class, 'detailDonasi'])->name('donatur.detail-donasi');
+    Route::get('/detail-donasi/{id}', [DonaturController::class, 'getDetailDonasi'])->name('donatur.detail-donasi');
     Route::get('/create-donasi', [DonaturController::class, 'createDonasi'])->name('donatur.create-donasi');
     // Route::post('/register', [DonaturController::class, 'register'])->name('donatur.register');
     //Route::post('/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');
+    Route::get('/logout', [DonaturController::class, 'logout'])->name('donatur.logout');
 });
 
 // NGO
