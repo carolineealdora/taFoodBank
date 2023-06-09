@@ -40,6 +40,7 @@ Route::prefix('donatur')->group(function () {
     // Route::get('/donasi', [DonaturController::class, 'donasi'])->name('donatur.donasi');
     Route::get('/donasi', [DonaturController::class, 'getListDonasi'])->name('donatur.donasi');
     Route::get('/profile', [DonaturController::class, 'getProfile'])->name('donatur.profile');
+    Route::post('/edit-profile', [DonaturController::class, 'editProfile'])->name('donatur.edit-profile');
     // Route::get('/detail-donasi', [DonaturController::class, 'detailDonasi'])->name('donatur.detail-donasi');
     Route::get('/detail-donasi/{id}', [DonaturController::class, 'getDetailDonasi'])->name('donatur.detail-donasi');
     Route::get('/create-donasi', [DonaturController::class, 'createDonasi'])->name('donatur.create-donasi');
@@ -59,7 +60,9 @@ Route::prefix('ngo')->group(function () {
     Route::get('/detail-donasi/{id}', [NgoController::class, 'detailDonasi'])->name('ngo.detail-donasi');
     Route::put('/donasi-approve/{id}', [NgoController::class, 'donasiApprove'])->name('ngo.donasiApprove');
     Route::put('/donasi-cancel/{id}', [NgoController::class, 'donasiCancel'])->name('ngo.donasiCancel');
-    Route::get('/profile', [NgoController::class, 'profile'])->name('ngo.profile');
+    Route::get('/profile', [NgoController::class, 'getProfile'])->name('ngo.profile');
+    Route::post('/edit-profile', [NgoController::class, 'editProfile'])->name('ngo.edit-profile');
+    Route::get('/logout', [DonaturController::class, 'logout'])->name('ngo.logout');
 });
 
 // Admin
@@ -67,7 +70,8 @@ Route::prefix('admin')->group(function () {
     Route::get('/show-login', [AdminController::class, 'showLoginForm'])->name('admin.showLogin');
     Route::get('/login', [AdminController::class, 'login'])->name('admin.login');
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('admin.dashboard');
-    Route::get('/profile', [AdminController::class, 'profile'])->name('admin.profile');
+    Route::get('/profile', [AdminController::class, 'getProfile'])->name('admin.profile');
+    Route::post('/edit-profile', [AdminController::class, 'editProfile'])->name('admin.edit-profile');
     Route::get('/donasi', [AdminController::class, 'donasi'])->name('admin.donasi');
     Route::get('/detail-donasi', [AdminController::class, 'detailDonasi'])->name('admin.detail-donasi');
     Route::get('/donatur', [AdminController::class, 'donatur'])->name('admin.donatur');

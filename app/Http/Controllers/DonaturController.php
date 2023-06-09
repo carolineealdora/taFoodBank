@@ -101,6 +101,7 @@ class DonaturController extends Controller
         try{
             //check user logged in
             $user = Auth::user();
+            // return $user;
 
             // get data donatur berdasarkan id user logged in
             $getData= User::with("donatur")->where('email', $user->email)->first();
@@ -116,30 +117,32 @@ class DonaturController extends Controller
 
     public function editProfile(Request $request){
         try{
+            // return $request;
             //check user logged in
             $user = Auth::user();
+            // return $user;
 
             // get data donatur berdasarkan id user logged in
-            $getData = User::where('email', $request->email)->first();
+            $getData = User::where('email', $user->email)->first();
             $getDonatur = Donatur::where('user_id', $getData['id'])->first();
-
+            return $getData['id'];
             //edit
             if($request->password == null){
                 $data_credentials = [
                     "nama"      => $request->nama,
-                    "email"     => $request->req_email
+                    "email"     => $request->email
                 ];
             }else{
                 $data_credentials = [
                     "nama"      => $request->nama,
-                    "email"     => $request->req_email,
+                    "email"     => $request->email,
                     "password"  => Hash::make($request->password)
                 ];
             }
 
             User::find($getData['id'])->update($data_credentials);
 
-            if($request['foto'] !== null){ //kondisi saat foto berubah
+            if($request['foto'] !== null && $request['foto'] !== 'undefined'){ //kondisi saat foto berubah
                 File::delete($getDonatur->foto);
 
                 $path = "images/donatur";
@@ -147,7 +150,7 @@ class DonaturController extends Controller
                 $insertImage = File::fileUpload($requestFile, $path);
 
                 $data = [
-                    "foto"              => $request->insertImage,
+                    "foto"              => $insertImage,
                     "alamat"            => $request->alamat,
                     "no_identitas"      => $request->no_identitas,
                     "tanggal_lahir"     => $request->tanggal_lahir,
@@ -168,7 +171,7 @@ class DonaturController extends Controller
                 'status'    => 'ok',
                 'response'  => 'created',
                 'message'   => 'Selamat! Data profile telah diubah.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('donatur.profile')
             ], 200);
         }catch(Throwable $e){
             return response()->json([

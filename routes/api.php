@@ -65,7 +65,7 @@ Route::get('admin/satuan', [AdminController::class, 'getListSatuan'])->name('adm
 //donatur
 Route::post('/donatur/register', [DonaturController::class, 'register'])->name('donatur.register');
 Route::post('donatur/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');
-Route::post('donatur/edit-profile', [DonaturController::class, 'editProfile'])->name('donatur.editProfile');
+// Route::post('donatur/edit-profile', [DonaturController::class, 'editProfile'])->name('donatur.editProfile');
 // Route::get('donatur/donasi', [DonaturController::class, 'getList'])->name('donatur.donasi');
 Route::get('donatur/donasi/{id}', [DonaturController::class, 'getDetailDonasi'])->name('donatur.detailDonasi');
 Route::post('donatur/edit/{id}', [DonaturController::class, 'editDonasi'])->name('donatur.editDonasi');

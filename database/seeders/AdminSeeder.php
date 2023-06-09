@@ -16,18 +16,21 @@ class AdminSeeder extends Seeder
      */
     public function run()
     {
+        // $admin_credentials = [
+        //     "nama"      => 'admin',
+        //     "email"     => "admin1@gmail.com",
+        //     "password"  => Hash::make('123')
+        // ];
+
+        // User::firstOrCreate($admin_credentials)->assignRole('admin');
+
         $admin = [
-            "foto_profil"   => 'kosong',
+            'user_id'       => 29,
+            "foto_profil"   => 'images/admin/bLOMHnyvS1HYlaLvAjddcst2CoUgc5vnfRg7VNaq.jpg',
             "no_identitas"  => '000000000'
         ];
 
-        $admin_credentials = [
-            "nama"      => 'admin',
-            "email"     => "admin1@gmail.com",
-            "password"  => Hash::make('123')
-        ];
-
         Admin::firstOrCreate($admin);
-        User::firstOrCreate($admin_credentials)->assignRole('admin');
+
     }
 }

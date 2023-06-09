@@ -6,12 +6,15 @@ use App\Models\NGO;
 use App\Models\Kota;
 use App\Models\User;
 use App\Helpers\File;
+use App\Models\Admin;
 use App\Models\Donasi;
 use App\Models\Satuan;
 use App\Models\Donatur;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
 {
@@ -153,6 +156,23 @@ class AdminController extends Controller
             $user = Auth::user();
 
             // get data donatur berdasarkan id user logged in
+            $getUser = User::with('admin')->where('email', $user->email)->first();
+
+            return view('admin/admin_profile', ['data' => $getUser]);
+        }catch(Throwable $e){
+            return response()->json([
+                'status'    => 'failed',
+                'message'   => 'Terdapat kesalahan!'
+            ], 500);
+        }
+    }
+
+    public function editProfile(Request $request){
+        try{
+            //check user logged in
+            $user = Auth::user();
+
+            // get data donatur berdasarkan id user logged in
             $getData = User::where('email', $request->email)->first();
             $getAdmin = Admin::where('user_id', $getData['id'])->first();
 
@@ -160,27 +180,27 @@ class AdminController extends Controller
             if($request->password == null){
                 $data_credentials = [
                     "nama"      => $request->nama,
-                    "email"     => $request->req_email
+                    "email"     => $request->email
                 ];
             }else{
                 $data_credentials = [
                     "nama"      => $request->nama,
-                    "email"     => $request->req_email,
+                    "email"     => $request->email,
                     "password"  => Hash::make($request->password)
                 ];
             }
 
             User::find($getData['id'])->update($data_credentials);
 
-            if($request['foto_profil'] !== null){ //kondisi saat foto berubah
-                File::delete($getAdmin->foto);
+            if($request['foto_profil'] !== null && $request['foto_profil'] !== 'undefined'){ //kondisi saat foto berubah
+                File::delete($getAdmin->foto_profil);
 
-                $path = "images/donatur";
+                $path = "images/admin";
                 $requestFile = $request['foto_profil'];
                 $insertImage = File::fileUpload($requestFile, $path);
 
                 $data = [
-                    "foto_profil"       => $request->insertImage,
+                    "foto_profil"       => $insertImage,
                     "no_identitas"      => $request->no_identitas
                 ];
             }else{
@@ -195,7 +215,7 @@ class AdminController extends Controller
                 'status'    => 'ok',
                 'response'  => 'created',
                 'message'   => 'Selamat! Data profile telah diubah.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('admin.profile')
             ], 200);
         }catch(Throwable $e){
             return response()->json([

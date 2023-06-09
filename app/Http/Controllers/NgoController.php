@@ -78,7 +78,7 @@ class NgoController extends Controller
                 'message'   => 'Status Berhasil Diubah!',
                 'route'     => route('ngo.detail-donasi', $id)
             ], 200);
-        } 
+        }
         catch (Throwable $e) {
             return response()->json([
                 'status' => 'failed',
@@ -175,10 +175,10 @@ class NgoController extends Controller
         return view('ngo/ngo_donasi', ['data' => $getData]);
     }
 
-    public function profile()
-    {
-        return view('ngo/ngo_profile');
-    }
+    // public function profile()
+    // {
+    //     return view('ngo/ngo_profile');
+    // }
 
     public function detailDonasi($id)
     {
@@ -190,7 +190,7 @@ class NgoController extends Controller
         $dataDonasiKonsumsi = DonasiKonsumsi::with("donasi", "kategoriData", "satuanData")->where("donasi_id", $id)->get();
         $data = [
             "dataDonasi" => $dataDonasi,
-            "dataUser" => $userData,   
+            "dataUser" => $userData,
             "dataDonKom" => $dataDonasiKonsumsi,
         ];
         return view('ngo/ngo_detail_donasi', $data);
@@ -241,27 +241,36 @@ class NgoController extends Controller
         }
     }
 
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('ngo/show-login');
+    }
+
     public function getProfile(){
         try{
             //check user logged in
             $user = Auth::user();
 
             // get data donatur berdasarkan id user logged in
-            $getData= User::with("ngo", "kota")->where('email', $user->email)->first();
+            $getUser = User::where('email', $user->email)->first();
 
-            return view('ngo/ngo_profile', ['data' => $getData]);
-//
-            $getNGO = NGO::with("kota")->find($id);
-            $getDonasiKonsumsi = DonasiKonsumsi::where('donasi_id', $id)->get();
-            $getPickup = Pickup::where('donasi_id', $id)->get();
-            // return $getDonasiKonsumsi;
+            $getNgo = NGO::where('user_id', $getUser->id)->first();
+
+            $getKota = Kota::where('id', $getNgo->ngo_kota)->first();
+
             $data = [
-                'donasi' => $getDonasi,
-                'donasi_konsumsi' => $getDonasiKonsumsi
-                // 'pickup' => $
+                'pic' => $getUser,
+                'ngo' => $getNgo,
+                'kota' => $getKota->nama
             ];
-            // return $data['donasi'];
-            return view('donatur/donatur_detail_donasi', $data);
+
+            return view('ngo/ngo_profile', ['data' => $data]);
         }catch(Throwable $e){
             return response()->json([
                 'status'    => 'failed',
@@ -276,49 +285,36 @@ class NgoController extends Controller
             $user = Auth::user();
 
             // get data donatur berdasarkan id user logged in
-            $getData = User::where('email', $request->email)->first();
+            $getData = User::where('email', $user->email)->first();
 
             $getNgo = NGO::where('user_id', $getData['id'])->first();
-
-            // return $getNgo;
 
             //edit
             if($request->password == null){
                 $data_credentials = [
                     "nama"      => $request->nama,
-                    "email"     => $request->req_email
                 ];
             }else{
                 $data_credentials = [
                     "nama"      => $request->nama,
-                    "email"     => $request->req_email,
                     "password"  => Hash::make($request->password)
                 ];
             }
 
-            User::find($getData['id'])->update($data_credentials);
 
-            if($request['pic_foto'] !== null){ //kondisi saat foto berubah
-                File::delete($getDonatur->foto);
+            if($request['pic_foto'] !== null && $request['pic_foto'] !== 'undefined'){ //kondisi saat foto berubah
+                File::delete($getNgo->pic_foto);
 
                 $path = "images/ngo";
                 $requestFile = $request['pic_foto'];
                 $insertImage = File::fileUpload($requestFile, $path);
 
                 $data = [
-                    "ngo_nama"          => $request->ngo_nama,
-                    "ngo_alamat"        => $request->ngo_alamat,
-                    "ngo_kota"          => $request->ngo_kota,
-                    "ngo_no_telp"       => $request->ngo_no_telp,
                     "no_identitas"      => $request->no_identitas,
-                    "pic_foto"          => $request->pic_foto
+                    "pic_foto"          => $insertImage
                 ];
             }else{
                 $data = [
-                    "ngo_nama"          => $request->ngo_nama,
-                    "ngo_alamat"        => $request->ngo_alamat,
-                    "ngo_kota"          => $request->ngo_kota,
-                    "ngo_no_telp"       => $request->ngo_no_telp,
                     "no_identitas"      => $request->no_identitas
                 ];
             }
@@ -329,7 +325,7 @@ class NgoController extends Controller
                 'status'    => 'ok',
                 'response'  => 'created',
                 'message'   => 'Selamat! Data profile telah diubah.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('ngo.profile')
             ], 200);
         }catch(Throwable $e){
             return response()->json([
