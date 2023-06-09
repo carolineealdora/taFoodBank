@@ -5,16 +5,14 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class LaporanDonasi extends Model
+class LogStatus extends Model
 {
     use HasFactory;
-
-    protected $table = 'laporan_donasi';
+    protected $table = 'log_status';
 
     protected $fillable =[
         'donasi_id',
-        'foto_laporan',
-        'deskripsi'
+        'status_message',
     ];
 
     public function donasi(){

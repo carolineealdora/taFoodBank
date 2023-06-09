@@ -11,11 +11,11 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Current Status</p>
                 <h5 class="font-weight-bolder">
-                  Picked Up
+                  {{$dataCurrentLog->status_message}}
                 </h5>
                 <p class="mb-0">
                   diperbarui pada
-                  <span class="text-success text-sm font-weight-bolder">25/03/2023</span>
+                  <span class="text-success text-sm font-weight-bolder">{{$dataCurrentLog->created_at}}</span>
                 </p>
               </div>
             </div>
@@ -75,36 +75,14 @@
                 {{-- <p class="text-uppercase text-sm">Semua Status Donasi</p> --}}
                 <div class="card-body pt-0 p-3">
                   <ul class="list-group">
+                    @foreach($dataLog as $log)
                     <li class="list-group-item border-0 d-flex p-4 mb-0 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Submitted oleh Donatur</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
+                        <h6 class="mb-1 text-sm">{{$log->status_message}}</h6>
+                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">{{$log->created_at}}</span></span>
                       </div>
                     </li>
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Disetujui oleh NGO</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Picked Up</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Dalam Pengiriman</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Berhasil Dikirim</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
+                    @endforeach
                   </ul>
                 </div>
               </div>
@@ -274,22 +252,30 @@
                 </div>
               </div>
               <div class="card-body">
+              @if($dataReport == 0)
                 <p class="text-uppercase text-sm">Form Data Donasi</p>
+                <form id="report-donasi" action="{{ URL::route('ngo.reportDonasi', $dataDonasi->id) }}" method="post" enctype="multipart/form-data" role="form">
+                  <div class="row">
+                    <div class="form-group">
+                      <label for="donatur_donasiFoto" class="form-control-label">Foto Pengiriman Donasi</label>
+                      {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
+                      <input class="form-control" type="file" id="photo" name="photo" value="{{ old('AdminFoto') }}" onchange="previewImage()" multiple>
+                      @error('AdminFoto')
+                      <p class="text-danger">{{ $message }}</p>
+                      @enderror
+                    </div>
+                    <div class="form-group">
+                      <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
+                      <input class="form-control" id="deskripsi" name="deskripsi" type="text" value="" placeholder="deskripsi donasi">
+                    </div>
+                  </div>
+                  <button type="submit" class="btn btn-success btn-sm ms-auto">Upload</button>
+                </form>
+                @else
                 <div class="row">
-                  <div class="form-group">
-                    <label for="donatur_donasiFoto" class="form-control-label">Foto Pengiriman Donasi</label>
-                    {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                    <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()" multiple>
-                    @error('AdminFoto')
-                    <p class="text-danger">{{ $message }}</p>
-                    @enderror
-                  </div>
-                  <div class="form-group">
-                    <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
-                    <input class="form-control" type="text" value="lucky.jesse">
-                  </div>
+                  <h7 class="text-center alert alert-success">Laporan Sudah Diisi!</h7>
                 </div>
-                <button class="btn btn-success btn-sm ms-auto">Upload</button>
+                @endif
               </div>
             </div>
           </div>
@@ -442,6 +428,68 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Update Data Gagal!",
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    });
+
+    $('#report-donasi').on('submit', function(event) {
+      event.preventDefault();
+      let dataForm = new FormData($(this)[0]);
+      Swal.fire({
+        title: "Apakah Data yang anda masukan benar?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            url:  $(this).attr('action'),
+            type: "POST",
+            data: dataForm,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              if (data.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          });
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: "Data Gagal Ditambahkan!",
             icon: 'error',
             confirmButtonText: 'Oke'
           });
