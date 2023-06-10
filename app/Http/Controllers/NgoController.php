@@ -210,7 +210,55 @@ class NgoController extends Controller
 
         //get list donasi berdasarkan id ngo
         $getData = DB::table("views_donasi")->where("ngo_tujuan", $getUser->ngo->id)->get();
-        return view('ngo/ngo_donasi', ['data' => $getData]);
+        $getDataTable = DB::table('views_donasi')->where('ngo_tujuan', $getUser->ngo->id);
+        $data = [
+            'getData' => $getData
+        ];
+        if(request()->ajax()){
+            return DataTables()->queryBuilder($getDataTable)
+                ->addColumn('nama_user', function ($query){
+                    $nama_user = $query->nama_user;
+
+                    return $nama_user;
+                })
+                ->addColumn('donasi_konsumsi', function ($query){
+                    $donasi_konsumsi = $query->donasi_konsumsi;
+
+                    return $donasi_konsumsi;
+                })
+                ->addColumn('status_donasi', function ($query){
+                    $status_donasi = $query->status_donasi;
+                    if($status_donasi == "submitted"){
+                        $badge = '<span class="badge badge-sm bg-gradient-warning">Submitted</span>';
+                    }elseif($status_donasi == "approved"){
+                        $badge = '<span class="badge badge-sm bg-gradient-success">Approved</span>';
+                    }elseif($status_donasi == "rejected"){
+                        $badge = '<span class="badge badge-sm bg-gradient-danger">Rejected</span>';
+                    }elseif($status_donasi == "pickedup"){
+                        $badge = '<span class="badge badge-sm bg-gradient-info">Picked Up</span>';
+                    }elseif($status_donasi == "finished"){
+                        $badge = '<span class="badge badge-sm bg-gradient-primary">Finished</span>';
+                    }
+                    return $badge;
+                })
+                ->addColumn('tanggal_waktu', function ($query){
+                    $tanggal = $query->tanggal;
+
+                    return $tanggal;
+                })
+                 ->addColumn('action', function ($query){
+                    $button = '<button id="'. $query->id .'" class="action-edit text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
+                      Detail
+                    </button>';
+
+                    return $button;
+                })
+                ->rawColumns(['nama_user', 'donasi_konsumsi', 'status_donasi', 'tanggal_wwaktu', 'action'])
+                ->addIndexColumn()
+                ->make(true);
+        } 
+
+        return view('ngo/ngo_donasi', $data);
     }
 
     public function detailDonasi($id)

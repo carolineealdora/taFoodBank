@@ -70,6 +70,7 @@ return [
             'driver' => 'eloquent',
             // 'model' => Illuminate\Foundation\Auth\User::class,
             'model' => App\Models\User::class,
+            Yajra\DataTables\DataTablesServiceProvider::class,
         ],
 
         // 'users' => [
