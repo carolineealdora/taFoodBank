@@ -31,11 +31,11 @@ class DonasiKonsumsi extends Model
         return $this->belongsTo(Donasi::class);
     }
 
-    public function kategoriData(){
-        return $this->belongsTo(Kategori::class, 'id');
+    public function dataKategori(){
+        return $this->belongsTo(Kategori::class, 'kategori');
     }
 
-    public function satuanData(){
-        return $this->belongsTo(Satuan::class, 'id');
+    public function dataSatuan(){
+        return $this->belongsTo(Satuan::class, 'satuan');
     }
 }

@@ -57,7 +57,7 @@ class NgoController extends Controller
     public function showDonasi($id)
     {
         try {
-            //get detail donasi
+            //donas detail donasi
             $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo")->where("id", $id)->first();
             return response()->json([
                 'status' => 'ok',
@@ -77,7 +77,7 @@ class NgoController extends Controller
     {
         try {
             Donasi::where("id", $id)->update(['status_donasi' => 2]);
-            //insert to log 
+            //insert to log
             $logData = [
                 'donasi_id' => $id,
                 'status_message' => "Disetujui Oleh NGO",
@@ -303,11 +303,12 @@ class NgoController extends Controller
             Pickup::where("donasi", $id)->update($data);
             //update status to pickedup
             Donasi::where("id", $id)->update(['status_donasi' => 4]);
-            //insert to log 
+            //insert to log
             $logData = [
                 'donasi_id' => $id,
                 'status_message' => "Picked Up",
             ];
+
             LogStatus::create($logData);
 
             return response()->json([
@@ -357,7 +358,7 @@ class NgoController extends Controller
             LaporanDonasi::create($data);
             //update status to finished
             Donasi::where("id", $id)->update(['status_donasi' => 5]);
-            //insert to log 
+            //insert to log
             $logData = [
                 'donasi_id' => $id,
                 'status_message' => "Berhasil Dikirim",

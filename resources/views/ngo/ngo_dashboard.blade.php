@@ -20,7 +20,7 @@
                 <i class="ni ni-money-coins text-lg opacity-10" aria-hidden="true"></i>
               </div>
             </div>
-          </div>
+        </div>
         </div>
       </div>
     </div>
@@ -53,7 +53,8 @@
               <div class="numbers">
                 <p class="text-lg mb-0 text-uppercase font-weight-bold">Picked Up</p>
                 <h5 class="font-weight-bolder">
-                  {{$rejected}}
+                  {{-- {{$rejected}} --}}
+                  {{$pickedup}}
                 </h5>
               </div>
             </div>

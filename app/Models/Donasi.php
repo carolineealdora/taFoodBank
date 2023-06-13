@@ -41,11 +41,11 @@ class Donasi extends Model
     }
 
     public function kotaData(){
-        return $this->belongsTo(Kota::class, "id");
+        return $this->belongsTo(Kota::class, "kota");
     }
 
     public function ngo(){
-        return $this->belongsTo(NGO::class, "id");
+        return $this->belongsTo(NGO::class, "ngo_tujuan");
     }
 
     public function donaturData(){

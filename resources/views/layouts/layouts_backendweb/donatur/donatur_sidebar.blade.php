@@ -39,7 +39,7 @@
         </li>
       </ul>
     </div>
-    <div class="sidenav-footer mx-3 ">
+    <div class="sidenav-footer mx-3  position-absolute bottom-0 end-0">
       <a href="{{ URL::route('donatur.logout') }}" class="btn btn-dark btn-sm w-100 mb-3">Log out</a>
     </div>
   </aside>

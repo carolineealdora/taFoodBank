@@ -29,95 +29,73 @@
       </div>
     </div>
     <div class="tab-content mt-4">
-      <div class="tab-pane fade show active" id="ll" role="tabpanel" aria-labelledby="all-status-tab">
-        <div class="col-md-12">
-          <div class="card p-3">
-            <div class="nav-wrapper position-relative end-0 mt-1">
-              <ul class="nav nav-pills nav-fill p-1" role="tablist">
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#all-status" role="tab" aria-controls="preview" aria-selected="true">
-                  <i class="ni ni-badge text-sm me-2"></i> All Status
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#submitted" role="tab" aria-controls="code" aria-selected="false">
-                    <i class="ni ni-laptop text-sm me-2"></i> Data Donasi & NGO
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#submitted" role="tab" aria-controls="code" aria-selected="false">
-                    <i class="ni ni-laptop text-sm me-2"></i> Data Donasi dari Donatur
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#pickedup" role="tab" aria-controls="preview" aria-selected="true">
-                  <i class="ni ni-badge text-sm me-2"></i> Data Pick Up Donasi
-                  </a>
-                </li>
-                <li class="nav-item">
-                  <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#pelaporan" role="tab" aria-controls="code" aria-selected="false">
-                    <i class="ni ni-laptop text-sm me-2"></i> Pelaporan Distribusi Donasi
-                  </a>
-                </li>
-              </ul>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-    <div class="tab-content mt-3">
-      <div class="tab-pane fade show active" id="all-status" role="tabpanel" aria-labelledby="all-status-tab">
-        <div class="row">
+        <div class="tab-pane fade show active" id="ll" role="tabpanel" aria-labelledby="all-status-tab">
           <div class="col-md-12">
-            <div class="card">
-              <div class="card-header pb-0">
-                <div class="d-flex align-items-center">
-                  <p class="mb-0">All Status</p>
-                  {{-- <button class="btn btn-primary btn-sm ms-auto">Simpan Perubahan</button> --}}
-                </div>
-              </div>
-              <div class="card-body">
-                {{-- <p class="text-uppercase text-sm">Semua Status Donasi</p> --}}
-                <div class="card-body pt-0 p-3">
-                  <ul class="list-group">
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Submitted oleh Donatur</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Disetujui oleh NGO</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Picked Up</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Dalam Pengiriman</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 mt-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <h6 class="mb-1 text-sm">Berhasil Dikirim</h6>
-                        <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">25/03/2023 - 10:10</span></span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
+            <div class="card p-3">
+              <div class="nav-wrapper position-relative end-0 mt-1">
+                <ul class="nav nav-pills nav-fill p-1" role="tablist">
+                  <li class="nav-item">
+                    <a class="nav-link mb-0 px-0 py-1 active" data-bs-toggle="tab" href="#all-status" role="tab" aria-controls="preview" aria-selected="true">
+                    <i class="ni ni-badge text-sm me-2"></i> All Status
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#data-donatur-ngo" role="tab" aria-controls="code" aria-selected="false">
+                      <i class="ni ni-laptop text-sm me-2"></i> Data Donasi & NGO
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#submitted" role="tab" aria-controls="code" aria-selected="false">
+                      <i class="ni ni-laptop text-sm me-2"></i> Data Donasi dari Donatur
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#pickedup" role="tab" aria-controls="preview" aria-selected="false">
+                    <i class="ni ni-badge text-sm me-2"></i> Data Pick Up Donasi
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a class="nav-link mb-0 px-0 py-1" data-bs-toggle="tab" href="#pelaporan" role="tab" aria-controls="code" aria-selected="false">
+                      <i class="ni ni-laptop text-sm me-2"></i> Pelaporan Distribusi Donasi
+                    </a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="tab-pane fade show active" id="submitted" role="tabpanel" aria-labelledby="submitted-tab">
+    <div class="tab-content mt-3">
+        <div class="tab-pane fade show active" id="all-status" role="tabpanel" aria-labelledby="all-status-tab">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="card">
+                  <div class="card-header pb-0">
+                    <div class="d-flex align-items-center">
+                      <p class="mb-0">All Status</p>
+                      {{-- <button class="btn btn-primary btn-sm ms-auto">Simpan Perubahan</button> --}}
+                    </div>
+                  </div>
+                  <div class="card-body">
+                    {{-- <p class="text-uppercase text-sm">Semua Status Donasi</p> --}}
+                    <div class="card-body pt-0 p-3">
+                      <ul class="list-group">
+                        @foreach($dataLog as $log)
+                        <li class="list-group-item border-0 d-flex p-4 mb-0 bg-gray-100 border-radius-lg">
+                          <div class="d-flex flex-column">
+                            <h6 class="mb-1 text-sm">{{$log->status_message}}</h6>
+                            <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">{{$log->created_at}}</span></span>
+                          </div>
+                        </li>
+                        @endforeach
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+        </div>
+      <div class="tab-pane fade show" id="data-donatur-ngo" role="tabpanel" aria-labelledby="submitted-tab">
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -132,10 +110,10 @@
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        <h6 class="text-sm">Nama Donatur</h6>
-                        <span class="mb-2 text-xs">Alamat: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                        <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                        <span class="mb-2 text-xs">Email: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
+                        <h6 class="text-sm">{{ $dataDonatur->nama }}</h6>
+                        <span class="mb-2 text-xs">Alamat: <span class="text-dark font-weight-bold ms-sm-2">{{ $dataDonasi->donaturData->alamat }}</span></span>
+                        <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">{{ $dataDonasi->donaturData->no_telp }}</span></span>
+                        <span class="mb-2 text-xs">Email: <span class="text-dark ms-sm-2 font-weight-bold">{{ $dataDonatur->email }}</span></span>
                       </div>
                     </li>
                   </ul>
@@ -147,12 +125,12 @@
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        <h6 class="text-sm">Nama NGO</h6>
-                        <span class="mb-2 text-xs">Kota Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
+                        <h6 class="text-sm">{{ $dataNgo->ngo_nama }}</h6>
+                        <span class="mb-2 text-xs">Kota Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">{{ $dataNgoKota->nama }}</span></span>
                         <div class="row">
-                          <span class="mb-2 text-xs">Alamat Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                          <span class="mb-2 text-xs">Nomor Telepon Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                          <span class="mb-2 text-xs">Email Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
+                          <span class="mb-2 text-xs">Alamat Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">{{ $dataDonasi->ngo->ngo_alamat }}</span></span>
+                          <span class="mb-2 text-xs">Nomor Telepon Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">{{ $dataDonasi->ngo->ngo_no_telp }}</span></span>
+                          <span class="mb-2 text-xs">Email Kantor NGO: <span class="text-dark font-weight-bold ms-sm-2">{{ $dataDonasi->ngo->ngo_nama }}</span></span>
                         </div>
                       </div>
                     </li>
@@ -163,7 +141,7 @@
           </div>
         </div>
       </div>
-      <div class="tab-pane fade show active" id="submitted" role="tabpanel" aria-labelledby="submitted-tab">
+      <div class="tab-pane fade show" id="submitted" role="tabpanel" aria-labelledby="submitted-tab">
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -178,7 +156,7 @@
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        <span class="mb-2 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
+                        <span class="mb-2 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">{{ $dataDonasi->created_at}}</span></span>
                       </div>
                     </li>
                   </ul>
@@ -188,14 +166,15 @@
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        <h6 class="text-sm">Pick Up Location - Kota</h6>
-                        <span class="mb-2 text-xs">Nama: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                        <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
-                        <span class="mb-2 text-xs">Alamat: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span>
+                        <h6 class="text-sm">Pick Up Location - {{ $dataDonasi->kotaData->nama }}</h6>
+                        <span class="mb-2 text-xs">Nama: <span class="text-dark font-weight-bold ms-sm-2">{{ $dataDonasi->nama_pickup }}</span></span>
+                        <span class="mb-2 text-xs">Nomor Telepon: <span class="text-dark ms-sm-2 font-weight-bold">{{ $dataDonasi->no_telp_pickup }}</span></span>
+                        <span class="mb-2 text-xs">Alamat: <span class="text-dark ms-sm-2 font-weight-bold">{{ $dataDonasi->alamat_pickup }}</span></span>
                       </div>
                     </li>
                   </ul>
                 </div>
+                @foreach ($dataDonKom as $item)
                 <p class="text-uppercase text-sm">Data Donasi</p>
                 <div class="card-body pt-2 p-3">
                   {{-- <p class="text-uppercase text-sm">Data Donasi</p> --}}
@@ -203,34 +182,34 @@
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
                         <div class="mb-2">
-                          <img src="{{asset('assets\backendweb\img\team-1.jpg')}}" class="avatar avatar-lg me-3" alt="user1">
+                          <img src="{{ asset('storage/'.$item->photo) }}" class="avatar avatar-lg me-3" alt="user1">
                         </div>
-                        <h6 class="mb-2 text-sm">Nama Makanan/Minuman</h6>
-                        <span class="mb-2 text-xs">Submitted at: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                        <span class="mb-2 text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span><br>
+                        <h6 class="mb-2 text-sm">{{ $item->nama }}</h6>
+                        <span class="mb-2 text-xs">Submitted at: <span class="text-dark font-weight-bold ms-sm-2">{{ $item->created_at }}</span></span>
+                        <span class="mb-2 text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">{{ $item->deskripsi }}</span></span><br>
                         <div class="row">
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                            <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->expired }}</span></span><br>
                           </div>
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            <span class="mb-2 text-xs">Jenis: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->dataKategori->nama }}</span></span><br>
                           </div>
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
+                            <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->kuantitas }}</span></span><br>
+                            <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->dataSatuan->nama }}</span></span><br>
                           </div>
                         </div>
                       </div>
                     </li>
                   </ul>
                 </div>
+                @endforeach
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="tab-pane fade show active" id="pickedup" role="tabpanel" aria-labelledby="pickedup-tab">
+      <div class="tab-pane fade show" id="pickedup" role="tabpanel" aria-labelledby="pickedup-tab">
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -240,50 +219,62 @@
                 </div>
               </div>
               <div class="card-body">
-                <p class="text-uppercase text-sm">Tanggal & Waktu</p>
-                <div class="card-body pt-2 p-3">
-                  <ul class="list-group">
-                    <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
-                      <div class="d-flex flex-column">
-                        <span class="mb-2 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                      </div>
-                    </li>
-                  </ul>
-                </div>
-                  <div class="card-body pt-2 p-3">
-                    <p class="text-uppercase text-sm">Data Donasi</p>
+                  {{-- <div class="card-body pt-2 p-3"> --}}
+                    <p class="text-uppercase text-sm">Data Donasi - Picked Up</p>
+                    @if(empty($dataPickup) == 0)
                     <ul class="list-group">
                       <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                         <div class="d-flex flex-column">
-                          <div class="mb-2">
-                            <img src="{{asset('assets\backendweb\img\team-1.jpg')}}" class="avatar avatar-lg me-3" alt="foto pickup donasi">
-                          </div>
-                          <h6 class="text-sm">Nama Makanan/Minuman</h6>
-                          <span class="mb-2 text-xs">Picked Up at: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
-                          <span class="text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span><br>
-                          <div class="row">
-                            <div class="form-group col-4">
-                              <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            </div>
-                            <div class="form-group col-4">
-                              <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                              <span class="mb-2 text-xs">Jenis: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            </div>
-                            <div class="form-group col-4">
-                              <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                              <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">oliver@burrito.com</span></span><br>
-                            </div>
-                          </div>
+                          <h6 class="text-sm">Donasi Belum Di Pick Up NGO</h6>
                         </div>
                       </li>
                     </ul>
-                  </div>
+                    @else
+                        <p class="text-uppercase text-sm">Tanggal & Waktu</p>
+                        <div class="card-body pt-2 p-3">
+                        <ul class="list-group">
+                            <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                            <div class="d-flex flex-column">
+                                <span class="mb-2 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">{{ $item->waktu_pickup }}</span></span>
+                            </div>
+                            </li>
+                        </ul>
+                        </div>
+                        @foreach ($dataPickup as $item)
+                        <ul class="list-group">
+                        <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                            <div class="d-flex flex-column">
+                            <div class="mb-2">
+                                <img src="{{ asset('storage/'.$item->photo) }}" class="avatar avatar-lg me-3" alt="foto pickup donasi">
+                            </div>
+                            <h6 class="text-sm">{{ $item->nama }}</h6>
+                            {{-- <span class="mb-2 text-xs">Picked Up at: <span class="text-dark font-weight-bold ms-sm-2">{{ $item->waktu_pickup }}</span></span> --}}
+                            <span class="text-xs">Deskripsi: <span class="text-dark font-weight-bold ms-sm-2">{{ $item->deskripsi }}</span></span><br>
+                            <div class="row">
+                                <div class="form-group col-4">
+                                <span class="mb-2 text-xs">Perkiraan Tanggal Expired: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->expired }}</span></span><br>
+                                </div>
+                                <div class="form-group col-4">
+                                <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->dataKategori->nama }}</span></span><br>
+                                </div>
+                                <div class="form-group col-4">
+                                <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->nama }}</span></span><br>
+                                <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">{{ $item->dataSatuan->nama }}</span></span><br>
+                                </div>
+                            </div>
+                            </div>
+                        </li>
+                        </ul>
+                        @endforeach
+                    @endif
+                  {{-- </div> --}}
+
               </div>
             </div>
           </div>
         </div>
       </div>
-      <div class="tab-pane fade show active" id="pelaporan" role="tabpanel" aria-labelledby="pelaporan-tab">
+      <div class="tab-pane fade show" id="pelaporan" role="tabpanel" aria-labelledby="pelaporan-tab">
         <div class="row">
           <div class="col-md-12">
             <div class="card">
@@ -293,53 +284,124 @@
                 </div>
               </div>
               <div class="card-body">
+                <p class="text-uppercase text-sm">Data Laporan</p>
+                @if(empty($dataReport) == 0)
+                <ul class="list-group">
+                  <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
+                    <div class="d-flex flex-column">
+                      <h6 class="text-sm">Belum Ada Laporan Donasi dari NGO</h6>
+                    </div>
+                  </li>
+                </ul>
+                @else
                 <p class="text-uppercase text-sm">Tanggal & Waktu</p>
                 <div class="card-body pt-2 p-3">
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        <span class="mb-2 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span>
+                        <span class="mb-2 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">{{ $dataReport->created_at }}</span></span>
                       </div>
                     </li>
                   </ul>
                 </div>
-                <p class="text-uppercase text-sm">Data Laporan</p>
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
-                        {{-- <div class="gallery" id="gallery"> --}}
-                          <div class="row">
-                            <div class="col-auto mb-2">
-                              <a href="{{asset('assets\backendweb\img\team-2.jpg')}}" data-pswp-width="1669" 
-                              data-pswp-height="2500">
-                                <img src="{{asset('assets\backendweb\img\team-2.jpg')}}" class="avatar avatar-lg" alt="buktifotopickedup">
-                              </a>
+                        @foreach($dataReport as $item)
+                            <div class="row">
+                                <div class="col-auto mb-2">
+                                <a href="{{ asset('storage/'.$item->foto_laporan) }}" data-pswp-width="1669"
+                                data-pswp-height="2500">
+                                    <img src="{{ asset('storage/'.$item->foto_laporan) }}" class="avatar avatar-lg" alt="buktifotopickedup">
+                                </a>
+                                </div>
                             </div>
-                            <div class="col-auto mb-2">
-                              <a href="{{asset('assets\backendweb\img\team-2.jpg')}}">
-                                <img src="{{asset('assets\backendweb\img\team-2.jpg')}}" class="avatar avatar-lg" alt="buktifotopickedup">
-                              </a>
+                            <div class="mt-4">
+                                <h6 class="text-sm">Deskripsi</h6>
+                                <span class="text-xs"><span class="text-dark font-weight-bold ms-sm-2">{{ $item->deskripsi }}</span></span><br>
                             </div>
-                            <div class="col-auto mb-2">
-                              <a href="{{asset('assets\backendweb\img\team-2.jpg')}}">
-                                <img src="{{asset('assets\backendweb\img\team-2.jpg')}}" class="avatar avatar-lg" alt="buktifotopickedup">
-                              </a>
-                            </div>
-                          </div>
-                        {{-- </div> --}}
-                        <div class="mt-4">
-                          <h6 class="text-sm">Deskripsi</h6>
-                          <span class="text-xs"><span class="text-dark font-weight-bold ms-sm-2">Viking Burrito</span></span><br>
-                        </div>
-                      </div>  
+                        @endforeach
+                      </div>
                     </li>
                   </ul>
+                @endif
                 </div>
               </div>
             </div>
           </div>
         </div>
-        <button class="btn btn-danger btn-sm ms-auto col-12 mt-4">Hapus Seluruh Data Donasi</button>
+        <button class="delete-confirm btn btn-danger btn-sm ms-auto col-12 mt-4" href="{{ URL::route('admin.deleteDonasi', ['id' => $dataDonKom[0]->id]) }}">Hapus Seluruh Data Donasi</button>
       </div>
     </div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+
+<script>
+$.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
+
+<script type="text/javascript">
+    $(document).on('click', '.delete-confirm', function() {
+      event.preventDefault();
+      Swal.fire({
+        title: "Apakah anda yakin ingin menghapus data?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            type: "DELETE",
+            url: $(this).attr("href"),
+            success: function(data) {
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              console.log(data)
+              if (data.responseJSON.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.responseJSON.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          })
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: 'Data Gagal Dihapus!',
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    });
+</script>
 @endsection

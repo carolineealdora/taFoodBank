@@ -8,25 +8,100 @@
         <div class="card-header pb-0">
           <div class="d-flex align-items-center">
             <p class="mb-0">Kota</p>
-            <button class="btn btn-primary btn-sm ms-auto">Simpan Perubahan</button>
           </div>
         </div>
-        <div class="card-body">
-          <div class="row">
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="jenis">Kota</label>
-                <select class="form-control" id="jenis">
-                  <option>Malang</option>
-                  <option>Jakarta</option>
-                </select>
-              </div>
+        <form id="kota-form" action="{{ $dataKota->id }}" method="post" role="form">
+            <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label for="kota">Kota</label>
+                        <input id="kota" name="nama" class="form-control" type="text" value="{{ $dataKota->nama }}">
+                    </div>
+                </div>
             </div>
-          </div>
-        </div>
+            <button type="submit" id="action" value="" class="submit btn btn-primary btn-sm ms-auto">Simpan Perubahan</button>
+            </div>
+        </form>
       </div>
     </div>
   </div>
 
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
+<script>
+$.ajaxSetup({
+    headers: {
+    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+</script>
+
+<script type="text/javascript">
+    $('#kota-form').on('submit', function(event) {
+      event.preventDefault();
+      var id = $(this).attr('action');
+      let route_url = "{{ URL::route('admin.edit-kota', ':id') }}"
+      route_url = route_url.replace(':id', id);
+      let dataForm = new FormData($(this)[0]);
+      Swal.fire({
+        title: "Apakah data yang anda masukan benar?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            url: route_url,
+            type: "POST",
+            data: dataForm,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              if (data.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          });
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: "Update Data Gagal!",
+            icon: 'error',
+            confirmButtonText: 'Oke'
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    });
+</script>
 @endsection

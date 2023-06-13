@@ -21,7 +21,7 @@
                     <th class="text-secondary opacity-7"></th>
                   </tr>
                 </thead>
-                <tbody>
+                {{-- <tbody>
                   <tr>
                     <td>
                       <div class="d-flex px-2 py-1">
@@ -49,11 +49,55 @@
                       <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
                     </td>
                     <td class="align-middle">
-                      <a href="{{ URL::route('admin.detail-donasi') }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                      <a href="{{ URL::route('admin.detail-donasi', ['id' => $item->donasi]) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                         Detail
                       </a>
                     </td>
                   </tr>
+                </tbody> --}}
+                <tbody>
+                    @foreach($data as $item)
+                  <tr>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{$item->nama_user}}</h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <div class="d-flex px-2 py-1">
+                        <div class="d-flex flex-column justify-content-center">
+                          <h6 class="mb-0 text-sm">{{$item->ngo_nama}}</h6>
+                        </div>
+                      </div>
+                    </td>
+                    <td>
+                      <p class="text-xs font-weight-bold mb-0">{{$item->donasi_konsumsi}}</p>
+                    </td>
+                    @if($item->status_donasi == "submitted")
+                    <td class="align-middle text-center text-sm">
+                      <span class="badge badge-sm bg-gradient-warning">{{$item->status_donasi}}</span>
+                    </td>
+                    @elseif($item->status_donasi == "approved")
+                    <td class="align-middle text-center text-sm">
+                      <span class="badge badge-sm bg-gradient-success">{{$item->status_donasi}}</span>
+                    </td>
+                    @elseif($item->status_donasi == "rejected")
+                    <td class="align-middle text-center text-sm">
+                      <span class="badge badge-sm bg-gradient-danger">{{$item->status_donasi}}</span>
+                    </td>
+                    @endif
+                    <td class="align-middle text-center">
+                      <span class="text-secondary text-xs font-weight-bold">{{$item->tanggal}}</span>
+                    </td>
+                    <td class="align-middle">
+                      <a href="{{ URL::route('admin.detail-donasi', ['id' => $item->donasi]) }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                        Detail
+                      </a><br>
+                    </td>
+                  </tr>
+                  @endforeach
                 </tbody>
               </table>
             </div>

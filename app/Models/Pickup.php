@@ -28,9 +28,11 @@ class Pickup extends Model
 
     public function dataKategori(){
         return $this->belongsTo(Kategori::class, "kategori");
+        // return $this->belongsTo(Kategori::class, "id");
     }
 
     public function dataSatuan(){
         return $this->belongsTo(Satuan::class, "satuan");
+        // return $this->belongsTo(Satuan::class, "id");
     }
 }

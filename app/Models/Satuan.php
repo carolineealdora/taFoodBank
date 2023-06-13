@@ -2,8 +2,9 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory;
+use App\Models\DonasiKonsumsi;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Satuan extends Model
 {
@@ -14,4 +15,8 @@ class Satuan extends Model
     protected $fillable = [
         'nama'
     ];
+
+    public function donasiKonsumsi(){
+        return $this->hasMany(DonasiKonsumsi::class, 'satuan');
+    }
 }

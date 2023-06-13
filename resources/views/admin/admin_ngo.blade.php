@@ -29,13 +29,15 @@
     </div>
   </div>
   {{-- </div> --}}
+{{-- @endsection --}}
+
   <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
   <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
   <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
   <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-  
+
   <script>
     $.ajaxSetup({
       headers: {
@@ -162,8 +164,6 @@
         }
 
       })
-
-
     });
   </script>
   @endsection

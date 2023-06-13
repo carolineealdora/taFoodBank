@@ -9,14 +9,19 @@ use App\Helpers\File;
 use App\Models\Admin;
 use App\Models\Donasi;
 use App\Models\DonasiKonsumsi;
+use App\Models\Pickup;
 use App\Models\Satuan;
 use App\Models\Donatur;
 use App\Models\Kategori;
+use App\Models\LogStatus;
 use Illuminate\Http\Request;
+use App\Models\LaporanDonasi;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Throwable;
+use Illuminate\Http\RedirectResponse;
 
 class AdminController extends Controller
 {
@@ -34,7 +39,22 @@ class AdminController extends Controller
 
     public function dashboard()
     {
-        return view('admin/admin_dashboard');
+        $userId = Auth::user()->id;
+        $getDataAdmin = Admin::where("user_id", $userId)->first();
+        $admminId = $getDataAdmin->id;
+        $countSubmitted = Donasi::where("status_donasi", 1)->count();
+        $countApproved = Donasi::where("status_donasi", 2)->count();
+        $countRejected = Donasi::where("status_donasi", 3)->count();
+        $countPickedUp = Donasi::where("status_donasi", 4)->count();
+        $countFinished = Donasi::where("status_donasi", 5)->count();
+        $data = [
+            'submited' => $countSubmitted,
+            'approved' => $countApproved,
+            'rejected' => $countRejected,
+            'pickedup' => $countPickedUp,
+            'finished' => $countFinished,
+        ];
+        return view('admin/admin_dashboard', $data);
     }
 
     public function profile()
@@ -42,14 +62,56 @@ class AdminController extends Controller
         return view('admin/admin_profile');
     }
 
-    public function donasi()
-    {
-        return view('admin/admin_donasi');
-    }
+    public function detailDonasi($id){
+        try{
+            //Current Status
+            $dataCurrentLog = LogStatus::where("donasi_id", $id)->orderBy('created_at', 'desc')->first();
+            //log donasi
+            $dataLog = LogStatus::where("donasi_id", $id)->orderBy('created_at', 'asc')->get();
+            $dataDonasi = Donasi::with("donaturData", "ngo", "kotaData")->where("id", $id)->first();
+            //informasi donatur
+            $donaturId = $dataDonasi->donaturData->user_id;
+            $donaturData = User::where("id", $donaturId)->first();
+            //informasi ngo
+            $ngoId = $dataDonasi->ngo->user_id;
+            $ngoData = User::where("id", $ngoId)->first();
+            $dataNgoKota = Kota::where('id', $dataDonasi->ngo->ngo_kota)->first();
+            //informasi donasi konsumsi
+            $dataDonasiKonsumsi = DonasiKonsumsi::with("donasi", "dataKategori", "dataSatuan")->where("donasi_id", $id)->get();
+            //informasi data pickup
+            $dataPickup = Pickup::with("donasiData", "dataKategori", "dataSatuan")->where("donasi_id", $id)->get();
 
-    public function detailDonasi()
-    {
-        return view('admin/admin_detail_donasi');
+            //Get Data Report Donasi
+            $dataReport = LaporanDonasi::where('donasi_id', $id)->get();
+
+            //constanta untuk form
+            $kategori = Kategori::get();
+            $satuan = Satuan::get();
+            $kota = Kota::get();
+            $ngos = NGO::get();
+            $data = [
+                "dataCurrentLog" => $dataCurrentLog,
+                "dataLog" => $dataLog,
+                "dataDonasi" => $dataDonasi,
+                "dataDonatur" => $donaturData,
+                "dataNgo" => $ngoData,
+                "dataNgoKota" => $dataNgoKota,
+                "dataDonKom" => $dataDonasiKonsumsi,
+                "dataPickup" => $dataPickup,
+                "dataReport" => $dataReport,
+                "kategori" => $kategori,
+                "satuan" => $satuan,
+                "kota" => $kota,
+                "ngos" => $ngos
+            ];
+
+            return view('admin/admin_detail_donasi', $data);
+        }catch(Throwable $e){
+            return response()->json([
+                'status' => 'error',
+                'response' => $e,
+            ], 500);
+        }
     }
 
     public function donatur()
@@ -94,7 +156,7 @@ class AdminController extends Controller
         return view('admin/admin_detail_donatur', $data);
     }
 
-    public function ngo()
+    public function getListNgo()
     {
         $getDataTable = NGO::with("userData", "kotaData");
         if (request()->ajax()) {
@@ -173,12 +235,8 @@ class AdminController extends Controller
 
     public function kota()
     {
-        return view('admin/admin_kota');
-    }
-
-    public function detailKota()
-    {
-        return view('admin/admin_detail_kota');
+        $getData = Kota::get();
+        return view('admin/admin_kota', ['data' => $getData]);
     }
 
     public function createKota()
@@ -206,9 +264,15 @@ class AdminController extends Controller
         return view('admin/admin_kategori');
     }
 
-    public function detailKategori()
+    public function detailKategori($id)
     {
-        return view('admin/admin_detail_kategori');
+        $getKategori = Kategori::where('id', $id)->first();
+
+        $data = [
+            "dataKategori" => $getKategori,
+        ];
+
+        return view('admin/admin_detail_kategori', $data);
     }
 
     public function createKategori()
@@ -221,9 +285,15 @@ class AdminController extends Controller
         return view('admin/admin_satuan');
     }
 
-    public function detailSatuan()
+    public function detailSatuan($id)
     {
-        return view('admin/admin_detail_satuan');
+        $getSatuan = Satuan::where('id', $id)->first();
+
+        $data = [
+            "dataSatuan" => $getSatuan
+        ];
+
+        return view('admin/admin_detail_satuan', $data);
     }
 
     public function createSatuan()
@@ -239,6 +309,17 @@ class AdminController extends Controller
     public function detailStatusDonasi()
     {
         return view('admin/admin_detail_status_donasi');
+    }
+
+    public function logout(Request $request): RedirectResponse
+    {
+        Auth::logout();
+
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('admin/show-login');
     }
 
     public function getProfile()
@@ -481,20 +562,6 @@ class AdminController extends Controller
         }
     }
 
-    public function getListNGO()
-    {
-        try {
-            $getList = NGO::with('user')->get();
-            return $getList;
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 'error',
-                'response' => 'list-ngo',
-                'response' => $e,
-            ], 500);
-        }
-    }
-
     public function getDonatur($id)
     {
         try {
@@ -628,26 +695,46 @@ class AdminController extends Controller
         }
     }
 
-    public function deleteDonasi($id)
-    {
-        try {
-            $delete = Donasi::find($id)->delete();
-            return $delete;
-        } catch (Throwable $e) {
+    public function deleteDonasi($id){
+        try{
+            //get all data donasi konsumsi with the same donasi id
+            $dataDonasiKonsumsi = DonasiKonsumsi::where('donasi_id', $id)->get();
+
+            foreach($dataDonasiKonsumsi as $donasi_konsumsi){
+                File::delete($donasi_konsumsi->photo);
+            }
+
+            Donasi::find($id)->delete();
+
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'deleted-donasi',
+                'message'   => 'Delete data Telah Berhasil!',
+                'route'     => route('admin.donasi')
+            ], 200);
+        }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',
-                'response' => 'delete-donasi',
                 'response' => $e,
             ], 500);
         }
     }
 
-    public function getListDonasi()
-    {
-        try {
-            $getList = Donasi::get();
-            return $getList;
-        } catch (Throwable $e) {
+    public function getListDonasi(){
+        try{
+            $getList = [];
+            $getData = DB::table("views_donasi")->get();
+            foreach($getData as $data){
+                $getIdNgo = $data->ngo_tujuan;
+                $getNgo = NGO::where('id', $getIdNgo)->first();
+                $namaNgo = $getNgo->ngo_nama;
+                $data->ngo_nama = $namaNgo;
+                $getList[] = $data;
+            }
+
+            // return $getList;
+            return view('admin/admin_donasi', ['data' => $getList]);
+        }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',
                 'response' => 'list-kota',
@@ -656,20 +743,53 @@ class AdminController extends Controller
         }
     }
 
-    public function storeKota(Request $request)
-    {
-        try {
+    //kota
+    public function getListKota(){
+        $getDataTable = Kota::with('donasi');
+        if (request()->ajax()) {
+            return DataTables()->eloquent($getDataTable)
+                ->addColumn('kota', function ($query) {
+                    $kota = $query->nama;
+
+                    return $kota;
+                })
+                ->addColumn('action', function ($query) {
+                    $button = '
+                    <div>
+                    <button id="' . $query->id . '" class="action-detail text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                      Detail
+                    </button>
+                    </div>
+                    <div>
+                    <button id="' . $query->id . '" class="action-hapus text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                      Hapus
+                    </button>
+                    </div>
+                    ';
+
+                    return $button;
+                })
+                ->rawColumns(['kota', 'action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('admin/admin_kota');
+    }
+
+    public function storeKota(Request $request){
+        try{
+            // return $request;
             $data = [
                 "nama"  => $request->nama
             ];
 
-            $data_master = Kota::create($data);
+            Kota::create($data);
 
             return response()->json([
                 'status'    => 'ok',
                 'response'  => 'created',
                 'message'   => 'Selamat! Kota telah tersimpan.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('admin.kota')
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -680,12 +800,11 @@ class AdminController extends Controller
         }
     }
 
-    public function getKota($id)
-    {
-        try {
+    public function getKota($id){
+        try{
             $getKota = Kota::find($id);
             return $getKota;
-        } catch (Throwable $e) {
+        }catch(Throwable $e){
             return response()->json([
                 'status' => 'error',
                 'response' => 'detail-kota',
@@ -694,20 +813,19 @@ class AdminController extends Controller
         }
     }
 
-    public function editKota(Request $request, $id)
-    {
-        try {
+    public function editKota(Request $request, $id){
+        try{
             $data = [
                 "nama"  => $request->nama
             ];
 
-            $update_data_master = Kota::find($id)->update($data);
+            Kota::find($id)->update($data);
 
             return response()->json([
                 'status'    => 'ok',
                 'response'  => 'updated',
                 'message'   => 'Selamat! Data kota telah diperbarui.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('admin.kota')
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -721,23 +839,23 @@ class AdminController extends Controller
     public function deleteKota($id)
     {
         try {
-            $used = count(Donasi::where('kota', $id)->get());
+            $used = Donasi::where('kota', $id)->count();
             // return $used;
             //check donasi yang memiliki value kota
-            if ($used > 0) {
+            if($used == 0){
                 $delete = Kota::find($id)->delete();
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'deleted',
                     'message'   => 'Data kota berhasil dihapus.',
-                    // 'route'     => route('donatur/donasi')
+                    'route'     => route('admin.kota')
                 ], 200);
             } else {
                 return response()->json([
-                    'status'    => 'ok',
+                    'status'    => 'error',
                     'response'  => 'error',
                     'message'   => 'Tidak dapat menghapus data kota. Data digunakan dalam data lain',
-                    // 'route'     => route('donatur/donasi')
+                    'route'     => route('admin.kota')
                 ], 200);
             }
         } catch (Throwable $e) {
@@ -749,28 +867,57 @@ class AdminController extends Controller
         }
     }
 
-    public function getListKota()
+    public function detailKota($id)
     {
-        try {
-            $getList = Kota::get();
-            return $getList;
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 'error',
-                'response' => 'list-kota',
-                'response' => $e,
-            ], 500);
-        }
+        $getKota = Kota::where('id', $id)->first();
+
+        // $kota = Kota::get();
+
+        $data = [
+            "dataKota" => $getKota,
+            // "kota" => $kota
+        ];
+
+        // return $getKota->id;
+
+        return view('admin/admin_detail_kota', $data);
     }
 
     //kategori
-    public function storeKategori(Request $request)
-    {
-        try {
-            // return $request;
-            //$email = Auth::user()->email;
-            // $user = User::with('admin')->where('email', $request->email)->first();
-            // $id_admin = $user->admin->id;
+    public function getListKategori(){
+        $getDataTable = Kategori::with('donasiKonsumsi');
+        if (request()->ajax()) {
+            return DataTables()->eloquent($getDataTable)
+                ->addColumn('kategori', function ($query) {
+                    $kategori = $query->nama;
+
+                    return $kategori;
+                })
+                ->addColumn('action', function ($query) {
+                    $button = '
+                    <div>
+                    <button id="' . $query->id . '" class="action-detail text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                      Detail
+                    </button>
+                    </div>
+                    <div>
+                    <button id="' . $query->id . '" class="action-hapus text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                      Hapus
+                    </button>
+                    </div>
+                    ';
+
+                    return $button;
+                })
+                ->rawColumns(['kategori', 'action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('admin/admin_kategori');
+    }
+
+    public function storeKategori(Request $request){
+        try{
             $data = [
                 "nama"  => $request->nama
             ];
@@ -781,7 +928,7 @@ class AdminController extends Controller
                 'status'    => 'ok',
                 'response'  => 'created',
                 'message'   => 'Selamat! Kategori telah tersimpan.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('admin.kategori')
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -800,7 +947,7 @@ class AdminController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => 'detail-Kategori',
+                'response' => 'error',
                 'message' => $e,
             ], 500);
         }
@@ -809,22 +956,23 @@ class AdminController extends Controller
     public function editKategori(Request $request, $id)
     {
         try {
+            // return $request;
             $data = [
                 "nama"  => $request->nama
             ];
 
-            $update_data_master = Kategori::find($id)->update($data);
+            Kategori::find($id)->update($data);
 
             return response()->json([
                 'status'    => 'ok',
                 'response'  => 'updated',
                 'message'   => 'Selamat! Data kategori telah diperbarui.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('admin.kategori')
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => 'update-Kategori',
+                'response' => 'error',
                 'message' => $e,
             ], 500);
         }
@@ -833,72 +981,86 @@ class AdminController extends Controller
     public function deleteKategori($id)
     {
         try {
-            $used = count(DonasiKonsumsi::where('kategori', $id)->get());
-
+            $used = DonasiKonsumsi::where('kategori', $id)->count();
             //check donasi yang memiliki value kategori
-            if ($used > 0) {
+            if ($used == 0) {
                 $delete = Kategori::find($id)->delete();
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'deleted',
                     'message'   => 'Data kategori berhasil dihapus.',
-                    // 'route'     => route('donatur/donasi')
+                    'route'     => route('admin.kategori')
                 ], 200);
-            } else {
+            }else{
                 return response()->json([
-                    'status'    => 'ok',
+                    'status'    => 'failed',
                     'response'  => 'error',
                     'message'   => 'Tidak dapat menghapus data kategori. Data digunakan dalam data lain',
-                    // 'route'     => route('donatur/donasi')
-                ], 200);
+                    'route'     => route('admin.kategori')
+                ], 500);
             }
         } catch (Throwable $e) {
             return response()->json([
-                'status' => 'error',
-                'response' => 'delete-Kategori',
-                'response' => $e,
-            ], 500);
-        }
-    }
-
-    public function getListKategori()
-    {
-        try {
-            $getList = Kategori::get();
-            return $getList;
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 'error',
-                'response' => 'list-Kategori',
-                'response' => $e,
+                'status'    => 'failed',
+                'response'  => 'error',
+                'message'   => 'error',
+                'route'     => route('admin.kategori')
             ], 500);
         }
     }
 
     //satuan
+    public function getListSatuan(){
+        $getDataTable = Satuan::with('donasiKonsumsi');
+        if (request()->ajax()) {
+            return DataTables()->eloquent($getDataTable)
+                ->addColumn('satuan', function ($query) {
+                    $satuan = $query->nama;
+
+                    return $satuan;
+                })
+                ->addColumn('action', function ($query) {
+                    $button = '
+                    <div>
+                    <button id="' . $query->id . '" class="action-detail text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                      Detail
+                    </button>
+                    </div>
+                    <div>
+                    <button id="' . $query->id . '" class="action-hapus text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                      Hapus
+                    </button>
+                    </div>
+                    ';
+
+                    return $button;
+                })
+                ->rawColumns(['satuan', 'action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
+        return view('admin/admin_satuan');
+    }
+
     public function storeSatuan(Request $request)
     {
         try {
-            // return $request;
-            //$email = Auth::user()->email;
-            // $user = User::with('admin')->where('email', $request->email)->first();
-            // $id_admin = $user->admin->id;
             $data = [
                 "nama"  => $request->nama
             ];
 
-            $data_master = Satuan::create($data);
+            Satuan::create($data);
 
             return response()->json([
                 'status'    => 'ok',
                 'response'  => 'created',
                 'message'   => 'Selamat! Satuan telah tersimpan.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('admin.satuan')
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => 'create-Satuan',
+                'response' => 'create-satuan',
                 'message' => $e,
             ], 500);
         }
@@ -925,13 +1087,13 @@ class AdminController extends Controller
                 "nama"  => $request->nama
             ];
 
-            $update_data_master = Satuan::find($id)->update($data);
+            Satuan::find($id)->update($data);
 
             return response()->json([
                 'status'    => 'ok',
                 'response'  => 'updated',
                 'message'   => 'Selamat! Data satuan telah diperbarui.',
-                // 'route'     => route('donatur/donasi')
+                'route'     => route('admin.satuan')
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -945,23 +1107,23 @@ class AdminController extends Controller
     public function deleteSatuan($id)
     {
         try {
-            $used = count(DonasiKonsumsi::where('satuan', $id)->get());
+            $used = DonasiKonsumsi::where('satuan', $id)->count();
 
             //check donasi yang memiliki value satuan
-            if ($used > 0) {
+            if ($used == 0) {
                 $delete = Satuan::find($id)->delete();
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'deleted',
                     'message'   => 'Data satuan berhasil dihapus.',
-                    // 'route'     => route('donatur/donasi')
+                    'route'     => route('admin.satuan')
                 ], 200);
             } else {
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'error',
                     'message'   => 'Tidak dapat menghapus data satuan. Data digunakan dalam data lain',
-                    // 'route'     => route('donatur/donasi')
+                    'route'     => route('admin.satuan')
                 ], 200);
             }
         } catch (Throwable $e) {
@@ -973,17 +1135,5 @@ class AdminController extends Controller
         }
     }
 
-    public function getListSatuan()
-    {
-        try {
-            $getList = Satuan::get();
-            return $getList;
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 'error',
-                'response' => 'list-Satuan',
-                'response' => $e,
-            ], 500);
-        }
-    }
+
 }

@@ -380,7 +380,7 @@
 
       let dataForm = new FormData($(this)[0]);
       Swal.fire({
-        title: "Apakah Data yang anda masukan benar?",
+        title: "Apakah data yang anda masukan benar?",
         showCancelButton: true,
         confirmButtonText: "Ya",
         cancelButtonText: "Batal",
@@ -505,7 +505,7 @@
 
       let dataForm = new FormData($(this)[0]);
       Swal.fire({
-        title: "Apakah Data yang anda masukan benar?",
+        title: "Apakah data yang anda masukan benar?",
         showCancelButton: true,
         confirmButtonText: "Ya",
         cancelButtonText: "Batal",
@@ -692,7 +692,7 @@
     $(document).on('click', '.delete-confirm', function() {
       event.preventDefault();
       Swal.fire({
-        title: "Apakah anda yakin Ingin Menghapus Data?",
+        title: "Apakah anda yakin ingin menghapus data?",
         showCancelButton: true,
         confirmButtonText: "Ya",
         cancelButtonText: "Batal",

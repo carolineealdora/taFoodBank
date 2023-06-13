@@ -14,4 +14,8 @@ class Kota extends Model
     protected $fillable = [
         'nama'
     ];
+
+    public function donasi(){
+        return $this->hasMany(Donasi::class, 'kota');
+    }
 }
