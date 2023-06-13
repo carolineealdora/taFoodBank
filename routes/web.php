@@ -79,7 +79,9 @@ Route::prefix('admin')->group(function () {
     Route::get('/donasi', [AdminController::class, 'donasi'])->name('admin.donasi');
     Route::get('/detail-donasi', [AdminController::class, 'detailDonasi'])->name('admin.detail-donasi');
     Route::get('/donatur', [AdminController::class, 'donatur'])->name('admin.donatur');
-    Route::get('/detail-donatur', [AdminController::class, 'detailDonatur'])->name('admin.detail-donatur');
+    Route::get('/detail-donatur/{id}', [AdminController::class, 'detailDonatur'])->name('admin.detail-donatur');
+    Route::post('/edit-donatur/{id}', [AdminController::class, 'editDonatur'])->name('admin.edit-donatur');
+    Route::delete('/delete-donatur/{id}', [AdminController::class, 'deleteDonatur'])->name('admin.delete-donatur');
     Route::get('/ngo', [AdminController::class, 'ngo'])->name('admin.ngo');
     Route::get('/detail-ngo/{id}', [AdminController::class, 'detailNgo'])->name('admin.detail-ngo');
     Route::post('/edit-ngo/{id}', [AdminController::class, 'editNGO'])->name('admin.edit-ngo');

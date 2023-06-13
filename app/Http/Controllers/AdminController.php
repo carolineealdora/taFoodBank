@@ -54,12 +54,44 @@ class AdminController extends Controller
 
     public function donatur()
     {
+        $getDataTable = Donatur::with("userData");
+        if (request()->ajax()) {
+            return DataTables()->eloquent($getDataTable)
+                ->addColumn('donatur_nama', function ($query) {
+                    $nama_donatur = $query->userData->nama;
+
+                    return $nama_donatur;
+                })
+                ->addColumn('no_telp', function ($query) {
+                    $no_telp = $query->no_telp;
+
+                    return $no_telp;
+                })
+                ->addColumn('action', function ($query) {
+                    $button = '
+                    <div>
+                    <button id="' . $query->id . '" class="action-edit text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
+                      Detail
+                    </button>
+                    </div>
+                    ';
+
+                    return $button;
+                })
+                ->rawColumns(['doantur_nama', 'no_telp', 'action'])
+                ->addIndexColumn()
+                ->make(true);
+        }
         return view('admin/admin_donatur');
     }
 
-    public function detailDonatur()
+    public function detailDonatur($id)
     {
-        return view('admin/admin_detail_donatur');
+        $getData = Donatur::with("userData")->where("id", $id)->first();
+        $data = [
+            'getData' => $getData
+        ];
+        return view('admin/admin_detail_donatur', $data);
     }
 
     public function ngo()
@@ -433,7 +465,7 @@ class AdminController extends Controller
     public function deleteNGO($id)
     {
         try {
-            $getNGO = NGO::find($id)->delete();
+            NGO::find($id)->delete();
             return response()->json([
                 'status'    => 'ok',
                 'response'  => 'updated',
@@ -444,7 +476,7 @@ class AdminController extends Controller
             return response()->json([
                 'status' => 'error',
                 'response' => 'delete-ngo',
-                'response' => $e,
+                'message'   => 'Data Gagal Dihapus!',
             ], 500);
         }
     }
@@ -480,44 +512,71 @@ class AdminController extends Controller
     public function editDonatur(Request $request, $id)
     {
         try {
-            $donatur_photo = Donatur::where('id', $id)->get();
+            $db = Donatur::find($id)->first();
+            $photo = $db->foto;
             if ($request['foto'] !== null) { //kondisi saat foto berubah
-                unlink($request->foto);
+                File::delete($photo);
                 $path = "images/donatur";
                 $requestFile = $request->foto;
                 // return $requestFile;
                 $insertImage = File::fileUpload($requestFile, $path);
-                $data = [
-                    "foto"  => $request->foto
+                $dataDonatur = [
+                    "no_telp" => $request->no_telp,
+                    "tanggal_lahir" => $request->tanggal_lahir,
+                    "alamat" => $request->alamat,
+                    "no_identitas" => $request->no_identitas,
+                    "foto"  => $insertImage
                 ];
+                Donatur::find($id)->update($dataDonatur);
 
-                NGO::find($id)->update($data);
+                if ($request->password !== null) {
+                    $dataUser = [
+                        "nama" => $request->nama,
+                        "email" => $request->email,
+                        "password" => Hash::make($request->password),
+                    ];
+                    User::find($db->user_id)->update($dataUser);
+                } else {
+                    $dataUser = [
+                        "nama" => $request->nama,
+                        "email" => $request->email,
+                    ];
+                    User::find($db->user_id)->update($dataUser);
+                }
+            } else {
+                $dataDonatur = [
+                    "no_telp" => $request->no_telp,
+                    "tanggal_lahir" => $request->tanggal_lahir,
+                    "alamat" => $request->alamat,
+                    "no_identitas" => $request->no_identitas,
+                ];
+                Donatur::find($id)->update($dataDonatur);
 
-                return response()->json([
-                    'status'    => 'ok',
-                    'response'  => 'updated',
-                    'message'   => 'Selamat! Data donatur telah diubah.',
-                    // 'route'     => route('donatur/donasi')
-                ], 200);
+                if ($request->password !== null) {
+                    $dataUser = [
+                        "nama" => $request->nama,
+                        "email" => $request->email,
+                        "password" => Hash::make($request->password),
+                    ];
+                    User::find($db->user_id)->update($dataUser);
+                } else {
+                    $dataUser = [
+                        "nama" => $request->nama,
+                        "email" => $request->email,
+                    ];
+                    User::find($d->user_id)->update($dataUser);
+                }
             }
-
-            $data = [
-                "nama"              => $request->nama,
-                "email"             => $request->email,
-                "password"          => $request->password,
-                "alamat"            => $request->alamat,
-                "no_identitas"      => $request->no_identitas,
-                "tanggal_lahir"     => $request->tanggal_lahir,
-                "no_telp"           => $request->no_telp,
-
-            ];
-
-            $update_donatur = Donasi::with('users')->find($id)->update($data);
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'updated',
+                'message'   => 'Selamat! Data Donatur telah diubah.',
+                'route'     => route('admin.detail-donatur', $id)
+            ], 200);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => 'update-donatur',
-                'message' => $e,
+                'message' => "Data Gagal di update!",
             ], 500);
         }
     }
@@ -525,13 +584,18 @@ class AdminController extends Controller
     public function deleteDonatur($id)
     {
         try {
-            $delete = User::with('donatur')->find($id)->delete();
-            return $delete;
+            Donatur::find($id)->delete();
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'updated',
+                'message'   => 'Data Berhasil Dihapus!',
+                'route'     => route('admin.donatur')
+            ], 200);
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => 'delete-donatur',
-                'message' => $e,
+                'response' => 'delete-ngo',
+                'message'   => 'Data Gagal Dihapus!',
             ], 500);
         }
     }

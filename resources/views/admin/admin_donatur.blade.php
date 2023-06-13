@@ -8,38 +8,17 @@
           <div class="card-header pb-0">
             <h6>List Donatur</h6>
           </div>
-          <div class="card-body px-0 pt-0 pb-2">
+          <div class="card-body px-5 pt-0 pb-2">
             <div class="table-responsive p-0">
-              <table class="table align-items-center mb-0">
+              <table id="donatur-admin-table"  class="table align-items-center mb-0">
                 <thead>
                   <tr>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7">Nama Donatur</th>
-                    <th class="text-uppercase text-secondary text-xxs font-weight-bolder opacity-7 ps-2">Nomor Telepon</th>
-                    <th class="text-secondary opacity-7"></th>
+                    <th>Nama Donatur</th>
+                    <th>Nomor Telepon</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <tr>
-                    <td>
-                      <div class="d-flex px-2 py-1">
-                        <div>
-                          <img src="../assets/img/team-2.jpg" class="avatar avatar-sm me-3" alt="user1">
-                        </div>
-                        <div class="d-flex flex-column justify-content-center">
-                          <h6 class="mb-0 text-sm">John Michael</h6>
-                          <p class="text-xs text-secondary mb-0">john@creative-tim.com</p>
-                        </div>
-                      </div>
-                    </td>
-                    <td>
-                      <p class="text-xs font-weight-bold mb-0">0811</p>
-                    </td>
-                    <td class="align-middle">
-                      <a href="{{ URL::route('admin.detail-donatur') }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
-                        Detail
-                      </a>
-                    </td>
-                  </tr>
                 </tbody>
               </table>
             </div>
@@ -49,4 +28,78 @@
     </div>
 
   {{-- </div> --}}
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+  <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  </script>
+
+  <script>
+       var table
+    $(function() {
+      let i = 1;
+      table = $('#donatur-admin-table').DataTable({
+        processing: true,
+        serverSide: false,
+        ajax: {
+          url: "{{ route('admin.donatur') }}",
+        },
+        columns: [{
+            data: 'donatur_nama',
+            name: 'donatur_nama'
+          },
+          {
+            data: 'no_telp',
+            name: 'no_telp',
+          },
+          {
+            data: 'action',
+            name: 'action'
+          },
+        ]
+      });
+      table.on('draw.dt order.dt search.dt', function() {
+        table.column(1, {
+          order: 'applied',
+          search: 'applied'
+        })
+      }).draw();
+    });
+
+     $(document).on('click', '.action-edit', function() {
+      let id = $(this).attr("id");
+      let route_url = "{{ URL::route('admin.detail-donatur', ':id') }}"
+      route_url = route_url.replace(':id', id);
+
+      event.preventDefault();
+      $.ajax({
+        url: route_url,
+        method: "GET",
+        contentType: false,
+        cache: false,
+        processData: false,
+        success: function(data) {
+          window.location.href = route_url;
+        },
+        error: (data) => {
+          if (data.status == "failed") {
+            Swal.fire({
+              title: 'Terjadi Kesalahan!',
+              icon: 'error',
+              confirmButtonText: 'Oke'
+            });
+          }
+        }
+      });
+    });
+  </script>
 @endsection
