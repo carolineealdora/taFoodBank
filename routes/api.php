@@ -23,12 +23,6 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 });
 
 //admin-ngo
-Route::post('admin/detail-ngo/{id}', [AdminController::class, 'approveNGO'])->name('admin.approve-ngo');
-Route::get('admin/detail-ngo/{id}', [AdminController::class, 'getNGO'])->name('admin.detail-ngo');
-Route::post('admin/edit-ngo/{id}', [AdminController::class, 'editNGO'])->name('admin.edit-ngo');
-Route::post('admin/edit-pic/{id}', [AdminController::class, 'editPIC'])->name('admin.edit-pic');
-Route::delete('admin/delete-ngo/{id}', [AdminController::class, 'deleteNGO'])->name('admin.delete-ngo');
-Route::get('admin/ngo', [AdminController::class, 'getListNGO'])->name('admin.get-list-ngo');
 
 //admin-donatur
 Route::get('admin/detail-donatur/{id}', [AdminController::class, 'getDonatur'])->name('admin.get-detail-donatur');

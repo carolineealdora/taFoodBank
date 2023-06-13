@@ -13,11 +13,11 @@
             <table id="ngo-table" class="table align-items-center mb-0">
               <thead>
                 <tr>
-                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Nama Donatur</th>
-                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Jenis Donasi</th>
-                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Status</th>
-                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Tanggal & Waktu</th>
-                  <th class="text-uppercase text-secondary text-xs font-weight-bolder opacity-7 ps-2">Action</th>
+                  <th>Nama Donatur</th>
+                  <th>Jenis Donasi</th>
+                  <th>Status</th>
+                  <th>Tanggal & Waktu</th>
+                  <th>Action</th>
                 </tr>
               </thead>
               <tbody>

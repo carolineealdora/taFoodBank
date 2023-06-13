@@ -81,7 +81,12 @@ Route::prefix('admin')->group(function () {
     Route::get('/donatur', [AdminController::class, 'donatur'])->name('admin.donatur');
     Route::get('/detail-donatur', [AdminController::class, 'detailDonatur'])->name('admin.detail-donatur');
     Route::get('/ngo', [AdminController::class, 'ngo'])->name('admin.ngo');
-    Route::get('/detail-ngo', [AdminController::class, 'detailNgo'])->name('admin.detail-ngo');
+    Route::get('/detail-ngo/{id}', [AdminController::class, 'detailNgo'])->name('admin.detail-ngo');
+    Route::post('/edit-ngo/{id}', [AdminController::class, 'editNGO'])->name('admin.edit-ngo');
+    Route::post('/edit-pic/{id}', [AdminController::class, 'editPIC'])->name('admin.edit-pic');
+    Route::put('/ngo-approve/{id}', [AdminController::class, 'approveNGO'])->name('admin.ngo-approve');
+    Route::put('/ngo-cancel/{id}', [AdminController::class, 'cancelNGO'])->name('admin.ngo-cancel');
+    Route::delete('/delete-ngo/{id}', [AdminController::class, 'deleteNGO'])->name('admin.delete-ngo');
     Route::get('/admin', [AdminController::class, 'admin'])->name('admin.admins');
     Route::get('/detail-admin', [AdminController::class, 'detailAdmin'])->name('admin.detail-admin');
     Route::get('/kota', [AdminController::class, 'kota'])->name('admin.kota');

@@ -23,11 +23,11 @@ class NGO extends Model
         'no_identitas'
     ];
 
-    public function user(){
-        return $this->belongsTo(User::class);
+    public function userData(){
+        return $this->belongsTo(User::class, "user_id");
     }
 
-    public function kota(){
-        return $this->belongsTo(Kota::class, "id");
+    public function kotaData(){
+        return $this->belongsTo(Kota::class, "ngo_kota");
     }
 }

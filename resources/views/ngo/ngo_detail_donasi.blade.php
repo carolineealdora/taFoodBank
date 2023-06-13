@@ -161,7 +161,7 @@
                   </ul>
                 </div>
                 @endforeach
-                @if($dataDonasi->status_donasi == 1)
+                @if($dataDonasi->status_donasi == 0)
                 <div class="row">
                   <button id="{{$dataDonasi->id}}" class="btn btn-success btn-sm ms-auto col-md-6 approve">Approve</button>
                   <button id="{{$dataDonasi->id}}" class="btn btn-danger btn-sm ms-auto col-md-6 reject">Reject</button>
