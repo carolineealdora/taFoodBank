@@ -26,20 +26,15 @@
                 <div class="form-group col-md-6">
                   <div class="form-group">
                     <label for="namaKonsumsi" class="form-control-label">Nama Makanan/Minuman</label>
-                    <input id="namaKonsumsi" name="nama" class="form-control" type="text" value="" placeholder="Masukkan nama makanan/minuman">
+                    <input id="namaKonsumsi" name="nama" class="form-control" type="text" value="" placeholder="Masukkan nama makanan/minuman" required>
                   </div>
                   <div class="form-group">
                     <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
-                    <input id="deskripsiDonasi" name="deskripsi"class="form-control" type="text" value="">
+                    <input id="deskripsiDonasi" name="deskripsi"class="form-control" type="text" value="" required>
                   </div>
                   <div class="form-group">
                     <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
-                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                  {{-- <input class="form-control" type="file" id="donasiFoto" name="photo" value="{{ old('donasiFoto') }}" onchange="previewImage()"> --}}
-                  <input class="form-control" type="file" id="donasiFoto" name="photo" value="{{ old('donasiFoto') }}">
-                  @error('donasiFoto')
-                    <p class="text-danger">{{ $message }}</p>
-                  @enderror
+                  <input class="form-control" type="file" id="donasiFoto" name="photo" required>
                   </div>
                   <div class="form-group">
                     <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
@@ -49,7 +44,7 @@
                 <div class="form-group col-md-6">
                   <div class="form-group">
                     <label for="kategoriDonasi">Kategori</label>
-                    <select id="kategori" name="kategori" class="form-control">
+                    <select id="kategori" name="kategori" class="form-control" required>
                         @foreach($kategori as $category)
                         <option value="{{$category->id}}">{{$category->nama}}</option>
                         @endforeach
@@ -57,11 +52,11 @@
                   </div>
                   <div class="form-group">
                     <label for="kuantitasDonasi" class="form-control-label">Kuantitas</label>
-                    <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="">
+                    <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="" required>
                   </div>
                   <div class="form-group">
                     <label for="satuanDonasi">Satuan</label>
-                    <select id="satuan" name="satuan" class="form-control" id="satuanDonasi">
+                    <select id="satuan" name="satuan" class="form-control" id="satuanDonasi" required>
                         @foreach($satuan as $metric)
                         <option value="{{$metric->id}}">{{$metric->nama}}</option>
                         @endforeach
@@ -76,7 +71,7 @@
               <p class="text-uppercase text-sm">Form Pickup Donasi</p>
               <div class="form-group">
                 <label for="kotaDonasi">Pickup Location - Kota</label>
-                <select class="form-control" id="kotaDonasi" name="kota">
+                <select class="form-control" id="kotaDonasi" name="kota" required>
                     @foreach($kota as $city)
                     <option value="{{$city->id}}">{{$city->nama}}</option>
                     @endforeach
@@ -84,7 +79,7 @@
               </div>
               <div class="form-group">
                 <label for="ngoDonasi">NGO Tujuan</label>
-                <select class="form-control" id="ngoDonasi" name="ngo_tujuan">
+                <select class="form-control" id="ngoDonasi" name="ngo_tujuan" required>
                     @foreach($ngos as $ngo)
                     <option value="{{$ngo->id}}">{{$ngo->ngo_nama}}</option>
                     @endforeach
@@ -94,20 +89,20 @@
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Nama</label>
-                    <input class="form-control" type="text" value="" id="namaPickup" name="nama_pickup">
+                    <input class="form-control" type="text" value="" id="namaPickup" name="nama_pickup" required>
                   </div>
                 </div>
                 <div class="col-md-6">
                   <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Nomor Telepon</label>
-                    <input class="form-control" type="text" value="" id="noTelpPickup" name="no_telp_pickup">
+                    <input class="form-control" type="text" value="" id="noTelpPickup" name="no_telp_pickup" required>
                   </div>
                 </div>
               </div>
               <div class="col-md-12">
                 <div class="form-group">
                     <label for="example-text-input" class="form-control-label">Pickup Location - Alamat Lengkap</label>
-                    <input class="form-control" type="text" value="" id="alamatPickup" name="alamat_pickup">
+                    <input class="form-control" type="text" value="" id="alamatPickup" name="alamat_pickup" required>
                 </div>
               </div>
             </form>
@@ -129,10 +124,8 @@
   });
 </script>
 
-<script type="text/javascript">
+<script>
     $(document).on('click', '.add', function(event) {
-        // get field data donasi
-        // const fieldForm = document.getElementById('fieldForm');
         const form = document.getElementById('formDonasi');
         const fieldForm = form.lastElementChild;
 
@@ -151,9 +144,7 @@
 
         // get index
         let indexAttribute = parseInt(clonedFieldForm.getAttribute('index'));
-        // console.log(indexAttribute);
         const clonedIndex = indexAttribute+1;
-        console.log(clonedIndex);
         clonedFieldForm.setAttribute('index', clonedIndex);
 
         // append new row to form donasi
@@ -177,13 +168,11 @@
       const getFormDonasi = document.getElementById('formDonasi');
       const getFormPickup = document.getElementById('formPickup');
 
-    //   const formDonasi = new FormData(getFormDonasi);
-    // inisiasi FormData baru untuk form dengan id=formDonasi
+   
     const formDonasi = new FormData();
 
     // loop semua fields group donasi
     const groupDonasi = document.querySelectorAll('#fieldForm');
-    console.log(groupDonasi, 'gas');
 
     groupDonasi.forEach((group, index) => {
     // inisiasi object untuk store value tiap group donasi
@@ -199,21 +188,6 @@
     const photoInput = group.querySelector('#donasiFoto');
     const photoValue = photoInput.files[0];
 
-    // console.log(namaValue, 'nama value brok');
-
-    // // store value di object groupData
-    // groupData.nama = namaValue;
-    // groupData.deskripsi = deskripsiValue;
-    // groupData.expired = expiredValue;
-    // groupData.kategori = kategoriValue;
-    // groupData.kuantitas = kuantitasValue;
-    // groupData.satuan = satuanValue;
-    // groupData.photo = photoValue;
-
-    // // append groupData ke formData formDonasi
-    // // formDonasi.append(`${index}`, JSON.stringify(groupData));
-    // formDonasi.append(JSON.stringify(groupData));
-
     formDonasi.append(`donasi_konsumsi[${index}][nama]`, namaValue);
     formDonasi.append(`donasi_konsumsi[${index}][deskripsi]`, deskripsiValue);
     formDonasi.append(`donasi_konsumsi[${index}][expired]`, expiredValue);
@@ -225,18 +199,11 @@
 
     const formPickup = new FormData(getFormPickup);
 
-    // // Convert formDonasi to JSON string
-    // const konsumsiValue = JSON.stringify(Object.fromEntries(formDonasi));
-
-    // // Append konsumsi property to formPickup
-    // formPickup.append(formDonasi);
-
     // merge formDonasi dan formPickup
       for (let entry of formPickup.entries()) {
         formDonasi.append(entry[0], entry[1]);
     }
 
-    console.log(formDonasi);
       Swal.fire({
         title: "Apakah data yang anda masukan benar?",
         showCancelButton: true,
@@ -264,17 +231,17 @@
               });
               setTimeout(function() {
                 Swal.close();
-                // window.location.href = data.route;
+                window.location.href = data.route;
               }, 2000);
             },
 
             error: (data) => {
-              if (data.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
-                  text: data.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  text: data.responseJSON.message,
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -286,8 +253,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Update Data Gagal!",
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();

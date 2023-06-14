@@ -68,6 +68,11 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 <script>
   $('#register-form').on('submit', function(event) {
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
     event.preventDefault();
     let dataForm = new FormData($(this)[0]);
 
@@ -79,7 +84,6 @@
       cache: false,
       processData: false,
       success: function(data) {
-        console.log(data);
         Swal.fire({
           title: 'Berhasil!',
           type: "success",

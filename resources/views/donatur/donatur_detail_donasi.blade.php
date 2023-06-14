@@ -146,15 +146,15 @@
                 <form id="pickup-donasi-form" action="{{ URL::route('donatur.editPickup', ['id' => $dataDonasi->id]) }}" method="post" role="form">
                     <div class="form-group">
                         <label for="kotaPickup">Pickup Location - Kota</label>
-                        <select class="form-control" id="kotaPickup" name="kotaPickup">
+                        <select class="form-control" id="kotaPickup" name="kotaPickup" required>
                             @foreach($kota as $city)
                             <option value="{{$city->id}}" @if($city->id == $dataDonasi->kota) selected @endif>{{$city->nama}}</option>
-                            @endforeach
+                            @endforeach 
                         </select>
                       </div>
                       <div class="form-group">
                         <label for="ngoDonasi">NGO Tujuan</label>
-                        <select class="form-control" id="ngoPickup" name="ngoPickup">
+                        <select class="form-control" id="ngoPickup" name="ngoPickup" required>
                             @foreach($ngos as $ngo)
                             <option value="{{$ngo->id}}" @if($ngo->id == $dataDonasi->ngo_tujuan) selected @endif>{{$ngo->ngo_nama}}</option>
                             @endforeach
@@ -164,20 +164,20 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="nama pengirim" class="form-control-label">Nama</label>
-                            <input id="namaPickup" name="namaPickup" class="form-control" type="text" value="{{ $dataDonasi->nama_pickup }}">
+                            <input id="namaPickup" name="namaPickup" class="form-control" type="text" value="{{ $dataDonasi->nama_pickup }}" required>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="nomor telepon pengirim" class="form-control-label">Nomor Telepon</label>
-                            <input id="noTelp" name="noTelp" class="form-control" type="text" value="{{ $dataDonasi->no_telp_pickup }}">
+                            <input id="noTelp" name="noTelp" class="form-control" type="text" value="{{ $dataDonasi->no_telp_pickup }}" required>
                           </div>
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
                             <label for="alamat pengirim" class="form-control-label">Pickup Location - Alamat Lengkap</label>
-                            <input id="alamatPickup" name="alamatPickup" class="form-control" type="text" value="{{ $dataDonasi->alamat_pickup }}">
+                            <input id="alamatPickup" name="alamatPickup" class="form-control" type="text" value="{{ $dataDonasi->alamat_pickup }}" required>
                         </div>
                       </div>
                       <button type ="submit" class="btn btn-success btn-sm ms-auto col-12">Submit Seluruh Data Donasi</button>
@@ -186,7 +186,7 @@
                 <form id="pickup-donasi-form" action="{{ URL::route('donatur.editPickup', ['id' => $dataDonasi->id]) }}" method="post" role="form">
                     <div class="form-group">
                         <label for="kotaDonasi">Pickup Location - Kota</label>
-                        <select class="form-control" id="kotaDonasi" name="kotaDonasi">
+                        <select class="form-control" id="kotaDonasi" name="kotaDonasi" required>
                             @foreach($kota as $city)
                             <option value="{{$city->id}}">{{$city->nama}}</option>
                             @endforeach
@@ -194,7 +194,7 @@
                       </div>
                       <div class="form-group">
                         <label for="ngoDonasi">NGO Tujuan</label>
-                        <select class="form-control" id="ngoDonasi" name="ngoDonasi">
+                        <select class="form-control" id="ngoDonasi" name="ngoDonasi" required>
                             @foreach($ngos as $ngo)
                             <option value="{{$ngo->id}}">{{$ngo->ngo_nama}}</option>
                             @endforeach
@@ -204,20 +204,20 @@
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="nama pengirim" class="form-control-label">Nama</label>
-                            <input id="nama" name="nama" class="form-control" type="text" value="" readonly>
+                            <input id="nama" name="nama" class="form-control" type="text" value="" readonly required>
                           </div>
                         </div>
                         <div class="col-md-6">
                           <div class="form-group">
                             <label for="nomor telepon pengirim" class="form-control-label">Nomor Telepon</label>
-                            <input id="noTelp" name="noTelp" class="form-control" type="text" value="" readonly>
+                            <input id="noTelp" name="noTelp" class="form-control" type="text" value="" readonly required>
                           </div>
                         </div>
                       </div>
                       <div class="col-md-12">
                         <div class="form-group">
                             <label for="alamat pengirim" class="form-control-label">Pickup Location - Alamat Lengkap</label>
-                            <input id="alamat" name="alamat" class="form-control" type="text" value="" readonly>
+                            <input id="alamat" name="alamat" class="form-control" type="text" value="" readonly required>
                         </div>
                       </div>
                 </form>
@@ -364,19 +364,15 @@
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Nama Makanan/Minuman</label>
-                  <input id="nama" name="nama" class="form-control" type="text" value="">
+                  <input id="nama" name="nama" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
-                  <input id="deskripsi" name="deskripsi" class="form-control" type="text" value="">
+                  <input id="deskripsi" name="deskripsi" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
-                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                  <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
-                  @error('AdminFoto')
-                  <p class="text-danger">{{ $message }}</p>
-                  @enderror
+                  <input class="form-control" type="file" id="donasiFoto" name="donasiFoto">
                 </div>
                 <div class="form-group">
                   <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
@@ -386,7 +382,7 @@
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label for="kategoriDonasi">Kategori</label>
-                  <select id="kategori" name="kategori" class="form-control">
+                  <select id="kategori" name="kategori" class="form-control" required>
                     @foreach($kategori as $category)
                     <option value="{{$category->id}}">{{$category->nama}}</option>
                     @endforeach
@@ -394,11 +390,11 @@
                 </div>
                 <div class="form-group">
                   <label for="kuantitasDonasi" class="form-control-label">Kuantitas</label>
-                  <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="">
+                  <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="satuanDonasi">Satuan</label>
-                  <select id="satuan" name="satuan" class="form-control" id="satuanDonasi">
+                  <select id="satuan" name="satuan" class="form-control" id="satuanDonasi" required>
                     @foreach($satuan as $metric)
                     <option value="{{$metric->id}}">{{$metric->nama}}</option>
                     @endforeach
@@ -426,19 +422,15 @@
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Nama Makanan/Minuman</label>
-                  <input id="nama" name="nama" class="form-control" type="text" value="">
+                  <input id="nama" name="nama" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
-                  <input id="deskripsi" name="deskripsi" class="form-control" type="text" value="">
+                  <input id="deskripsi" name="deskripsi" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
-                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                  <input class="form-control" type="file" id="donasiFoto" name="photo" value="{{ old('donasiFoto') }}">
-                  @error('donasiFoto')
-                  <p class="text-danger">{{ $message }}</p>
-                  @enderror
+                  <input class="form-control" type="file" id="donasiFoto" name="photo">
                 </div>
                 <div class="form-group">
                   <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
@@ -448,7 +440,7 @@
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label for="kategoriDonasi">Kategori</label>
-                  <select id="kategori" name="kategori" class="form-control">
+                  <select id="kategori" name="kategori" class="form-control" required>
                     @foreach($kategori as $category)
                     <option value="{{$category->id}}">{{$category->nama}}</option>
                     @endforeach
@@ -456,11 +448,11 @@
                 </div>
                 <div class="form-group">
                   <label for="kuantitasDonasi" class="form-control-label">Kuantitas</label>
-                  <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="">
+                  <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="satuanDonasi">Satuan</label>
-                  <select id="satuan" name="satuan" class="form-control" id="satuanDonasi">
+                  <select id="satuan" name="satuan" class="form-control" id="satuanDonasi" required>
                     @foreach($satuan as $metric)
                     <option value="{{$metric->id}}">{{$metric->nama}}</option>
                     @endforeach
@@ -487,7 +479,7 @@
     });
   </script>
 
-  <script type="text/javascript">
+  <script>
     $(document).on('click', '.open-modal', function(event) {
       var id = $(this).attr('id');
       var index = $(this).attr('index');
@@ -543,12 +535,12 @@
             },
 
             error: (data) => {
-              if (data.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
-                  text: data.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  text: data.responseJSON.message,
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -560,8 +552,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Update Data Gagal!",
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();
@@ -578,7 +570,6 @@
 
       let dataForm = new FormData($(this)[0]);
 
-      console.log(dataForm, 'add donasi');
       Swal.fire({
         title: "Apakah data yang anda masukan benar?",
         showCancelButton: true,
@@ -611,12 +602,12 @@
             },
 
             error: (data) => {
-              if (data.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
-                  text: data.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  text: data.responseJSON.message,
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -628,8 +619,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Update Data Gagal!",
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: 'Oke'
           });
           setTimeout(function() {
             Swal.close();
@@ -668,13 +659,12 @@
             },
 
             error: (data) => {
-              console.log(data)
               if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
                   text: data.responseJSON.message,
                   icon: 'error',
-                  confirmButtonText: 'Oke'
+                  confirmButtonText: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -686,8 +676,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: 'Data Gagal Dihapus!',
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();
@@ -740,12 +730,12 @@
             },
 
             error: (data) => {
-              if (data.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
-                  text: data.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  text: data.responseJSON.message,
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -757,8 +747,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Update Data Gagal!",
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();

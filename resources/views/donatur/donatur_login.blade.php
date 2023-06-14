@@ -15,10 +15,10 @@
               <div class="card-body">
                 <form id="login-form" role="form" action="{{route('user.login', 3)}}" method="post" role="form">
                   <div class="mb-3">
-                    <input id="email" name="email" type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
+                    <input id="email" name="email" type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email" required>
                   </div>
                   <div class="mb-3">
-                    <input id="password" name="password" type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password">
+                    <input id="password" name="password" type="password" class="form-control form-control-lg" placeholder="Password" aria-label="Password" required>
                   </div>
                   <div class="text-center">
                     <button type="submit" class="btn btn-lg btn-primary btn-lg w-100 mt-4 mb-0">Log in</button>
