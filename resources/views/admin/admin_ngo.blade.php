@@ -86,7 +86,7 @@
       }).draw();
     });
 
-    $(document).on('click', '.action-edit', function() {
+    $(document).on('click', '.action-detail', function() {
       let id = $(this).attr("id");
       let route_url = "{{ URL::route('admin.detail-ngo', ':id') }}"
       route_url = route_url.replace(':id', id);

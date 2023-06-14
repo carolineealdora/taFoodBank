@@ -3,7 +3,7 @@
 @section('admin_content')
 <div class="container-fluid py-4">
   <div class="row">
-    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
         <div class="card-body p-3">
           <div class="row">
@@ -24,7 +24,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
         <div class="card-body p-3">
           <div class="row">
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <div class="col-xl-3 col-sm-6 mb-xl-0 mb-4">
+    <div class="col-xl-4 col-sm-6 mb-xl-0 mb-4">
       <div class="card">
         <div class="card-body p-3">
           <div class="row">
@@ -76,9 +76,6 @@
                 <h5 class="font-weight-bolder">
                     {{$finished}}
                 </h5>
-                <p class="mb-0">
-                  <span class="text-success text-sm font-weight-bolder">+5%</span> than last month
-                </p>
               </div>
             </div>
             <div class="col-4 text-end">

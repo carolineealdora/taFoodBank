@@ -55,6 +55,22 @@ class AdminController extends Controller
             'finished' => $countFinished,
         ];
         return view('admin/admin_dashboard', $data);
+        $userId = Auth::user()->id;
+        $getDataAdmin = Admin::where("user_id", $userId)->first();
+        $admminId = $getDataAdmin->id;
+        $countSubmitted = Donasi::where("status_donasi", 1)->count();
+        $countApproved = Donasi::where("status_donasi", 2)->count();
+        $countRejected = Donasi::where("status_donasi", 3)->count();
+        $countPickedUp = Donasi::where("status_donasi", 4)->count();
+        $countFinished = Donasi::where("status_donasi", 5)->count();
+        $data = [
+            'submited' => $countSubmitted,
+            'approved' => $countApproved,
+            'rejected' => $countRejected,
+            'pickedup' => $countPickedUp,
+            'finished' => $countFinished,
+        ];
+        return view('admin/admin_dashboard', $data);
     }
 
     public function profile()
@@ -62,7 +78,28 @@ class AdminController extends Controller
         return view('admin/admin_profile');
     }
 
-    public function detailDonasi($id){
+    // public function detailDonasi($id){
+    //     try{
+    //         //Current Status
+    //         $dataCurrentLog = LogStatus::where("donasi_id", $id)->orderBy('created_at', 'desc')->first();
+    //         //log donasi
+    //         $dataLog = LogStatus::where("donasi_id", $id)->orderBy('created_at', 'asc')->get();
+    //         $dataDonasi = Donasi::with("donaturData", "ngo", "kotaData")->where("id", $id)->first();
+    //         //informasi donatur
+    //         $donaturId = $dataDonasi->donaturData->user_id;
+    //         $donaturData = User::where("id", $donaturId)->first();
+    //         //informasi ngo
+    //         $ngoId = $dataDonasi->ngo->user_id;
+    //         $ngoData = User::where("id", $ngoId)->first();
+    //         $dataNgoKota = Kota::where('id', $dataDonasi->ngo->ngo_kota)->first();
+    //         //informasi donasi konsumsi
+    //         $dataDonasiKonsumsi = DonasiKonsumsi::with("donasi", "dataKategori", "dataSatuan")->where("donasi_id", $id)->get();
+    //         //informasi data pickup
+    //         $dataPickup = Pickup::with("donasiData", "dataKategori", "dataSatuan")->where("donasi_id", $id)->get();
+    // }
+
+    public function detailDonasi($id)
+    {
         try{
             //Current Status
             $dataCurrentLog = LogStatus::where("donasi_id", $id)->orderBy('created_at', 'desc')->first();
@@ -132,8 +169,8 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-edit text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
-                      Detail
+                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                        <span style="color : white">Detail</span>
                     </button>
                     </div>
                     ';
@@ -190,13 +227,13 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-edit text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
-                      Detail
+                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                        <span style="color : white">Detail</span>
                     </button>
                     </div>
                     <div>
-                    <button id="' . $query->id . '" class="action-hapus text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
-                      Hapus
+                    <button id="' . $query->id . '" class="action-hapus btn btn-danger btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                        <span style="color : white">Hapus</span>
                     </button>
                     </div>
                     ';
@@ -579,13 +616,13 @@ class AdminController extends Controller
     public function editDonatur(Request $request, $id)
     {
         try {
-            $db = Donatur::find($id)->first();
-            $photo = $db->foto;
+            $db_donatur = Donatur::where('id', $id)->first();
+            $db_user = User::where('id', $db_donatur->user_id)->first();
+            $photo = $db_donatur->foto;
             if ($request['foto'] !== null) { //kondisi saat foto berubah
                 File::delete($photo);
                 $path = "images/donatur";
                 $requestFile = $request->foto;
-                // return $requestFile;
                 $insertImage = File::fileUpload($requestFile, $path);
                 $dataDonatur = [
                     "no_telp" => $request->no_telp,
@@ -594,6 +631,7 @@ class AdminController extends Controller
                     "no_identitas" => $request->no_identitas,
                     "foto"  => $insertImage
                 ];
+
                 Donatur::find($id)->update($dataDonatur);
 
                 if ($request->password !== null) {
@@ -602,16 +640,17 @@ class AdminController extends Controller
                         "email" => $request->email,
                         "password" => Hash::make($request->password),
                     ];
-                    User::find($db->user_id)->update($dataUser);
+                    User::find($db_donatur->user_id)->update($dataUser);
                 } else {
                     $dataUser = [
                         "nama" => $request->nama,
                         "email" => $request->email,
                     ];
-                    User::find($db->user_id)->update($dataUser);
+                    User::find($db_donatur->user_id)->update($dataUser);
                 }
             } else {
                 $dataDonatur = [
+                    "foto"  => $db_donatur->foto,
                     "no_telp" => $request->no_telp,
                     "tanggal_lahir" => $request->tanggal_lahir,
                     "alamat" => $request->alamat,
@@ -625,7 +664,7 @@ class AdminController extends Controller
                         "email" => $request->email,
                         "password" => Hash::make($request->password),
                     ];
-                    User::find($db->user_id)->update($dataUser);
+                    User::find($db_donatur->user_id)->update($dataUser);
                 } else {
                     $dataUser = [
                         "nama" => $request->nama,
@@ -652,6 +691,7 @@ class AdminController extends Controller
     {
         try {
             Donatur::find($id)->delete();
+
             return response()->json([
                 'status'    => 'ok',
                 'response'  => 'updated',
@@ -697,6 +737,7 @@ class AdminController extends Controller
 
     public function deleteDonasi($id){
         try{
+            // return 'masuk sini';
             //get all data donasi konsumsi with the same donasi id
             $dataDonasiKonsumsi = DonasiKonsumsi::where('donasi_id', $id)->get();
 
@@ -722,18 +763,62 @@ class AdminController extends Controller
 
     public function getListDonasi(){
         try{
-            $getList = [];
-            $getData = DB::table("views_donasi")->get();
-            foreach($getData as $data){
-                $getIdNgo = $data->ngo_tujuan;
-                $getNgo = NGO::where('id', $getIdNgo)->first();
-                $namaNgo = $getNgo->ngo_nama;
-                $data->ngo_nama = $namaNgo;
-                $getList[] = $data;
-            }
+            $getDataTable = DB::table("views_donasi");
 
-            // return $getList;
-            return view('admin/admin_donasi', ['data' => $getList]);
+            //generate datatable
+            if(request()->ajax()){
+                return DataTables()->queryBuilder($getDataTable)
+                    ->addColumn('nama_user', function ($query){
+                        $nama_user = $query->nama_user;
+
+                        return $nama_user;
+                    })
+                    ->addColumn('ngo_nama', function ($query){
+                        $ngo_nama = $query->ngo_nama;
+
+                        return $ngo_nama;
+                    })
+                    ->addColumn('donasi_konsumsi', function ($query){
+                        $donasi_konsumsi = $query->donasi_konsumsi;
+
+                        return $donasi_konsumsi;
+                    })
+                    ->addColumn('status_donasi', function ($query){
+                        $status_donasi = $query->status_donasi;
+                        if($status_donasi == "submitted"){
+                            $badge = '<span class="badge badge-sm bg-gradient-warning">Submitted</span>';
+                        }elseif($status_donasi == "approved"){
+                            $badge = '<span class="badge badge-sm bg-gradient-success">Approved</span>';
+                        }elseif($status_donasi == "rejected"){
+                            $badge = '<span class="badge badge-sm bg-gradient-danger">Rejected</span>';
+                        }elseif($status_donasi == "pickedup"){
+                            $badge = '<span class="badge badge-sm bg-gradient-info">Picked Up</span>';
+                        }elseif($status_donasi == "finished"){
+                            $badge = '<span class="badge badge-sm bg-gradient-primary">Finished</span>';
+                        }
+                        return $badge;
+                    })
+                    ->addColumn('tanggal_waktu', function ($query){
+                        $tanggal = $query->tanggal;
+
+                        return $tanggal;
+                    })
+                    ->addColumn('action', function ($query){
+                        $button = '
+                        <div>
+                        <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                          <span style="color : white">Detail</span>
+                        </button>
+                        </div>
+                        ';
+
+                        return $button;
+                    })
+                    ->rawColumns(['nama_user', 'donasi_konsumsi', 'status_donasi', 'tanggal_wwaktu', 'action'])
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+            return view('admin/admin_donasi');
         }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',
@@ -756,13 +841,13 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-detail text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
-                      Detail
+                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                        <span style="color : white">Detail</span>
                     </button>
                     </div>
                     <div>
-                    <button id="' . $query->id . '" class="action-hapus text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
-                      Hapus
+                    <button id="' . $query->id . '" class="action-hapus btn btn-danger btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                        <span style="color : white">Hapus</span>
                     </button>
                     </div>
                     ';
@@ -871,14 +956,9 @@ class AdminController extends Controller
     {
         $getKota = Kota::where('id', $id)->first();
 
-        // $kota = Kota::get();
-
         $data = [
             "dataKota" => $getKota,
-            // "kota" => $kota
         ];
-
-        // return $getKota->id;
 
         return view('admin/admin_detail_kota', $data);
     }
@@ -896,13 +976,13 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-detail text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
-                      Detail
+                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                        <span style="color : white">Detail</span>
                     </button>
                     </div>
                     <div>
-                    <button id="' . $query->id . '" class="action-hapus text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
-                      Hapus
+                    <button id="' . $query->id . '" class="action-hapus btn btn-danger btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                        <span style="color : white">Hapus</span>
                     </button>
                     </div>
                     ';
@@ -1022,13 +1102,13 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-detail text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
-                      Detail
+                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                        <span style="color : white">Detail</span>
                     </button>
                     </div>
                     <div>
-                    <button id="' . $query->id . '" class="action-hapus text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
-                      Hapus
+                    <button id="' . $query->id . '" class="action-hapus btn btn-danger btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                        <span style="color : white">Hapus</span>
                     </button>
                     </div>
                     ';

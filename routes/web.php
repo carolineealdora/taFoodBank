@@ -48,7 +48,7 @@ Route::prefix('donatur')->group(function () {
     Route::post('/edit-pickup/{id}', [DonaturController::class, 'editPickup'])->name('donatur.editPickup');
     Route::get('/logout', [DonaturController::class, 'logout'])->name('donatur.logout');
     Route::delete('/delete-donasi-konsumsi/{id}', [DonaturController::class, 'deleteDonasiKonsumsi'])->name('donatur.deleteDonasiKonsumsi');
-    Route::delete('/delete-donasi/{id}', [DonaturController::class, 'deleteDonasi'])->name('donatur.deleteDonasi');
+    Route::delete('/delete-donasi/{id}', [DonaturController::class, 'deleteDonasi'])->name('donatur.delete-donasi');
 });
 // login
 Route::prefix('ngo')->group(function () {
@@ -94,8 +94,6 @@ Route::prefix('admin')->group(function () {
     Route::put('/ngo-approve/{id}', [AdminController::class, 'approveNGO'])->name('admin.ngo-approve');
     Route::put('/ngo-cancel/{id}', [AdminController::class, 'cancelNGO'])->name('admin.ngo-cancel');
     Route::delete('/delete-ngo/{id}', [AdminController::class, 'deleteNGO'])->name('admin.delete-ngo');
-    Route::get('/admin', [AdminController::class, 'admin'])->name('admin.admins');
-    Route::get('/detail-admin', [AdminController::class, 'detailAdmin'])->name('admin.detail-admin');
     Route::get('/kota', [AdminController::class, 'getListKota'])->name('admin.kota');
     Route::post('/create-kota', [AdminController::class, 'storeKota'])->name('admin.store-kota');
     Route::get('/create-kota', [AdminController::class, 'createKota'])->name('admin.create-kota');

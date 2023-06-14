@@ -20,7 +20,7 @@
                 </div>
                 </div>
             </div>
-            <button type="submit" id="action" value="" class="submit btn-primary btn-sm ms-auto">Simpan Perubahan</button>
+            <button type="submit" id="action" value="" class="submit btn btn-primary btn-sm ms-auto">Simpan Perubahan</button>
             </div>
         </form>
       </div>

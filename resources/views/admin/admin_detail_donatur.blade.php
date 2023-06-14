@@ -144,7 +144,7 @@
               });
               setTimeout(function() {
                 Swal.close();
-                window.location.href = data.route;
+                // window.location.href = data.route;
               }, 2000);
             },
 
@@ -206,7 +206,7 @@
               });
               setTimeout(function() {
                 Swal.close();
-                window.location.href = data.route;
+                // window.location.href = data.route;
               }, 2000);
             },
 

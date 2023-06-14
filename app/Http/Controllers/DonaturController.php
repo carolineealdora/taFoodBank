@@ -57,20 +57,6 @@ class DonaturController extends Controller
         ];
         return view('donatur/donatur_dashboard', $data);
     }
-    // public function donasi()
-    // {
-    //     return view('donatur/donatur_donasi');
-    // }
-
-    // public function profile()
-    // {
-    //     return view('donatur/donatur_profile');
-    // }
-
-    // public function detailDonasi()
-    // {
-    //     return view('donatur/donatur_detail_donasi');
-    // }
 
     public function createDonasi()
     {
@@ -462,9 +448,62 @@ class DonaturController extends Controller
             $getUser = User::with("donatur")->where('email', $user->email)->first();
 
             //get list donasi berdasarkan id donatur
-            $getData = DB::table("views_donasi")->where("donatur", $getUser->donatur->id)->get();
-            // return $getData;
-            return view('donatur/donatur_donasi', ['data' => $getData]);
+            $getDataTable = DB::table("views_donasi")->where("donatur", $getUser->donatur->id);
+
+            //generate datatable
+            if(request()->ajax()){
+                return DataTables()->queryBuilder($getDataTable)
+                    ->addColumn('ngo_nama', function ($query){
+                        $ngo_nama = $query->ngo_nama;
+
+                        return $ngo_nama;
+                    })
+                    ->addColumn('donasi_konsumsi', function ($query){
+                        $donasi_konsumsi = $query->donasi_konsumsi;
+
+                        return $donasi_konsumsi;
+                    })
+                    ->addColumn('status_donasi', function ($query){
+                        $status_donasi = $query->status_donasi;
+                        if($status_donasi == "submitted"){
+                            $badge = '<span class="badge badge-sm bg-gradient-warning">Submitted</span>';
+                        }elseif($status_donasi == "approved"){
+                            $badge = '<span class="badge badge-sm bg-gradient-success">Approved</span>';
+                        }elseif($status_donasi == "rejected"){
+                            $badge = '<span class="badge badge-sm bg-gradient-danger">Rejected</span>';
+                        }elseif($status_donasi == "pickedup"){
+                            $badge = '<span class="badge badge-sm bg-gradient-info">Picked Up</span>';
+                        }elseif($status_donasi == "finished"){
+                            $badge = '<span class="badge badge-sm bg-gradient-primary">Finished</span>';
+                        }
+                        return $badge;
+                    })
+                    ->addColumn('tanggal_waktu', function ($query){
+                        $tanggal = $query->tanggal;
+
+                        return $tanggal;
+                    })
+                    ->addColumn('action', function ($query){
+                        $button = '
+                        <div>
+                        <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                          <span style="color : white">Detail</span>
+                        </button>
+                        </div>
+                        <div>
+                        <button id="' . $query->id . '" class="action-hapus btn btn-danger btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                            <span style="color : white">Hapus</span>
+                        </button>
+                        </div>
+                        ';
+
+                        return $button;
+                    })
+                    ->rawColumns(['nama_user', 'donasi_konsumsi', 'status_donasi', 'tanggal_wwaktu', 'action'])
+                    ->addIndexColumn()
+                    ->make(true);
+            }
+            return view('donatur/donatur_donasi');
         }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',

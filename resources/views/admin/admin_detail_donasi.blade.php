@@ -11,11 +11,11 @@
               <div class="numbers">
                 <p class="text-sm mb-0 text-uppercase font-weight-bold">Current Status</p>
                 <h5 class="font-weight-bolder">
-                  Picked Up
+                    {{$dataCurrentLog->status_message}}
                 </h5>
                 <p class="mb-0">
                   diperbarui pada
-                  <span class="text-success text-sm font-weight-bolder">25/03/2023</span>
+                  <span class="text-success text-sm font-weight-bolder">{{$dataCurrentLog->created_at}}</span>
                 </p>
               </div>
             </div>
@@ -81,7 +81,7 @@
                     <div class="card-body pt-0 p-3">
                       <ul class="list-group">
                         @foreach($dataLog as $log)
-                        <li class="list-group-item border-0 d-flex p-4 mb-0 bg-gray-100 border-radius-lg">
+                        <li class="list-group-item border-0 d-flex p-4 mb-3 bg-gray-100 border-radius-lg">
                           <div class="d-flex flex-column">
                             <h6 class="mb-1 text-sm">{{$log->status_message}}</h6>
                             <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">{{$log->created_at}}</span></span>
@@ -330,7 +330,7 @@
             </div>
           </div>
         </div>
-        <button class="delete-confirm btn btn-danger btn-sm ms-auto col-12 mt-4" href="{{ URL::route('admin.deleteDonasi', ['id' => $dataDonKom[0]->id]) }}">Hapus Seluruh Data Donasi</button>
+        <button class="delete-confirm btn btn-danger btn-sm ms-auto col-12 mt-4" href="{{ URL::route('admin.deleteDonasi', ['id' => $dataDonasi->id]) }}">Hapus Seluruh Data Donasi</button>
       </div>
     </div>
 
@@ -381,8 +381,8 @@ $.ajaxSetup({
                 Swal.fire({
                   title: 'Perhatian!',
                   text: data.responseJSON.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -394,8 +394,8 @@ $.ajaxSetup({
           Swal.fire({
             title: 'Perhatian!',
             text: 'Data Gagal Dihapus!',
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: 'Oke'
           });
           setTimeout(function() {
             Swal.close();

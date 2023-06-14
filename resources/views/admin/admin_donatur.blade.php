@@ -34,7 +34,7 @@
   <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
   <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-  
+
   <script>
     $.ajaxSetup({
       headers: {
@@ -75,7 +75,7 @@
       }).draw();
     });
 
-     $(document).on('click', '.action-edit', function() {
+     $(document).on('click', '.action-detail', function() {
       let id = $(this).attr("id");
       let route_url = "{{ URL::route('admin.detail-donatur', ':id') }}"
       route_url = route_url.replace(':id', id);

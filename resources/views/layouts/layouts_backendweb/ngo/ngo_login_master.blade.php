@@ -7,7 +7,7 @@
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets\backendweb\img\apple-icon.png') }}">
   <link rel="icon" type="image/png" href="{{ asset('assets\backendweb\img\favicon.png') }}">
   <title>
-    Donatur-Login
+    NGO-Login
   </title>
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">

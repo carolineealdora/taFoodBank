@@ -14,8 +14,8 @@
                 <a class="btn bg-gradient-dark mb-0" href="{{ URL::route('admin.create-kategori')}}"><i class="fas fa-plus"></i>&nbsp;&nbsp;Tambah Data Baru</a>
               </div>
           </div>
-          <div class="card-body px-0 pt-0 pb-2">
-            <div class="table-responsive p-0">
+          <div class="card-body my-3 px-3 py-5 pt-0 pb-2">
+            <div class="table-responsive">
               <table id="kategori-table" class="table align-items-center mb-0">
                 <thead>
                   <tr>

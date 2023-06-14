@@ -68,15 +68,13 @@
               <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
                   <p class="mb-0">All Status</p>
-                  {{-- <button class="btn btn-primary btn-sm ms-auto">Simpan Perubahan</button> --}}
                 </div>
               </div>
               <div class="card-body">
-                {{-- <p class="text-uppercase text-sm">Semua Status Donasi</p> --}}
                 <div class="card-body pt-0 p-3">
                   <ul class="list-group">
                     @foreach($dataLog as $log)
-                    <li class="list-group-item border-0 d-flex p-4 mb-0 bg-gray-100 border-radius-lg">
+                    <li class="list-group-item border-0 d-flex p-4 mb-3 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
                         <h6 class="mb-1 text-sm">{{$log->status_message}}</h6>
                         <span class="mb-1 text-xs">Tanggal & Waktu: <span class="text-dark font-weight-bold ms-sm-2">{{$log->created_at}}</span></span>
@@ -97,10 +95,6 @@
               <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
                   <p class="mb-0">Data Donasi dari Donatur</p>
-                  {{-- <div class="ms-auto text-end">
-                    <button class="btn btn-dark btn-sm ms-auto">Edit</button>
-                    <button class="btn btn-danger btn-sm ms-auto">Delete</button>
-                  </div> --}}
                 </div>
               </div>
               <div class="card-body">
@@ -133,7 +127,6 @@
                 <p class="text-uppercase text-sm">Data Donasi</p>
                 @foreach($dataDonKom as $item)
                 <div class="card-body pt-2 p-3">
-                  {{-- <p class="text-uppercase text-sm">Data Donasi</p> --}}
                   <ul class="list-group">
                     <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                       <div class="d-flex flex-column">
@@ -184,9 +177,7 @@
               <div class="card-body">
                 @foreach($dataPickup as $pickup)
                 <div class="card-body">
-                  {{-- <hr class="horizontal dark"> --}}
                   <div class="card-body pt-2 p-3">
-                    {{-- <p class="text-uppercase text-sm">Data Donasi</p> --}}
                     <ul class="list-group">
                       <li class="list-group-item border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg">
                         <div class="d-flex flex-column">
@@ -248,7 +239,6 @@
               <div class="card-header pb-0">
                 <div class="d-flex align-items-center">
                   <p class="mb-0">Pelaporan Distibusi Donasi</p>
-                  {{-- <button class="btn btn-primary btn-sm ms-auto">Simpan Perubahan</button> --}}
                 </div>
               </div>
               <div class="card-body">

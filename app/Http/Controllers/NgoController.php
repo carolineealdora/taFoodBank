@@ -185,7 +185,9 @@ class NgoController extends Controller
 
         //get list donasi berdasarkan id ngo
         $getDataTable = DB::table('views_donasi')->where('ngo_tujuan', $getUser->ngo->id);
-        if (request()->ajax()) {
+
+        //generate datatable
+        if(request()->ajax()){
             return DataTables()->queryBuilder($getDataTable)
                 ->addColumn('nama_user', function ($query) {
                     $nama_user = $query->nama_user;

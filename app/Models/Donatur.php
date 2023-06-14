@@ -35,4 +35,8 @@ class Donatur extends Model
     public function kota(){
         return $this->belongsTo(Kota::class, "id");
     }
+
+    // public function kota(){
+    //     return $this->belongsTo(Kota::class, "id");
+    // }
 }

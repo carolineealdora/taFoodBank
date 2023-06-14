@@ -18,7 +18,7 @@
             <div class="card-body">
               <p class="text-uppercase text-sm">Form Data Donasi</p>
               {{-- Form Data Donasi Konsumsi --}}
-            <form id="formDonasi" action="{{ URL::route('donatur.storeDonasi') }}" method="post" role="form">
+            <form id="formDonasi" action="{{ URL::route('donatur.store-donasi') }}" method="post" role="form">
               <div class="fields-row row border-0 d-flex p-4 mb-2 bg-gray-100 border-radius-lg" id="fieldForm" index="0">
                 <div class="ms-auto text-end">
                     <a class="delete btn btn-link text-danger text-gradient px-3 mb-0"><i class="far fa-trash-alt me-2"></i>Delete</a>
@@ -72,7 +72,7 @@
             </form>
               <button class="btn btn-primary btn-sm ms-auto add">Add</button>
               <hr class="horizontal dark">
-            <form id="formPickup" action="{{ URL::route('donatur.storeDonasi') }}" method="post" role="form">
+            <form id="formPickup" action="{{ URL::route('donatur.store-donasi') }}" method="post" role="form">
               <p class="text-uppercase text-sm">Form Pickup Donasi</p>
               <div class="form-group">
                 <label for="kotaDonasi">Pickup Location - Kota</label>

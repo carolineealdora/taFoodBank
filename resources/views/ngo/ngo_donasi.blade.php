@@ -8,13 +8,13 @@
         <div class="card-header pb-0">
           <h6>List Donasi</h6>
         </div>
-        <div class="card-body px-5 pt-0 pb-2">
+        <div class="card-body px-3 py-5 pt-0 pb-2">
           <div class="table-responsive">
             <table id="ngo-table" class="table align-items-center mb-0">
               <thead>
                 <tr>
                   <th>Nama Donatur</th>
-                  <th>Jenis Donasi</th>
+                  <th>Nama Donasi</th>
                   <th>Status</th>
                   <th>Tanggal & Waktu</th>
                   <th>Action</th>
