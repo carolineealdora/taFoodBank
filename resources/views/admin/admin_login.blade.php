@@ -13,7 +13,7 @@
                 <p class="mb-0">Silahkan Masukkan Email dan Password yang Telah Terdaftar</p>
               </div>
               <div class="card-body">
-                <form id="login-form" role="form" action="{{route('user.login')}}" method="post"  role="form">
+                <form id="login-form" role="form" action="{{route('user.login', 1)}}" method="post" role="form">
                   <div class="mb-3">
                     <input id="email" name="email" type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
                   </div>
@@ -68,13 +68,16 @@
       },
 
       error: (data) => {
-        if (data.status == "fail-verif") {
+        if (data.responseJSON.status == "fail-verif") {
           Swal.fire({
             title: 'Perhatian!',
-            text: data.message,
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: "error",
+            text: data.responseJSON.message,
+            showConfirmButton: false
           });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
         }
       }
     });

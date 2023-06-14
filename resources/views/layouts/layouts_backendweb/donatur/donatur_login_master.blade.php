@@ -19,14 +19,16 @@
   <link href="{{ asset('assets\backendweb\css\nucleo-svg.css') }}" rel="stylesheet" />
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('assets\backendweb\css\argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 </head>
 
 <body class="">
   <!-- <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
       <div class="col-12"> -->
-        <!-- Navbar -->
-        <!-- <nav class="navbar navbar-expand-lg blur border-radius-lg top-0 z-index-3 shadow position-absolute mt-4 py-2 start-0 end-0 mx-4">
+  <!-- Navbar -->
+  <!-- <nav class="navbar navbar-expand-lg blur border-radius-lg top-0 z-index-3 shadow position-absolute mt-4 py-2 start-0 end-0 mx-4">
           <div class="container-fluid">
             <a class="navbar-brand font-weight-bolder ms-lg-0 ms-3 " href="../pages/dashboard.html">
               Argon Dashboard 2
@@ -73,33 +75,33 @@
             </div>
           </div>
         </nav> -->
-        <!-- End Navbar -->
-      <!-- </div>
+  <!-- End Navbar -->
+  <!-- </div>
     </div>
   </div> -->
 
-    @yield('donatur_login_content')
+  @yield('donatur_login_content')
 
 </body>
 
-  <!--   Core JS Files   -->
-  <script src="{{ asset('assets\backendweb\js\corepopper.min.js') }}"></script>
-  <script src="{{ asset('assets\backendweb\js\corebootstrap.min.js') }}"></script>
-  <script src="{{ asset('assets\backendweb\js\plugins\perfect-scrollbar.min.js') }}"></script>
-  <script src="{{ asset('assets\backendweb\js\plugins\smooth-scrollbar.min.js') }}"></script>
-  <script>
-    var win = navigator.platform.indexOf('Win') > -1;
-    if (win && document.querySelector('#sidenav-scrollbar')) {
-      var options = {
-        damping: '0.5'
-      }
-      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+<!--   Core JS Files   -->
+<script src="{{ asset('assets\backendweb\js\corepopper.min.js') }}"></script>
+<script src="{{ asset('assets\backendweb\js\corebootstrap.min.js') }}"></script>
+<script src="{{ asset('assets\backendweb\js\plugins\perfect-scrollbar.min.js') }}"></script>
+<script src="{{ asset('assets\backendweb\js\plugins\smooth-scrollbar.min.js') }}"></script>
+<script>
+  var win = navigator.platform.indexOf('Win') > -1;
+  if (win && document.querySelector('#sidenav-scrollbar')) {
+    var options = {
+      damping: '0.5'
     }
-  </script>
-  <!-- Github buttons -->
-  <script async defer src="https://buttons.github.io/buttons.js"></script>
-  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-  <script src="{{ asset('assets\backendweb\js\argon-dashboard.min.js?v=2.0.4') }}"></script>
+    Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+  }
+</script>
+<!-- Github buttons -->
+<script async defer src="https://buttons.github.io/buttons.js"></script>
+<!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+<script src="{{ asset('assets\backendweb\js\argon-dashboard.min.js?v=2.0.4') }}"></script>
 
 
 </html>

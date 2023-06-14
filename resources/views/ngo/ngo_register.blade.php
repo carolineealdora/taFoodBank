@@ -24,11 +24,11 @@
               </div>
               <div class="mb-3">
                 <label for="ngo_nama" class="form-control-label">Nama NGO</label>
-                <input id="ngo_nama" name="ngo_nama" type="text" class="form-control" placeholder="Nama NGO" aria-label="Nama NGO">
+                <input id="ngo_nama" name="ngo_nama" type="text" class="form-control" placeholder="Nama NGO" aria-label="Nama NGO" required>
               </div>
               <div class="form-group">
                 <label for="ngo_kota" class="form-control-label">Kota Kantor NGO</label>
-                <select id="ngo_kota" name="ngo_kota" class="form-control" id="kotaDonasi">
+                <select id="ngo_kota" name="ngo_kota" class="form-control" id="kotaDonasi" required>
                   @foreach($kota as $item)
                   <option value="{{ $item->id }}">{{ $item->nama }}</option>
                   @endforeach
@@ -36,39 +36,35 @@
               </div>
               <div class="mb-3">
                 <label for="ngo_alamat" class="form-control-label">Alamat Kantor NGO</label>
-                <input id="ngo_alamat" name="ngo_alamat" type="text" class="form-control" placeholder="Alamat Kantor NGO" aria-label="Alamat Kantor NGO">
+                <input id="ngo_alamat" name="ngo_alamat" type="text" class="form-control" placeholder="Alamat Kantor NGO" aria-label="Alamat Kantor NGO" required>
               </div>
-              <div class="mb-3"> 
+              <div class="mb-3">
                 <label for="ngo_no_telp" class="form-control-label">Nomor Telepon Kantor NGO</label>
-                <input id="ngo_no_telp" name="ngo_no_telp" type="text" class="form-control" placeholder="Nomor Telepon Kantor NGO" aria-label="Nomor Telepon Kantor NGO">
+                <input id="ngo_no_telp" name="ngo_no_telp" type="text" class="form-control" placeholder="Nomor Telepon Kantor NGO" aria-label="Nomor Telepon Kantor NGO" required>
               </div>
               <div class="mb-3">
                 <label for="email" class="form-control-label">Email Kantor NGO</label>
-                <input name="email" id="email" type="email" class="form-control" placeholder="Email Kantor NGO" aria-label="Email Kantor NGO">
+                <input name="email" id="email" type="email" class="form-control" placeholder="Email Kantor NGO" aria-label="Email Kantor NGO" required>
               </div>
               <hr class="horizontal dark">
               <div class="card-header text-center pt-0">
                 <h5>Data PIC</h5>
               </div>
               <div class="form-group mb-3">
-                <label for="pic_foto" class="form-control-label">Foto Profil <span class="mb-2 text-xs font-weight-light">(opsional)</span></label>
-                {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                <input class="form-control" type="file" id="pic_foto" name="pic_foto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
-                @error('AdminFoto')
-                  <p class="text-danger">{{ $message }}</p>
-                @enderror
-                </div>
-                <div class="mb-3">
-                  <label for="nama" class="form-control-label">Nama PIC</label>
-                  <input id="nama" name="nama" type="text" class="form-control" placeholder="Nama PIC" aria-label="Nama PIC">
-                </div>
-                <div class="mb-3">
-                  <label for="no_identitas" class="form-control-label">Nomor Identitas (KTP)</label>
-                  <input id="no_identitas" name="no_identitas" type="text" class="form-control" placeholder="Nomor Identitas (KTP)" aria-label="Nomor Identitas">
-                </div>
+                <label for="pic_foto" class="form-control-label">Foto Profil</span></label>
+                <input class="form-control" type="file" id="pic_foto" name="pic_foto" required>
+              </div>
+              <div class="mb-3">
+                <label for="nama" class="form-control-label">Nama PIC</label>
+                <input id="nama" name="nama" type="text" class="form-control" placeholder="Nama PIC" aria-label="Nama PIC" required>
+              </div>
+              <div class="mb-3">
+                <label for="no_identitas" class="form-control-label">Nomor Identitas (KTP)</label>
+                <input id="no_identitas" name="no_identitas" type="text" class="form-control" placeholder="Nomor Identitas (KTP)" aria-label="Nomor Identitas" required>
+              </div>
               <div class="mb-3">
                 <label for="password" class="form-control-label">Password</label>
-                <input id="password" name="password" type="password" class="form-control" placeholder="Password" aria-label="Password">
+                <input id="password" name="password" type="password" class="form-control" placeholder="Password" aria-label="Password" required>
               </div>
               <div class="text-center">
                 <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Daftar</button>
@@ -81,8 +77,7 @@
     </div>
   </div>
 </main>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<!-- custom script -->
 <script>
   $('#register-form').on('submit', function(event) {
     event.preventDefault();
@@ -109,13 +104,16 @@
       },
 
       error: (data) => {
-        if (data.status == "failed") {
+        if (data.responseJSON.status == "failed") {
           Swal.fire({
             title: 'Perhatian!',
-            text: data.message,
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: "error",
+            text: data.responseJSON.message,
+            showConfirmButton: false
           });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
         }
       }
     });

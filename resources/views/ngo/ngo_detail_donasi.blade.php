@@ -149,10 +149,10 @@
                           </div>
                           <div class="form-group col-4">
                             <span class="mb-2 text-xs">Kuantitas: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->kuantitas}}</span></span><br>
-                            <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->satuanData->nama}}</span></span><br>
+                            <span class="mb-2 text-xs">Satuan: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->dataSatuan->nama}}</span></span><br>
                           </div>
                           <div class="form-group col-4">
-                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->kategoriData->nama}}</span></span><br>
+                            <span class="mb-2 text-xs">Kategori: <span class="text-dark ms-sm-2 font-weight-bold">{{$item->dataKategori->nama}}</span></span><br>
                           </div>
 
                         </div>
@@ -258,15 +258,10 @@
                   <div class="row">
                     <div class="form-group">
                       <label for="donatur_donasiFoto" class="form-control-label">Foto Pengiriman Donasi</label>
-                      {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                      <input class="form-control" type="file" id="photo" name="photo" value="{{ old('AdminFoto') }}" onchange="previewImage()" multiple>
-                      @error('AdminFoto')
-                      <p class="text-danger">{{ $message }}</p>
-                      @enderror
-                    </div>
+                      <input class="form-control" type="file" id="photo" name="photo" required>
                     <div class="form-group">
                       <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
-                      <input class="form-control" id="deskripsi" name="deskripsi" type="text" value="" placeholder="deskripsi donasi">
+                      <input class="form-control" id="deskripsi" name="deskripsi" type="text" value="" placeholder="deskripsi donasi" required>
                     </div>
                   </div>
                   <button type="submit" class="btn btn-success btn-sm ms-auto">Upload</button>
@@ -296,19 +291,16 @@
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Nama Makanan/Minuman</label>
-                  <input id="nama" name="nama" class="form-control" type="text" value="">
+                  <input id="nama" name="nama" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
-                  <input id="deskripsi" name="deskripsi" class="form-control" type="text" value="">
+                  <input id="deskripsi" name="deskripsi" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
-                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-                  <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
-                  @error('AdminFoto')
-                  <p class="text-danger">{{ $message }}</p>
-                  @enderror
+                  <input class="form-control" type="file" id="donasiFoto" name="donasiFoto">
+                  <p><small style="color: red;">* Jika tidak ingin diubah harap dikosongkan</small></p>
                 </div>
                 <div class="form-group">
                   <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
@@ -318,7 +310,7 @@
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label for="kategoriDonasi">Kategori</label>
-                  <select id="kategori" name="kategori" class="form-control" id="kategoriDonasi">
+                  <select id="kategori" name="kategori" class="form-control" id="kategoriDonasi" required>
                     @foreach($kategori as $category)
                     <option value="{{$category->id}}">{{$category->nama}}</option>
                     @endforeach
@@ -326,11 +318,11 @@
                 </div>
                 <div class="form-group">
                   <label for="example-text-input" class="form-control-label">Kuantitas</label>
-                  <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="">
+                  <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="" required>
                 </div>
                 <div class="form-group">
                   <label for="satuanDonasi">Satuan</label>
-                  <select id="satuan" name="satuan" class="form-control" id="satuanDonasi">
+                  <select id="satuan" name="satuan" class="form-control" id="satuanDonasi" required>
                     @foreach($satuan as $metric)
                     <option value="{{$metric->id}}">{{$metric->nama}}</option>
                     @endforeach
@@ -345,18 +337,8 @@
     </div>
   </div>
   <!-- End Form Modal -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
+  <!-- custom script -->
   <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-  </script>
-
-  <script type="text/javascript">
     $(document).on('click', '.open-modal', function(event) {
       var id = $(this).attr('id');
       var value = $(this).attr('value');
@@ -411,12 +393,12 @@
             },
 
             error: (data) => {
-              if (data.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
-                  text: data.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  type: "error",
+                  text: data.responseJSON.message,
+                  showConfirmButton: false,
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -428,8 +410,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Update Data Gagal!",
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false,
           });
           setTimeout(function() {
             Swal.close();
@@ -473,12 +455,12 @@
             },
 
             error: (data) => {
-              if (data.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
-                  text: data.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  text: data.responseJSON.message,
+                  type: 'error',
+                  showConfirmButton: false,
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -490,8 +472,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Data Gagal Ditambahkan!",
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();
@@ -536,12 +518,12 @@
             },
 
             error: (data) => {
-              if (data.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
-                  text: data.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  text: data.responseJSON.message,
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -553,8 +535,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Update Data Gagal!",
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();
@@ -570,7 +552,7 @@
 
       event.preventDefault();
       Swal.fire({
-        title: "Apakah anda yakin?",
+        title: "Apakah anda yakin ingin menerima NGO?",
         showCancelButton: true,
         confirmButtonText: "Ya",
         cancelButtonText: "Batal",
@@ -584,7 +566,6 @@
             type: "PUT",
             url: route_url,
             success: function(data) {
-              console.log(data)
               Swal.fire({
                 title: 'Berhasil!',
                 type: "success",
@@ -598,13 +579,12 @@
             },
 
             error: (data) => {
-              console.log(data)
               if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
                   text: data.responseJSON.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -616,8 +596,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: 'Status Gagal Diubah!',
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();
@@ -633,7 +613,7 @@
 
       event.preventDefault();
       Swal.fire({
-        title: "Apakah anda yakin?",
+        title: "Apakah anda yakin ingin menolak NGO?",
         showCancelButton: true,
         confirmButtonText: "Ya",
         cancelButtonText: "Batal",
@@ -647,7 +627,6 @@
             type: "PUT",
             url: route_url,
             success: function(data) {
-              console.log(data)
               Swal.fire({
                 title: 'Berhasil!',
                 type: "success",
@@ -661,13 +640,12 @@
             },
 
             error: (data) => {
-              console.log(data)
               if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
                   text: data.responseJSON.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -679,8 +657,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: 'Status Gagal Diubah!',
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();
@@ -719,13 +697,12 @@
             },
 
             error: (data) => {
-              console.log(data)
               if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
                   text: data.responseJSON.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -737,8 +714,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: 'Data Gagal Dihapus!',
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();

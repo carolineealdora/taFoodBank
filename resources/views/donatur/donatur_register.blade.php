@@ -18,45 +18,40 @@
       <div class="col-xl-4 col-lg-5 col-md-7 mx-auto">
         <div class="card z-index-0">
           <div class="card-body">
-            <form  id="register-form" action="{{route('donatur.register')}}" method="post" enctype="multipart/form-data"  role="form">
+            <form id="register-form" action="{{route('donatur.register')}}" method="post" enctype="multipart/form-data" role="form">
               <div class="form-group mb-3">
-                <label for="donatur_donasiFoto" class="form-control-label">Foto Profil <span class="mb-2 text-xs font-weight-light">(opsional)</span></label>
-              {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-              <input id="foto" name="foto" class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()">
-              @error('AdminFoto')
-                <p class="text-danger">{{ $message }}</p>
-              @enderror
+                <label for="donatur_donasiFoto" class="form-control-label">Foto Profil</label>
+                <input id="foto" name="foto" class="form-control" type="file" id="donasiFoto" name="donasiFoto" required>
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Nama Lengkap</label>
-                <input id="nama" name="nama" type="text" class="form-control" placeholder="Name" aria-label="Name">
+                <input id="nama" name="nama" type="text" class="form-control" placeholder="Name" aria-label="Name" required>
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Alamat Lengkap</label>
-                <input id="alamat" name="alamat" type="text" class="form-control" placeholder="Alamat" aria-label="Alamat">
+                <input id="alamat" name="alamat" type="text" class="form-control" placeholder="Alamat" aria-label="Alamat" required>
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Nomor Identitas (KTP)</label>
-                <input id="no_identitas" name="no_identitas" type="text" class="form-control" placeholder="Nomor Identitas (KTP)" aria-label="Nomor Identitas">
+                <input id="no_identitas" name="no_identitas" type="text" class="form-control" placeholder="Nomor Identitas (KTP)" aria-label="Nomor Identitas" required>
               </div>
-              {{-- ambil dari form donasi --}}
-              <div class="mb-3"> 
+              <div class="mb-3">
                 <div class="form-group">
                   <label for="donatur_donasiFoto" class="form-control-label">Tanggal Lahir</label>
-                  <input id="tanggal_lahir" name="tanggal_lahir" class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>                   
+                  <input id="tanggal_lahir" name="tanggal_lahir" class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="text" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
                 </div>
               </div>
-              <div class="mb-3"> 
+              <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Nomor Telepon</label>
-                <input id="no_telp" name="no_telp" type="text" class="form-control" placeholder="Nomor Telepon" aria-label="Nomor Telepon">
+                <input id="no_telp" name="no_telp" type="text" class="form-control" placeholder="Nomor Telepon" aria-label="Nomor Telepon" required>
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Email</label>
-                <input id="email" name="email" type="email" class="form-control" placeholder="Email" aria-label="Email">
+                <input id="email" name="email" type="email" class="form-control" placeholder="Email" aria-label="Email" required>
               </div>
               <div class="mb-3">
                 <label for="donatur_donasiFoto" class="form-control-label">Password</label>
-                <input id="password" name="password" type="password" class="form-control" placeholder="Password" aria-label="Password">
+                <input id="password" name="password" type="password" class="form-control" placeholder="Password" aria-label="Password" required>
               </div>
               <div class="text-center">
                 <button type="submit" class="btn bg-gradient-dark w-100 my-4 mb-2">Daftar</button>
@@ -98,13 +93,16 @@
       },
 
       error: (data) => {
-        if (data.status == "failed") {
+        if (data.responseJSON.status == "failed") {
           Swal.fire({
             title: 'Perhatian!',
-            text: data.message,
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: "error",
+            text: data.responseJSON.message,
+            showConfirmButton: false
           });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
         }
       }
     });

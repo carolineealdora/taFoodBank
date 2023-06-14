@@ -4,8 +4,8 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- CSRF Token -->
-    <meta name="csrf-token" content="{{ csrf_token() }}">
+  <!-- CSRF Token -->
+  <meta name="csrf-token" content="{{ csrf_token() }}">
 
   <link rel="apple-touch-icon" sizes="76x76" href="{{ asset('assets\backendweb\img\apple-icon.png') }}">
   <link rel="icon" type="image/png" href="{{ asset('assets\backendweb\img\favicon.png') }}">
@@ -27,9 +27,10 @@
   <link rel="stylesheet" href="{{ asset('assets\backendweb\css\flatpickr.min.css') }}">
   {{-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> --}}
   <style>
-    .form-control.datepicker:disabled, .form-control.datepicker[readonly] {
-    background-color: #ffffff;
-    opacity: 1;
+    .form-control.datepicker:disabled,
+    .form-control.datepicker[readonly] {
+      background-color: #ffffff;
+      opacity: 1;
     }
   </style>
   {{-- photoswipe --}}
@@ -55,11 +56,24 @@
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/photoswipe/4.1.3/photoswipe-ui-default.min.js"></script>
   <link rel="stylesheet" href="{{ asset('assets/backendweb/photoswipe/dist/photoswipe.css') }}"> --}}
-
 </head>
 
-<body class="g-sidenav-show bg-gray-100" >
-    @include('layouts.layouts_backendweb.ngo.ngo_sidebar')
+<body class="g-sidenav-show bg-gray-100">
+  <!-- New Script -->
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
+  <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
+  <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  </script>
+  @include('layouts.layouts_backendweb.ngo.ngo_sidebar')
 
   <main class="main-content position-relative border-radius-lg ">
 
@@ -107,32 +121,32 @@
             <input class="form-check-input mt-1 ms-auto" type="checkbox" id="dark-version" onclick="darkMode(this)">
           </div>
         </div>
-        </div>
       </div>
     </div>
+  </div>
   </div>
   <script>
     // const flatpickr = require("flatpickr");
     flatpickr("#datepicker", {
-    altInput: true,
-    altFormat: "F j, Y",
-    dateFormat: "Y-m-d", // set the date format
-    minDate: "today", // set the minimum selectable date to today
-    maxDate: new Date().fp_incr(100), // set the maximum selectable date to 30 days from today
-    defaultDate: "today", // set the default selected date to today
-    // disable: ["2023-03-27", { from: "2023-03-30", to: "2023-04-03" }], // disable specific dates or date ranges
-    locale: {
-      firstDayOfWeek: 1, // set Monday as the first day of the week
-      weekdays: {
-        shorthand: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
-        longhand: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
-      },
-      months: {
-        shorthand: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
-        longhand: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+      altInput: true,
+      altFormat: "F j, Y",
+      dateFormat: "Y-m-d", // set the date format
+      minDate: "today", // set the minimum selectable date to today
+      maxDate: new Date().fp_incr(100), // set the maximum selectable date to 30 days from today
+      defaultDate: "today", // set the default selected date to today
+      // disable: ["2023-03-27", { from: "2023-03-30", to: "2023-04-03" }], // disable specific dates or date ranges
+      locale: {
+        firstDayOfWeek: 1, // set Monday as the first day of the week
+        weekdays: {
+          shorthand: ["Su", "Mo", "Tu", "We", "Th", "Fr", "Sa"],
+          longhand: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"]
+        },
+        months: {
+          shorthand: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+          longhand: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+        }
       }
-    }
-  });
+    });
   </script>
   <!--   Core JS Files   -->
   <script src="{{ asset('assets/backendweb/js/core/popper.min.js') }}"></script>

@@ -44,7 +44,7 @@
                       <span class="text-secondary text-xs font-weight-bold">23/04/18</span>
                     </td>
                     <td class="align-middle">
-                      <a href="{{ URL::route('ngo.detail-donasi') }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
+                      <a href="{{ URL::route('ngo.detailDonasi') }}" class="text-secondary font-weight-bold text-xs" data-toggle="tooltip" data-original-title="Edit user">
                         Detail
                       </a>
                     </td>

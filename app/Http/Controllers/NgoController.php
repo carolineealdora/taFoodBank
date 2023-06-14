@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Facades\Validator;
 use Throwable;
 
 class NgoController extends Controller
@@ -54,26 +55,7 @@ class NgoController extends Controller
         return view('ngo.ngo_register', ["kota" => $kota]);
     }
 
-    public function showDonasi($id)
-    {
-        try {
-            //donas detail donasi
-            $getDataDonasi = Donasi::with("donasi_konsumsi", "status_donasi", "kota", "ngo")->where("id", $id)->first();
-            return response()->json([
-                'status' => 'ok',
-                'response' => 'get-donasi',
-                'message' => 'Berhasil Get Donasi!',
-                'data' => $getDataDonasi
-            ], 200);
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 'error',
-                'response' => 'failed',
-            ], 500);
-        }
-    }
-
-    public function donasiApprove($id)
+    public function approveDonasi($id)
     {
         try {
             Donasi::where("id", $id)->update(['status_donasi' => 2]);
@@ -103,7 +85,7 @@ class NgoController extends Controller
                 'status'    => 'ok',
                 'response'  => 'approve-donasi',
                 'message'   => 'Status Berhasil Diubah!',
-                'route'     => route('ngo.detail-donasi', $id)
+                'route'     => route('ngo.detailDonasi', $id)
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -113,7 +95,7 @@ class NgoController extends Controller
         }
     }
 
-    public function donasiCancel($id)
+    public function cancelDonasi($id)
     {
         try {
             Donasi::where("id", $id)->update(['status_donasi' => 3]);
@@ -121,7 +103,7 @@ class NgoController extends Controller
                 'status'    => 'ok',
                 'response'  => 'reject-donasi',
                 'message'   => 'Status Berhasil Diubah!',
-                'route'     => route('ngo.detail-donasi', $id)
+                'route'     => route('ngo.detailDonasi', $id)
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -131,33 +113,26 @@ class NgoController extends Controller
         }
     }
 
-    public function getDataPickup()
-    {
-        //get all data donasi
-        try {
-            //whos login
-            $user = Auth::user();
-            //get ngo id
-            $getUser = User::with("ngo")->where('email', "ngoTest@gmail.com")->first();
-            //get donasi for ngo
-            $getDataPickup = Donasi::with("pickup", "status_donasi", "kota", "ngo", "donator")->where("ngo", $getUser->ngo->id)->get();
-            return response()->json([
-                'status' => 'ok',
-                'response' => 'get-donasi',
-                'message' => 'Berhasil Get Pickup!',
-                'data' => $getDataPickup
-            ], 200);
-        } catch (Throwable $e) {
-            return response()->json([
-                'status' => 'failed',
-                'response' => $e,
-            ], 500);
-        }
-    }
-
     public function editPickup(Request $request, $id)
     {
         try {
+            // Validation
+            $rules = [
+                'donasiFoto' => 'mimes:jpg,jpeg,png,svg',
+            ];
+
+            $messages = [
+                'donasiFoto.mimes' => 'Hanya menerima extensi JPG, JPEG, PNG, SVG !',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors()->first()
+                ], 400);
+            }
+
             $dataPickup = Pickup::find($id)->first();
             $photo = $dataPickup->photo;
             $requestFile = $request->donasiFoto;
@@ -191,7 +166,7 @@ class NgoController extends Controller
                 'status'    => 'ok',
                 'response'  => 'updated-donkom',
                 'message'   => 'Update Data Telah Berhasil!',
-                'route'     => route('ngo.detail-donasi', $id)
+                'route'     => route('ngo.detailDonasi', $dataPickup->donasi)
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -200,7 +175,7 @@ class NgoController extends Controller
             ], 500);
         }
     }
-    public function donasi()
+    public function showDonasi()
     {
         //check user logged in
         $user = Auth::user();
@@ -209,45 +184,41 @@ class NgoController extends Controller
         $getUser = User::with("ngo")->where('email', $user->email)->first();
 
         //get list donasi berdasarkan id ngo
-        $getData = DB::table("views_donasi")->where("ngo_tujuan", $getUser->ngo->id)->get();
         $getDataTable = DB::table('views_donasi')->where('ngo_tujuan', $getUser->ngo->id);
-        $data = [
-            'getData' => $getData
-        ];
-        if(request()->ajax()){
+        if (request()->ajax()) {
             return DataTables()->queryBuilder($getDataTable)
-                ->addColumn('nama_user', function ($query){
+                ->addColumn('nama_user', function ($query) {
                     $nama_user = $query->nama_user;
 
                     return $nama_user;
                 })
-                ->addColumn('donasi_konsumsi', function ($query){
+                ->addColumn('donasi_konsumsi', function ($query) {
                     $donasi_konsumsi = $query->donasi_konsumsi;
 
                     return $donasi_konsumsi;
                 })
-                ->addColumn('status_donasi', function ($query){
+                ->addColumn('status_donasi', function ($query) {
                     $status_donasi = $query->status_donasi;
-                    if($status_donasi == "submitted"){
+                    if ($status_donasi == "submitted") {
                         $badge = '<span class="badge badge-sm bg-gradient-warning">Submitted</span>';
-                    }elseif($status_donasi == "approved"){
+                    } elseif ($status_donasi == "approved") {
                         $badge = '<span class="badge badge-sm bg-gradient-success">Approved</span>';
-                    }elseif($status_donasi == "rejected"){
+                    } elseif ($status_donasi == "rejected") {
                         $badge = '<span class="badge badge-sm bg-gradient-danger">Rejected</span>';
-                    }elseif($status_donasi == "pickedup"){
+                    } elseif ($status_donasi == "pickedup") {
                         $badge = '<span class="badge badge-sm bg-gradient-info">Picked Up</span>';
-                    }elseif($status_donasi == "finished"){
+                    } elseif ($status_donasi == "finished") {
                         $badge = '<span class="badge badge-sm bg-gradient-primary">Finished</span>';
                     }
                     return $badge;
                 })
-                ->addColumn('tanggal_waktu', function ($query){
+                ->addColumn('tanggal_waktu', function ($query) {
                     $tanggal = $query->tanggal;
 
                     return $tanggal;
                 })
-                 ->addColumn('action', function ($query){
-                    $button = '<button id="'. $query->id .'" class="action-edit text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
+                ->addColumn('action', function ($query) {
+                    $button = '<button id="' . $query->id . '" class="action-edit btn btn-primary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
                       Detail
                     </button>';
 
@@ -256,9 +227,9 @@ class NgoController extends Controller
                 ->rawColumns(['nama_user', 'donasi_konsumsi', 'status_donasi', 'tanggal_wwaktu', 'action'])
                 ->addIndexColumn()
                 ->make(true);
-        } 
+        }
 
-        return view('ngo/ngo_donasi', $data);
+        return view('ngo/ngo_donasi');
     }
 
     public function detailDonasi($id)
@@ -272,7 +243,7 @@ class NgoController extends Controller
         $userId = $dataDonasi->donaturData->user_id;
         $userData = User::where("id", $userId)->first();
         //informasi donasi konsumsi
-        $dataDonasiKonsumsi = DonasiKonsumsi::with("donasi", "kategoriData", "satuanData")->where("donasi_id", $id)->get();
+        $dataDonasiKonsumsi = DonasiKonsumsi::with("donasi", "dataKategori", "dataSatuan")->where("donasi_id", $id)->get();
         //informasi data pickup
         $dataPickup = Pickup::with("donasiData", "dataKategori", "dataSatuan")->where("donasi", $id)->get();
         //Get Data Report Donasi
@@ -315,7 +286,7 @@ class NgoController extends Controller
                 'status'    => 'ok',
                 'response'  => 'updated-donkom',
                 'message'   => 'Update Data Telah Berhasil!',
-                'route'     => route('ngo.detail-donasi', $id)
+                'route'     => route('ngo.detailDonasi', $id)
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -333,7 +304,7 @@ class NgoController extends Controller
                 'status'    => 'ok',
                 'response'  => 'delete-pickup',
                 'message'   => 'Data Berhasil Dihapus!',
-                'route'     => route('ngo.detail-donasi', $id)
+                'route'     => route('ngo.detailDonasi', $id)
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -346,6 +317,23 @@ class NgoController extends Controller
     public function reportDonasi(Request $request, $id)
     {
         try {
+            // Validation
+            $rules = [
+                'photo' => 'required|mimes:jpg,jpeg,png,svg',
+            ];
+
+            $messages = [
+                'photo.mimes' => 'Hanya menerima extensi JPG, JPEG, PNG, SVG !',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors()->first()
+                ], 400);
+            }
+
             $path = "images/report";
             $requestFile = $request->photo;
             $insertImage = File::fileUpload($requestFile, $path);
@@ -368,7 +356,7 @@ class NgoController extends Controller
                 'status'    => 'ok',
                 'response'  => 'add-report',
                 'message'   => 'Data Berhasil Ditambahkan!',
-                'route'     => route('ngo.detail-donasi', $id)
+                'route'     => route('ngo.detailDonasi', $id)
             ], 200);
         } catch (Throwable $e) {
             return response()->json([
@@ -386,6 +374,25 @@ class NgoController extends Controller
     public function register(Request $request)
     {
         try {
+            // Validation
+            $rules = [
+                'pic_foto' => 'required|mimes:jpg,jpeg,png,svg',
+                'password' => 'required|min:8',
+            ];
+
+            $messages = [
+                'pic_foto.mimes' => 'Hanya menerima extensi JPG, JPEG, PNG, SVG !',
+                'password.min' => 'Password minimal 8 karakter!',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors()->first()
+                ], 400);
+            }
+
             $data_user = [
                 'nama'  => $request->nama,
                 'email' => $request->email,
@@ -418,7 +425,7 @@ class NgoController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'status'    => 'failed',
-                'message'   => $e
+                'message'   => 'terjadi kesalahan pada sistem'
             ], 500);
         }
     }
@@ -434,7 +441,7 @@ class NgoController extends Controller
         return redirect('ngo/show-login');
     }
 
-    public function getProfile()
+    public function showProfile()
     {
         try {
             //check user logged in
@@ -465,6 +472,24 @@ class NgoController extends Controller
     public function editProfile(Request $request)
     {
         try {
+            // Validation
+            $rules = [
+                'pic_foto' => 'mimes:jpg,jpeg,png,svg',
+                'password' => 'min:8',
+            ];
+
+            $messages = [
+                'pic_foto.mimes' => 'Hanya menerima extensi JPG, JPEG, PNG, SVG !',
+                'password.min' => 'Password minimal 8 karakter!',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors()->first()
+                ], 400);
+            }
             //check user logged in
             $user = Auth::user();
 
@@ -485,6 +510,7 @@ class NgoController extends Controller
                 ];
             }
 
+            User::find($getData['id'])->update($data_credentials);
 
             if ($request['pic_foto'] !== null && $request['pic_foto'] !== 'undefined') { //kondisi saat foto berubah
                 File::delete($getNgo->pic_foto);

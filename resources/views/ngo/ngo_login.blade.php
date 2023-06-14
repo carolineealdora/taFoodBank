@@ -13,7 +13,7 @@
                 <p class="mb-0">Silahkan Masukkan Email dan Password yang Telah Terdaftar</p>
               </div>
               <div class="card-body">
-                <form id="login-form" role="form" action="{{route('user.login')}}" method="post">
+                <form id="login-form" role="form" action="{{route('user.login', 2)}}" method="post">
                   <div class="mb-3">
                     <input id="email" name="email" type="email" class="form-control form-control-lg" placeholder="Email" aria-label="Email">
                   </div>
@@ -34,7 +34,7 @@
             </div>
           </div>
           <div class="col-6 d-lg-flex d-none h-100 my-auto pe-0 position-absolute top-0 end-0 text-center justify-content-center flex-column">
-            <div class="position-relative bg-gradient-warning h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('{{ asset('assets/backendweb/img/ngo/login-bg.jpg') }}');
+            <div class="position-relative bg-gradient-warning h-100 m-3 px-7 border-radius-lg d-flex flex-column justify-content-center overflow-hidden" style="background-image: url('{{ asset('asset/backendweb/img/ngo/login-bg.jpg') }}');
         background-size: cover;">
               <span class="mask bg-gradient-warning opacity-6"></span>
               <h4 class="mt-5 text-white font-weight-bolder position-relative">"Sharing is Caring"</h4>
@@ -46,8 +46,7 @@
     </div>
   </section>
 </main>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<!-- custom script -->
 <script>
   $('#login-form').on('submit', function(event) {
     event.preventDefault();
@@ -74,13 +73,16 @@
       },
 
       error: (data) => {
-        if (data.status == "fail-verif") {
+        if (data.responseJSON.status == "fail-verif") {
           Swal.fire({
             title: 'Perhatian!',
-            text: data.message,
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: "error",
+            text: data.responseJSON.message,
+            showConfirmButton: false,
           });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
         }
       }
     });

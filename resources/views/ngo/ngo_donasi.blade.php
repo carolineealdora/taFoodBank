@@ -29,20 +29,7 @@
     </div>
   </div>
   {{-- </div> --}}
-  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <link rel="stylesheet" href="https://cdn.datatables.net/1.13.4/css/jquery.dataTables.css" />
-  <script type="text/javascript" src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.js"></script>
-  <script type="text/javascript" src=" https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
-
-  <script>
-    $.ajaxSetup({
-      headers: {
-        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
-      }
-    });
-  </script>
-
+  <!-- custom script -->
   <script>
     var table
     $(function() {
@@ -77,19 +64,18 @@
       });
       table.on('draw.dt order.dt search.dt', function() {
         table.column(1, {
-            order: 'applied',
-            search: 'applied'
-          })
+          order: 'applied',
+          search: 'applied'
+        })
       }).draw();
     });
 
     $(document).on('click', '.action-edit', function() {
       let id = $(this).attr("id");
-      let route_url = "{{ URL::route('ngo.detail-donasi', ':id') }}"
+      let route_url = "{{ URL::route('ngo.detailDonasi', ':id') }}"
       route_url = route_url.replace(':id', id);
 
       event.preventDefault();
-      window.location.href = route_url;
       $.ajax({
         url: route_url,
         method: "GET",
@@ -100,12 +86,16 @@
           window.location.href = route_url;
         },
         error: (data) => {
-          if (data.status == "failed") {
+          if (data.responseJSON.status == "failed") {
             Swal.fire({
-              title: 'Terjadi Kesalahan!',
-              icon: 'error',
-              confirmButtonText: 'Oke'
+              title: 'Perhatian!',
+              text: data.responseJSON.message,
+              type: 'error',
+              showConfirmButton: false
             });
+            setTimeout(function() {
+              Swal.close();
+            }, 2000);
           }
         }
       });

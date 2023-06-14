@@ -12,7 +12,34 @@ use Throwable;
 
 class UserController extends Controller
 {
-    public function login(Request $request){
+    public function login(Request $request, $id){
+        //validate page
+        if($id == 1){
+            $user = User::role("admin")->where("email", $request->email)->first();
+            if($user == null){
+                return response()->json([
+                    'status'    => 'fail-verif',
+                    'message'   => 'Admin tidak terdaftar!'
+                ], 400);
+            }
+        }elseif($id == 2){
+            $user = User::role("ngo")->where("email", $request->email)->first();
+            if($user == null){
+                return response()->json([
+                    'status'    => 'fail-verif',
+                    'message'   => 'NGO tidak terdaftar!'
+                ], 400);
+            }
+        }elseif($id == 3){
+            $user = User::role("donatur")->where("email", $request->email)->first();
+            if($user == null){
+                return response()->json([
+                    'status'    => 'fail-verif',
+                    'message'   => 'Donatur tidak terdaftar!'
+                ], 400);
+            }
+        }
+        //start login
         $login = Auth::attempt([
             'email'     => $request->email,
             'password'  => $request->password,
@@ -22,6 +49,9 @@ class UserController extends Controller
             $user = Auth::user()->roles[0]->name;
 
             if($user == "admin"){
+                if($id == 1){
+                    $user = Auth::user();
+                }
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'login-user',
@@ -29,6 +59,9 @@ class UserController extends Controller
                     'route'     => route('admin.dashboard')
                 ], 200);
             }else if($user == "ngo"){
+                if($id == 2){
+
+                }
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'login-user',
@@ -36,6 +69,9 @@ class UserController extends Controller
                     'route'     => route('ngo.dashboard'),
                 ], 200);
             }else if($user == "donatur"){
+                if($id == 3){
+
+                }
                 return response()->json([
                     'status'    => 'ok',
                     'response'  => 'login-user',

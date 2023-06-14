@@ -27,7 +27,7 @@ Route::get('/csrf-token', function () {
 });
 
 Route::prefix('user')->group(function () {
-    Route::post('/login', [UserController::class, 'login'])->name('user.login');
+    Route::post('/login/{id}', [UserController::class, 'login'])->name('user.login');
 });
 
 // Donatur
@@ -50,27 +50,29 @@ Route::prefix('donatur')->group(function () {
     Route::delete('/delete-donasi-konsumsi/{id}', [DonaturController::class, 'deleteDonasiKonsumsi'])->name('donatur.deleteDonasiKonsumsi');
     Route::delete('/delete-donasi/{id}', [DonaturController::class, 'deleteDonasi'])->name('donatur.deleteDonasi');
 });
-
-// NGO
+// login
 Route::prefix('ngo')->group(function () {
     Route::get('/show-login', [NgoController::class, 'showLoginForm'])->name('ngo.showLogin');
     Route::get('/show-register', [NgoController::class, 'showRegisterForm'])->name('ngo.showRegister');
-    Route::get('/login', [NgoController::class, 'login'])->name('ngo.login');
     Route::post('/register', [NgoController::class, 'register'])->name('ngo.register');
-    Route::get('/dashboard', [NgoController::class, 'dashboard'])->name('ngo.dashboard');
-    Route::get('/donasi', [NgoController::class, 'donasi'])->name('ngo.donasi');
-    Route::get('/detail-donasi/{id}', [NgoController::class, 'detailDonasi'])->name('ngo.detail-donasi');
-    Route::put('/donasi-approve/{id}', [NgoController::class, 'donasiApprove'])->name('ngo.donasiApprove');
-    Route::put('/donasi-cancel/{id}', [NgoController::class, 'donasiCancel'])->name('ngo.donasiCancel');
-    Route::post('/edit-pickup/{id}', [NgoController::class, 'editPickup'])->name('ngo.editPickup');
-    Route::post('/waktu-pickup/{id}', [NgoController::class, 'addTimePickup'])->name('ngo.addTimePickup');
-    Route::delete('/delete-pickup/{id}', [NgoController::class, 'deletePickup'])->name('ngo.deletePickup');
-    Route::post('/report-donasi/{id}', [NgoController::class, 'reportDonasi'])->name('ngo.reportDonasi');
-    Route::get('/profile', [NgoController::class, 'getProfile'])->name('ngo.profile');
-    Route::post('/edit-profile', [NgoController::class, 'editProfile'])->name('ngo.edit-profile');
-    Route::get('/logout', [NgoController::class, 'logout'])->name('ngo.logout');
 });
-
+// NGO
+Route::group(['prefix' => 'food-bank',  'middleware' => ['auth']], function () {
+    Route::group(['prefix' => 'ngo', 'middleware' => ['role:ngo'], 'as' => 'ngo.'], function () {
+        Route::get('/dashboard', [NgoController::class, 'dashboard'])->name('dashboard');
+        Route::get('/donasi', [NgoController::class, 'showDonasi'])->name('donasi');
+        Route::get('/detail-donasi/{id}', [NgoController::class, 'detailDonasi'])->name('detailDonasi');
+        Route::put('/donasi-approve/{id}', [NgoController::class, 'approveDonasi'])->name('donasiApprove');
+        Route::put('/donasi-cancel/{id}', [NgoController::class, 'cancelDonasi'])->name('donasiCancel');
+        Route::post('/edit-pickup/{id}', [NgoController::class, 'editPickup'])->name('editPickup');
+        Route::post('/waktu-pickup/{id}', [NgoController::class, 'addTimePickup'])->name('addTimePickup');
+        Route::delete('/delete-pickup/{id}', [NgoController::class, 'deletePickup'])->name('deletePickup');
+        Route::post('/report-donasi/{id}', [NgoController::class, 'reportDonasi'])->name('reportDonasi');
+        Route::get('/profile', [NgoController::class, 'showProfile'])->name('profile');
+        Route::post('/edit-profile', [NgoController::class, 'editProfile'])->name('editProfile');
+        Route::get('/logout', [NgoController::class, 'logout'])->name('logout');
+    });
+});
 // Admin
 Route::prefix('admin')->group(function () {
     Route::get('/show-login', [AdminController::class, 'showLoginForm'])->name('admin.showLogin');
@@ -116,7 +118,6 @@ Route::prefix('admin')->group(function () {
     Route::get('/detail-status-donasi', [AdminController::class, 'detailStatusDonasi'])->name('admin.detail-status-donasi');
     Route::get('/create-status-donasi', [AdminController::class, 'createStatusDonasi'])->name('admin.create-status-donasi');
     Route::get('/logout', [AdminController::class, 'logout'])->name('admin.logout');
-
 });
 
 // Route::get('/tes', [Test::class, 'tesData']);

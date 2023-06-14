@@ -20,37 +20,48 @@
   <!-- CSS Files -->
   <link id="pagestyle" href="{{ asset('assets\backendweb\css\argon-dashboard.css?v=2.0.4') }}" rel="stylesheet" />
   <style>
-    .form-control.datepicker:disabled, .form-control.datepicker[readonly] {
-    background-color: #ffffff;
-    opacity: 1;
+    .form-control.datepicker:disabled,
+    .form-control.datepicker[readonly] {
+      background-color: #ffffff;
+      opacity: 1;
     }
   </style>
 </head>
 
 <body class="">
+   <!-- New Script -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+  <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  </script>
+  @yield('ngo_register_content')
 
-    @yield('ngo_register_content')
+  {{-- Script Tags --}}
 
-    {{-- Script Tags --}}
-    
-      <!--   Core JS Files   -->
-      <script src="{{ asset('assets\backendweb\js\corepopper.min.js') }}"></script>
-      <script src="{{ asset('assets\backendweb\js\corebootstrap.min.js') }}"></script>
-      <script src="{{ asset('assets\backendweb\js\plugins\perfect-scrollbar.min.js') }}"></script>
-      <script src="{{ asset('assets\backendweb\js\plugins\smooth-scrollbar.min.js') }}"></script>
-      <script>
-        var win = navigator.platform.indexOf('Win') > -1;
-        if (win && document.querySelector('#sidenav-scrollbar')) {
-          var options = {
-            damping: '0.5'
-          }
-          Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
-        }
-      </script>
-      <!-- Github buttons -->
-      <script async defer src="https://buttons.github.io/buttons.js"></script>
-      <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
-      <script src="{{ asset('assets\backendweb\js\argon-dashboard.min.js?v=2.0.4') }}"></script>
-    
+  <!--   Core JS Files   -->
+  <script src="{{ asset('assets\backendweb\js\corepopper.min.js') }}"></script>
+  <script src="{{ asset('assets\backendweb\js\corebootstrap.min.js') }}"></script>
+  <script src="{{ asset('assets\backendweb\js\plugins\perfect-scrollbar.min.js') }}"></script>
+  <script src="{{ asset('assets\backendweb\js\plugins\smooth-scrollbar.min.js') }}"></script>
+  <script>
+    var win = navigator.platform.indexOf('Win') > -1;
+    if (win && document.querySelector('#sidenav-scrollbar')) {
+      var options = {
+        damping: '0.5'
+      }
+      Scrollbar.init(document.querySelector('#sidenav-scrollbar'), options);
+    }
+  </script>
+  <!-- Github buttons -->
+  <script async defer src="https://buttons.github.io/buttons.js"></script>
+  <!-- Control Center for Soft Dashboard: parallax effects, scripts for the example pages etc -->
+  <script src="{{ asset('assets\backendweb\js\argon-dashboard.min.js?v=2.0.4') }}"></script>
+
 </body>
+
 </html>

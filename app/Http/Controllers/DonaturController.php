@@ -24,6 +24,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\File as facadesFile;
+use Illuminate\Support\Facades\Validator;
 
 class DonaturController extends Controller
 {
@@ -91,6 +92,28 @@ class DonaturController extends Controller
     public function register(Request $request)
     {
         try{
+            // Validation
+            $rules = [
+                'foto' => 'required|mimes:jpg,jpeg,png,svg',
+                'password' => 'required|min:8',
+                'no_identitas' => 'required|max:20|min:16',
+            ];
+
+            $messages = [
+                'foto.mimes' => 'Hanya menerima extensi JPG, JPEG, PNG, SVG !',
+                'password.min' => 'Password minimal 8 karakter!',
+                'no_identitas.min' => 'No identitas minimal 16 karakter!',
+                'no_identitas.max' => 'No identitas maksimasl 20  karakter!',
+            ];
+
+            $validator = Validator::make($request->all(), $rules, $messages);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'failed',
+                    'message' => $validator->errors()->first()
+                ], 400);
+            }
+
             $data_user = [
                 'nama'  => $request->nama,
                 'email' => $request->email,
@@ -123,7 +146,7 @@ class DonaturController extends Controller
         }catch(Throwable $e){
             return response()->json([
                 'status'    => 'failed',
-                'message'   => 'Terdapat kesalahan!'
+                'message'   => 'Terdapat kesalahan pada sistem!'
             ], 500);
         }
 
