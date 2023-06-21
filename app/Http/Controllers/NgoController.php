@@ -70,7 +70,7 @@ class NgoController extends Controller
             $getDataKonsumsi = $getData->donasi_konsumsi;
             foreach ($getDataKonsumsi as $item) {
                 $data = [
-                    'donasi' => $item['donasi']->id,
+                    'donasi_id' => $item['donasi']->id,
                     'nama' => $item['nama'],
                     'photo' => "default",
                     'deskripsi' => $item['deskripsi'],
@@ -91,6 +91,7 @@ class NgoController extends Controller
             return response()->json([
                 'status' => 'failed',
                 'message' => 'Status Gagal Diubah',
+                'response' => $e
             ], 500);
         }
     }
@@ -220,9 +221,12 @@ class NgoController extends Controller
                     return $tanggal;
                 })
                 ->addColumn('action', function ($query) {
-                    $button = '<button id="' . $query->id . '" class="action-edit btn btn-primary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit user">
+                    $button = '<button id="' . $query->donasi . '" class="action-edit btn btn-primary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
                       Detail
                     </button>';
+                    // $button = '<button id="' . $query->id . '" class="action-edit btn btn-primary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                    //   Detail
+                    // </button>';
 
                     return $button;
                 })
@@ -234,6 +238,55 @@ class NgoController extends Controller
         return view('ngo/ngo_donasi');
     }
 
+    public function tambahPickup(Request $request, $id){
+        try{
+            $user = Auth::user();
+            // get data ngo berdasarkan id user logged in
+            $getData = User::where('email', $user->email)->first();
+            $getNgo = NGO::where('user_id', $getData['id'])->first();
+            $id_ngo = $getNgo->id;
+
+            $dataPickupFirst = Pickup::with("donasiData", "dataKategori", "dataSatuan")->where("donasi_id", $id)->first();
+            $data_waktu_pickup = $dataPickupFirst->waktu_pickup;
+
+            $path = "images/pickup";
+            $requestFile = $request['photo'];
+            $insertImage = File::fileUpload($requestFile, $path);
+            $data = [
+                "donasi_id"     => $id,
+                "nama"          => $request['nama'],
+                "photo"         => $insertImage,
+                "deskripsi"     => $request['deskripsi'],
+                "kategori"      => $request['kategori'],
+                "satuan"        => $request['satuan'],
+                "kuantitas"     => $request['kuantitas'],
+                "expired"       => $request['expired'],
+                "waktu_pickup"  => $data_waktu_pickup
+            ];
+
+            Pickup::create($data);
+
+            $logData = [
+                'donasi_id' => $id,
+                'status_message' => "Picked Up",
+            ];
+
+            LogStatus::create($logData);
+
+            return response()->json([
+                'status'    => 'ok',
+                'response'  => 'created',
+                'message'   => 'Selamat! Data pickup telah ditambahkan.',
+                'route'     => route('ngo.detail-donasi', $id)
+            ], 200);
+        } catch (Throwable $e) {
+            return response()->json([
+                'status'    => 'error',
+                'message'   => 'Tambah Data Pickup Gagal!',
+                'response' => $e
+            ], 500);
+        }
+    }
     public function detailDonasi($id)
     {
         //Current Status
@@ -247,7 +300,9 @@ class NgoController extends Controller
         //informasi donasi konsumsi
         $dataDonasiKonsumsi = DonasiKonsumsi::with("donasi", "dataKategori", "dataSatuan")->where("donasi_id", $id)->get();
         //informasi data pickup
-        $dataPickup = Pickup::with("donasiData", "dataKategori", "dataSatuan")->where("donasi", $id)->get();
+        $dataPickup = Pickup::with("donasiData", "dataKategori", "dataSatuan")->where("donasi_id", $id)->get();
+
+        $countDataPickup = $dataPickup->count();
         //Get Data Report Donasi
         $dataReport = LaporanDonasi::where("donasi_id", $id)->count();
         //constanta untuk form
@@ -262,7 +317,8 @@ class NgoController extends Controller
             "dataPickup" => $dataPickup,
             "dataReport" => $dataReport,
             "kategori" => $kategori,
-            "satuan" => $satuan
+            "satuan" => $satuan,
+            "countDataPickup" => $countDataPickup
         ];
         return view('ngo/ngo_detail_donasi', $data);
     }
@@ -273,7 +329,7 @@ class NgoController extends Controller
             $data = [
                 "waktu_pickup" => $request->WaktuPembuatan,
             ];
-            Pickup::where("donasi", $id)->update($data);
+            Pickup::where("donasi_id", $id)->update($data);
             //update status to pickedup
             Donasi::where("id", $id)->update(['status_donasi' => 4]);
             //insert to log
@@ -380,11 +436,13 @@ class NgoController extends Controller
             $rules = [
                 'pic_foto' => 'required|mimes:jpg,jpeg,png,svg',
                 'password' => 'required|min:8',
+                'no_identitas' => 'required|min:12',
             ];
 
             $messages = [
                 'pic_foto.mimes' => 'Hanya menerima extensi JPG, JPEG, PNG, SVG !',
                 'password.min' => 'Password minimal 8 karakter!',
+                'no_identitas.min' => 'Nomor Identitas minimal 12 karakter!',
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);
@@ -478,11 +536,13 @@ class NgoController extends Controller
             $rules = [
                 'pic_foto' => 'mimes:jpg,jpeg,png,svg',
                 'password' => 'min:8',
+                'no_identitas' => 'required|min:12',
             ];
 
             $messages = [
                 'pic_foto.mimes' => 'Hanya menerima extensi JPG, JPEG, PNG, SVG !',
                 'password.min' => 'Password minimal 8 karakter!',
+                'no_identitas.min' => 'Nomor Identitas minimal 12 karakter!',
             ];
 
             $validator = Validator::make($request->all(), $rules, $messages);

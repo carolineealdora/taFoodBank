@@ -45,10 +45,12 @@
             <div class="form-group col-md-12">
               <label for="foto_profil" class="form-control-label">Foto Profil</label>
             {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
-            <input class="form-control" type="file" id="fotoProfil" name="fotoProfil" value="{{ old('foto_profil') }}" onchange="previewImage()">
-            @error('foto_profil')
+            {{-- <input class="form-control" type="file" id="fotoProfil" name="fotoProfil" value="{{ old('foto_profil') }}" onchange="previewImage()"> --}}
+            <input class="form-control" type="file" id="fotoProfil" name="fotoProfil">
+            <p><small style="color: red;">* Jika tidak ingin diubah harap dikosongkan</small></p>
+            {{-- @error('foto_profil')
               <p class="text-danger">{{ $message }}</p>
-            @enderror
+            @enderror --}}
             </div>
             <div class="col-md-6">
               <div class="form-group">
@@ -76,7 +78,8 @@
               <div class="form-group">
                 <label for="password" class="form-control-label">Password</label>
                 <input class="form-control" type="password" id="password" name="password" value="">
-              </div>
+                <p><small style="color: red;">* Jika tidak ingin diubah harap dikosongkan</small></p>
+            </div>
             </div>
           </div>
         </div>
@@ -161,8 +164,8 @@
                         Swal.fire({
                         title: 'Perhatian!',
                         text: data.responseJSON.message,
-                        icon: 'error',
-                        confirmButtonText: 'Oke'
+                        type: 'error',
+                        showConfirmButton: false
                         });
                         setTimeout(function() {
                         Swal.close();
@@ -174,8 +177,8 @@
                 Swal.fire({
                     title: 'Perhatian!',
                     text: 'Status Gagal Diubah!',
-                    icon: 'error',
-                    confirmButtonText: 'Oke'
+                    type: 'error',
+                    showConfirmButton: false
                 });
                 setTimeout(function() {
                     Swal.close();

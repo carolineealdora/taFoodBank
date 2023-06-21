@@ -105,8 +105,8 @@
           if (data.status == "failed") {
             Swal.fire({
               title: 'Terjadi Kesalahan!',
-              icon: 'error',
-              confirmButtonText: 'Oke'
+              type: 'error',
+              showConfirmButton: false
             });
           }
         }
@@ -152,8 +152,8 @@
               if (data.status == "failed") {
                 Swal.fire({
                   title: 'Terjadi Kesalahan!',
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();

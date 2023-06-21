@@ -149,7 +149,7 @@
                         <select class="form-control" id="kotaPickup" name="kotaPickup" required>
                             @foreach($kota as $city)
                             <option value="{{$city->id}}" @if($city->id == $dataDonasi->kota) selected @endif>{{$city->nama}}</option>
-                            @endforeach 
+                            @endforeach
                         </select>
                       </div>
                       <div class="form-group">
@@ -372,7 +372,13 @@
                 </div>
                 <div class="form-group">
                   <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
+                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
+                  {{-- <input class="form-control" type="file" id="donasiFoto" name="donasiFoto" value="{{ old('AdminFoto') }}" onchange="previewImage()"> --}}
                   <input class="form-control" type="file" id="donasiFoto" name="donasiFoto">
+                  <p><small style="color: red;">* Jika tidak ingin diubah harap dikosongkan</small></p>
+                  {{-- @error('AdminFoto')
+                  <p class="text-danger">{{ $message }}</p>
+                  @enderror --}}
                 </div>
                 <div class="form-group">
                   <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
@@ -430,7 +436,12 @@
                 </div>
                 <div class="form-group">
                   <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
+                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
+                  {{-- <input class="form-control" type="file" id="donasiFoto" name="photo" value="{{ old('donasiFoto') }}"> --}}
                   <input class="form-control" type="file" id="donasiFoto" name="photo">
+                  {{-- @error('donasiFoto')
+                  <p class="text-danger">{{ $message }}</p>
+                  @enderror --}}
                 </div>
                 <div class="form-group">
                   <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
@@ -535,7 +546,7 @@
             },
 
             error: (data) => {
-              if (data.responseJSON.status == "failed") {
+              if (data.responseJSON.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
                   text: data.responseJSON.message,
@@ -620,7 +631,7 @@
             title: 'Perhatian!',
             text: "Update Data Gagal!",
             type: 'error',
-            showConfirmButton: 'Oke'
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();
@@ -663,8 +674,8 @@
                 Swal.fire({
                   title: 'Perhatian!',
                   text: data.responseJSON.message,
-                  icon: 'error',
-                  confirmButtonText: false
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -731,8 +742,12 @@
 
             error: (data) => {
               if (data.responseJSON.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
+                  text: data.responseJSON.message,
+                  type: 'error',
+                  showConfirmButton: false
                   text: data.responseJSON.message,
                   type: 'error',
                   showConfirmButton: false

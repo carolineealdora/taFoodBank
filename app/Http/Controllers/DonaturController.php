@@ -132,7 +132,7 @@ class DonaturController extends Controller
         }catch(Throwable $e){
             return response()->json([
                 'status'    => 'failed',
-                'message'   => 'Terdapat kesalahan pada sistem!'
+                'message'   => 'Maaf, terdapat masalah. Anda gagal terdaftar.'
             ], 500);
         }
 
@@ -217,7 +217,7 @@ class DonaturController extends Controller
         }catch(Throwable $e){
             return response()->json([
                 'status'    => 'failed',
-                'message'   => 'Terdapat kesalahan!'
+                'message'   => 'Data profile gagal diubah'
             ], 500);
         }
     }
@@ -301,8 +301,7 @@ class DonaturController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => $e,
-                // 'message' => $e,
+                'message' => 'Donasi gagal terkirim',
             ], 500);
         }
     }
@@ -353,8 +352,7 @@ class DonaturController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => $e,
-                // 'message' => $e,
+                'message' => 'Donasi gagal ditambahkan',
             ], 500);
         }
     }
@@ -403,7 +401,7 @@ class DonaturController extends Controller
         } catch (Throwable $e) {
             return response()->json([
                 'status' => 'error',
-                'response' => $e,
+                'message' => 'Data donasi gagal diubah',
             ], 500);
 
         }
@@ -434,7 +432,7 @@ class DonaturController extends Controller
         }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',
-                'response' => $e,
+                'message' => 'Data pickup gagal diubah',
             ], 500);
         }
     }
@@ -486,12 +484,12 @@ class DonaturController extends Controller
                     ->addColumn('action', function ($query){
                         $button = '
                         <div>
-                        <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                        <button id="' . $query->donasi . '" class="action-detail btn btn-primary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
                           <span style="color : white">Detail</span>
                         </button>
                         </div>
                         <div>
-                        <button id="' . $query->id . '" class="action-hapus btn btn-danger btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
+                        <button id="' . $query->donasi . '" class="action-hapus btn btn-danger btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Edit">
                             <span style="color : white">Hapus</span>
                         </button>
                         </div>
@@ -507,7 +505,7 @@ class DonaturController extends Controller
         }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',
-                'response' => $e,
+                'message' => 'Terdapat kesalahan!',
             ], 500);
         }
     }
@@ -553,7 +551,7 @@ class DonaturController extends Controller
         }catch(Throwable $e){
             return response()->json([
                 'status' => 'error',
-                'response' => $e,
+                'message' => 'Terdapat kesalahan!',
             ], 500);
         }
     }
@@ -576,7 +574,7 @@ class DonaturController extends Controller
         }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',
-                'response' => $e,
+                'message' => 'Data gagal dihapus.',
             ], 500);
         }
     }
@@ -601,7 +599,7 @@ class DonaturController extends Controller
         }catch (Throwable $e){
             return response()->json([
                 'status' => 'error',
-                'response' => $e,
+                'message' => 'Data gagal dihapus',
             ], 500);
         }
     }

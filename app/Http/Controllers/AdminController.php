@@ -169,7 +169,7 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                    <button id="' . $query->id . '" class="action-detail btn btn-primary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
                         <span style="color : white">Detail</span>
                     </button>
                     </div>
@@ -227,7 +227,7 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                    <button id="' . $query->id . '" class="action-detail btn btn-primary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
                         <span style="color : white">Detail</span>
                     </button>
                     </div>
@@ -806,7 +806,7 @@ class AdminController extends Controller
                     ->addColumn('action', function ($query){
                         $button = '
                         <div>
-                        <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                        <button id="' . $query->donasi . '" class="action-detail btn btn-primary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
                           <span style="color : white">Detail</span>
                         </button>
                         </div>
@@ -841,7 +841,7 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                    <button id="' . $query->id . '" class="action-detail btn btn-primary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
                         <span style="color : white">Detail</span>
                     </button>
                     </div>
@@ -976,7 +976,7 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                    <button id="' . $query->id . '" class="action-detail btn btn-primary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
                         <span style="color : white">Detail</span>
                     </button>
                     </div>
@@ -1102,7 +1102,7 @@ class AdminController extends Controller
                 ->addColumn('action', function ($query) {
                     $button = '
                     <div>
-                    <button id="' . $query->id . '" class="action-detail btn btn-secondary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
+                    <button id="' . $query->id . '" class="action-detail btn btn-primary btn-sm text-secondary font-weight-bold text-xs edit-item" data-toggle="tooltip" data-original-title="Detail">
                         <span style="color : white">Detail</span>
                     </button>
                     </div>

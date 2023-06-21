@@ -18,7 +18,7 @@
                     </nav>
                 </div>
             </div>
-            <div class="col-md-3 col-md-offset-1 col-sm-3">
+            {{-- <div class="col-md-3 col-md-offset-1 col-sm-3">
                 <div class="info">
                     <h5 class="title"> Help and Support</h5>
                      <nav>
@@ -41,8 +41,8 @@
                         </ul>
                     </nav>
                 </div>
-            </div>
-            <div class="col-md-3 col-sm-3">
+            </div> --}}
+            {{-- <div class="col-md-3 col-sm-3">
                 <div class="info">
                     <h5 class="title">Latest News</h5>
                     <nav>
@@ -61,8 +61,8 @@
                         </ul>
                     </nav>
                 </div>
-            </div>
-            <div class="col-md-2 col-md-offset-1 col-sm-3">
+            </div> --}}
+            {{-- <div class="col-md-2 col-md-offset-1 col-sm-3">
                 <div class="info">
                     <h5 class="title">Follow us on</h5>
                     <nav>
@@ -90,7 +90,7 @@
                         </ul>
                     </nav>
                 </div>
-            </div>
+            </div> --}}
         </div>
         <hr>
         <div class="copyright">

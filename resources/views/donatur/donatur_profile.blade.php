@@ -49,84 +49,91 @@
             </ul>
           </div>
         </div> --}}
-</div>
-</div>
-</div>
-<div class="container-fluid py-4">
-  <div class="row">
-    <div class="col-md-12">
-      <div class="card">
-        <div class="card-header pb-0">
-          <div class="d-flex align-items-center">
-            <p class="mb-0">Edit Profile</p>
-            <button class="btn btn-primary btn-sm ms-auto save">Simpan Perubahan</button>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid py-4">
+    <div class="row">
+      <div class="col-md-12">
+        <div class="card">
+          <div class="card-header pb-0">
+            <div class="d-flex align-items-center">
+              <p class="mb-0">Edit Profile</p>
+              <button class="btn btn-primary btn-sm ms-auto save">Simpan Perubahan</button>
+            </div>
           </div>
-        </div>
-        <div class="card-body">
-          <p class="text-uppercase text-sm">Data Profile</p>
-          <div class="row">
-            <div class="form-group col-md-12">
-              <label for="foto" class="form-control-label">Foto Profile</label>
+          <div class="card-body">
+            <p class="text-uppercase text-sm">Data Profile</p>
+            <div class="row">
+              <div class="form-group col-md-12">
+                <label for="foto" class="form-control-label">Foto Profile</label>
+              {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
+              {{-- <input class="form-control" type="file" id="foto" name="foto" value="{{ old('foto') }}" onchange="previewImage()"> --}}
               <input class="form-control" type="file" id="foto" name="foto">
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="nama" class="form-control-label">Nama</label>
-                <input class="form-control" id="nama" name="nama" type="text" value="{{ $data->nama }}" required>
+              <p><small style="color: red;">* Jika tidak ingin diubah harap dikosongkan</small></p>
+              {{-- @error('foto')
+                <p class="text-danger">{{ $message }}</p>
+              @enderror --}}
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="nomor identitas" class="form-control-label">Nomor Identitas</label>
-                <input class="form-control" id="noIdentitas" name="noIdentitas" type="text" value="{{ $data['donatur']->no_identitas }}" required>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nama" class="form-control-label">Nama</label>
+                  <input class="form-control" id="nama" name="nama" type="text" value="{{ $data->nama }}">
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="tanggal lahir" class="form-control-label">Tanggal Lahir</label>
-                <input class="form-control" id="tanggalLahir" name="tanggalLahir" type="text" value="{{ $data['donatur']->tanggal_lahir }}" required>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nomor identitas" class="form-control-label">Nomor Identitas</label>
+                  <input class="form-control" id="noIdentitas" name="noIdentitas" type="text" value="{{ $data['donatur']->no_identitas }}">
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="nomor telepon" class="form-control-label">Nomor Telepon</label>
-                <input class="form-control" id="noTelp" name="noTelp" type="text" value="{{ $data['donatur']->no_telp }}" required>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="tanggal lahir" class="form-control-label">Tanggal Lahir</label>
+                  <input class="form-control" id="tanggalLahir" name="tanggalLahir" type="text" value="{{ $data['donatur']->tanggal_lahir }}">
+                </div>
               </div>
-            </div>
-            <div class="col-md-12">
-              <div class="form-group">
-                <label for="alamat" class="form-control-label">Alamat Lengkap</label>
-                <input class="form-control" id="alamat" name="alamat" type="text" value="{{ $data['donatur']->alamat }}" required>
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="nomor telepon" class="form-control-label">Nomor Telepon</label>
+                  <input class="form-control" id="noTelp" name="noTelp" type="text" value="{{ $data['donatur']->no_telp }}">
+                </div>
               </div>
+              <div class="col-md-12">
+                <div class="form-group">
+                    <label for="alamat" class="form-control-label">Alamat Lengkap</label>
+                    <input class="form-control" id="alamat" name="alamat" type="text" value="{{ $data['donatur']->alamat }}">
+                </div>
+                </div>
             </div>
-          </div>
-          <hr class="horizontal dark">
-          <p class="text-uppercase text-sm">Informasi Log in</p>
-          <div class="row">
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="email" class="form-control-label">Email</label>
-                <input class="form-control" id="email" name="email" type="email" value="{{ $data->email }}" required>
+            <hr class="horizontal dark">
+            <p class="text-uppercase text-sm">Informasi Log in</p>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="email" class="form-control-label">Email</label>
+                  <input class="form-control" id="email" name="email" type="email" value="{{ $data->email }}">
+                </div>
               </div>
-            </div>
-            <div class="col-md-6">
-              <div class="form-group">
-                <label for="password" class="form-control-label">Password</label>
-                <input class="form-control" id="password" name="password" type="password" value="">
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="password" class="form-control-label">Password</label>
+                  <input class="form-control" id="password" name="password" type="password" value="">
+                  <p><small style="color: red;">* Jika tidak ingin diubah harap dikosongkan</small></p>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
     </div>
-  </div>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-  <script type="text/javascript">
-    //preview image
-    function previewImage() {
-      const image = document.querySelector('#foto');
-      const imgPreview = document.querySelector('.img-preview');
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script type="text/javascript">
+        //preview image
+        function previewImage(){
+            const image = document.querySelector('#foto');
+            const imgPreview = document.querySelector('.img-preview');
 
       imgPreview.style.display = 'block';
 
@@ -162,64 +169,66 @@
       formData.append('email', document.querySelector('#email').value);
       formData.append('password', document.querySelector('#password').value);
 
-      Swal.fire({
-        title: "Apakah anda yakin ingin mengubah data profile?",
-        showCancelButton: true,
-        confirmButtonText: "Ya",
-        cancelButtonText: "Batal",
-        confirmButtonColor: "#28a745",
-        cancelButtonColor: "#dc3545",
-        focusConfirm: true,
-        focusCancel: false
-      }).then(result => {
-        if (result.value == true) {
-          $.ajax({
-            type: "POST", // Change the request type to POST
-            enctype: 'multipart/form-data',
-            processData: false,
-            contentType: false,
-            url: route_url,
-            data: formData, // Pass the formData object as the data to be sent
-            success: function(data) {
+            console.log(formData, 'ini form data');
 
-              Swal.fire({
-                title: 'Berhasil!',
-                type: "success",
-                text: data.message,
-                showConfirmButton: false,
-              });
-              setTimeout(function() {
-                Swal.close();
-                window.location.href = data.route;
-              }, 2000);
-            },
-            error: (data) => {
-
-              if (data.responseJSON.status == "failed") {
+            Swal.fire({
+                title: "Apakah anda yakin ingin mengubah data profile?",
+                showCancelButton: true,
+                confirmButtonText: "Ya",
+                cancelButtonText: "Batal",
+                confirmButtonColor: "#28a745",
+                cancelButtonColor: "#dc3545",
+                focusConfirm: true,
+                focusCancel: false
+            }).then(result => {
+                if (result.value == true) {
+                $.ajax({
+                    type: "POST", // Change the request type to POST
+                    enctype: 'multipart/form-data',
+                    processData: false,
+                    contentType: false,
+                    url: route_url,
+                    data: formData, // Pass the formData object as the data to be sent
+                    success: function(data) {
+                    console.log(data)
+                    Swal.fire({
+                        title: 'Berhasil!',
+                        type: "success",
+                        text: data.message,
+                        showConfirmButton: false,
+                    });
+                    setTimeout(function() {
+                        Swal.close();
+                        window.location.href = data.route;
+                    }, 2000);
+                    },
+                    error: (data) => {
+                    console.log(data)
+                    if (data.responseJSON.status == "failed") {
+                        Swal.fire({
+                        title: 'Perhatian!',
+                        text: data.responseJSON.message,
+                        type: 'error',
+                        showConfirmButton: false
+                        });
+                        setTimeout(function() {
+                        Swal.close();
+                        }, 2000);
+                    }
+                    }
+                })
+                } else {
                 Swal.fire({
-                  title: 'Perhatian!',
-                  text: data.responseJSON.message,
-                  type: 'error',
-                  showConfirmButton: false
+                    title: 'Perhatian!',
+                    text: 'Status Gagal Diubah!',
+                    type: 'error',
+                    showConfirmButton: false
                 });
                 setTimeout(function() {
-                  Swal.close();
+                    Swal.close();
                 }, 2000);
-              }
-            }
-          })
-        } else {
-          Swal.fire({
-            title: 'Perhatian!',
-            text: 'Status Gagal Diubah!',
-            icon: 'error',
-            confirmButtonText: 'Oke'
-          });
-          setTimeout(function() {
-            Swal.close();
-          }, 2000);
-        }
-      })
-    })
-  </script>
-  @endsection
+                }
+            })
+        })
+      </script>
+@endsection

@@ -34,7 +34,12 @@
                   </div>
                   <div class="form-group">
                     <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
-                  <input class="form-control" type="file" id="donasiFoto" name="photo" required>
+                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
+                  {{-- <input class="form-control" type="file" id="donasiFoto" name="photo" value="{{ old('donasiFoto') }}" onchange="previewImage()"> --}}
+                  <input class="form-control" type="file" id="donasiFoto" name="photo">
+                  {{-- @error('donasiFoto')
+                    <p class="text-danger">{{ $message }}</p>
+                  @enderror --}}
                   </div>
                   <div class="form-group">
                     <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
@@ -168,7 +173,7 @@
       const getFormDonasi = document.getElementById('formDonasi');
       const getFormPickup = document.getElementById('formPickup');
 
-   
+
     const formDonasi = new FormData();
 
     // loop semua fields group donasi

@@ -118,6 +118,28 @@
         }
       });
     });
+        event.preventDefault();
+        window.location.href = route_url;
+        $.ajax({
+          url: route_url,
+          method: "GET",
+          contentType: false,
+          cache: false,
+          processData: false,
+          success: function(data) {
+            window.location.href = route_url;
+          },
+          error: (data) => {
+            if (data.status == "failed") {
+              Swal.fire({
+                title: 'Terjadi Kesalahan!',
+                type: 'error',
+                showConfirmButton: false
+              });
+            }
+          }
+        });
+      });
 
     $(document).on('click', '.action-hapus', function() {
       let id = $(this).attr("id");
@@ -171,5 +193,5 @@
         }
       })
     });
-  </script>
-  @endsection
+    </script>
+@endsection

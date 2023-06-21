@@ -24,7 +24,7 @@ return new class extends Migration
             $table->foreign('satuan')->references('id')->on('satuan');
             $table->integer('kuantitas');
             $table->date('expired');
-            $table->dateTime('waktu_pickup');
+            $table->dateTime('waktu_pickup')->nullable()->change();
             $table->timestamps();
         });
 

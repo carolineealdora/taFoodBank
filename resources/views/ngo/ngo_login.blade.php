@@ -48,6 +48,13 @@
 </main>
 <!-- custom script -->
 <script>
+    $.ajaxSetup({
+      headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+      }
+    });
+  </script>
+<script>
   $('#login-form').on('submit', function(event) {
     event.preventDefault();
     let dataForm = new FormData($(this)[0]);

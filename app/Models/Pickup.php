@@ -12,7 +12,7 @@ class Pickup extends Model
     protected $table = 'pickup';
 
     protected $fillable =[
-        'donasi',
+        'donasi_id',
         'nama',
         'photo',
         'deskripsi',
@@ -20,6 +20,7 @@ class Pickup extends Model
         'satuan',
         'kuantitas',
         'expired',
+        'waktu_pickup'
     ];
 
     public function donasiData(){

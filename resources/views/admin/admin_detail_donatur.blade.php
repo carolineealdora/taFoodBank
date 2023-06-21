@@ -144,17 +144,17 @@
               });
               setTimeout(function() {
                 Swal.close();
-                // window.location.href = data.route;
+                window.location.href = data.route;
               }, 2000);
             },
 
             error: (data) => {
-              if (data.status == "failed") {
+              if (data.responseJSON.status == "failed") {
                 Swal.fire({
                   title: 'Perhatian!',
-                  text: data.message,
-                  icon: 'error',
-                  confirmButtonText: 'Oke'
+                  text: data.responseJSON.message,
+                  type: 'error',
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -166,8 +166,8 @@
           Swal.fire({
             title: 'Perhatian!',
             text: "Update Data Gagal!",
-            icon: 'error',
-            confirmButtonText: 'Oke'
+            type: 'error',
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();
@@ -217,7 +217,7 @@
                   title: 'Perhatian!',
                   text: data.responseJSON.message,
                   icon: 'error',
-                  confirmButtonText: 'Oke'
+                  showConfirmButton: false
                 });
                 setTimeout(function() {
                   Swal.close();
@@ -230,7 +230,7 @@
             title: 'Perhatian!',
             text: 'Data Gagal Dihapus!',
             icon: 'error',
-            confirmButtonText: 'Oke'
+            showConfirmButton: false
           });
           setTimeout(function() {
             Swal.close();

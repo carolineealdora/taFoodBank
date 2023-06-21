@@ -19,7 +19,7 @@
                             Lebih Lanjut
                         </a>
                     </div>
-                </div>     
+                </div>
             </div>
         </div>
     </div>
@@ -47,10 +47,10 @@
                     <div class="button-get-started mb-10">
                         <a href="#sectiondonatur" class="btn btn-danger btn-fill btn-lg">Penjelasan Soal Donatur</a>
                     </div>
-                    <p class="text-muted" style="margin-top: 30px;">Ingin langsung menjadi donatur?</p>
+                    {{-- <p class="text-muted" style="margin-top: 30px;">Ingin langsung menjadi donatur?</p>
                     <div class="button-get-started">
                         <a href="{{ URL::route('donatur.showLogin') }}" class="btn btn-danger btn-fill btn-md">Log in Donatur</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
             <div class="col-md-4" id="penjelasan">
@@ -75,10 +75,10 @@
                     <div class="button-get-started">
                         <a href="#sectionngo" class="btn btn-danger btn-fill btn-lg">Penjelasan Soal NGO</a>
                     </div>
-                    <p class="text-muted" style="margin-top: 30px;">Ingin mendaftarkan NGO Anda?</p>
+                    {{-- <p class="text-muted" style="margin-top: 30px;">Ingin mendaftarkan NGO Anda?</p>
                     <div class="button-get-started">
                         <a href="{{ URL::route('ngo.showLogin') }}" class="btn btn-danger btn-fill btn-md">Log in NGO</a>
-                    </div>
+                    </div> --}}
                 </div>
             </div>
         </div>
@@ -96,7 +96,7 @@
                     <div class="title-area">
                         <h2>Who We Are</h2>
                         <div class="separator separator-danger">✻</div>
-                        <p class="description">FoodBank Kita merupakan sistem manajemen berbasis web yang menghubungkan donatur dengan NGO untuk memudahkan proses pendataan dan 
+                        <p class="description">FoodBank Kita merupakan sistem manajemen berbasis web yang menghubungkan donatur dengan NGO untuk memudahkan proses pendataan dan
                             pelaporan hasil distribusi surplus makanan sebagai usaha mendukung jalannya program SGDs</p>
                     </div>
                 </div>
@@ -222,7 +222,7 @@
             <div class="title-area">
                 <h2 class="text-white">Ingin jadi mitra NGO FoodBank Kita?</h2>
                 <div class="separator line-separator">♦</div>
-                <p class="description"> Dengan menjadi mitra FoodBank Kita, pihak NGO dapat memudahkan operasional program food bank serta meningkatkan kepercayaan donatur serta masyarakat. 
+                <p class="description"> Dengan menjadi mitra FoodBank Kita, pihak NGO dapat memudahkan operasional program food bank serta meningkatkan kepercayaan donatur serta masyarakat.
                     Melalui sistem web FoodBank Kita, NGO dapat terhubung dengan donatur secara lebih mudah. Pengelolaan data donasi yang diterima serta pelaporan hasil distribusi donasi juga dapat dilakukan melalui sistem FoodBank Kita. </p>
             </div>
             <div class="button-get-started">
@@ -230,5 +230,5 @@
             </div>
         </div>
     </div>
-</div>    
+</div>
 @endsection

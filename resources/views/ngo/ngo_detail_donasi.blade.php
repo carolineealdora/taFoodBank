@@ -154,7 +154,7 @@
                   </ul>
                 </div>
                 @endforeach
-                @if($dataDonasi->status_donasi == 0)
+                @if($dataDonasi->status_donasi == 1)
                 <div class="row">
                   <button id="{{$dataDonasi->id}}" class="btn btn-success btn-sm ms-auto col-md-6 approve">Approve</button>
                   <button id="{{$dataDonasi->id}}" class="btn btn-danger btn-sm ms-auto col-md-6 reject">Reject</button>
@@ -170,8 +170,13 @@
           <div class="col-md-12">
             <div class="card">
               <div class="card-header pb-0">
-                <div class="d-flex align-items-center">
-                  <p class="mb-0">Data Pick Up Donasi</p>
+                <div class="row col-12">
+                    <div class="d-flex align-items-center col-6">
+                        <p class="mb-0">Data Pick Up Donasi</p>
+                      </div>
+                      <div class="col-6 text-end">
+                          <button action="" id="" value="" type="button" class="open-modal btn btn-link text-dark px-3 mb-0" data-bs-toggle="modal" data-bs-target="#modalAddPickup"><a class="btn bg-gradient-dark mb-0"><i class="fas fa-plus"></i>&nbsp;&nbsp;Tambah Data Pickup</a></button>
+                      </div>
                 </div>
               </div>
               <div class="card-body">
@@ -217,15 +222,17 @@
                 </div>
                 @endforeach
                 <hr class="horizontal dark">
-                @if($dataPickup[0]->waktu_pickup == "")
-                <p class="text-uppercase text-sm">Bukti Pick Up Donasi</p>
-                <form id="add-tanggal-form" action="{{ URL::route('ngo.addTimePickup', ['id' => $dataDonasi->id]) }}" method="post" role="form">
-                  <div class="form-group">
-                    <label for="WaktuExpired" class="form-control-label">Tanggal & Waktu Pick Up</label>
-                    <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="datetime-local" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
-                  </div>
-                  <button type="submit" class="btn btn-success btn-sm ms-auto col-12">Submit</button>
-                </form>
+                @if($countDataPickup > 0)
+                    @if($dataPickup[0]->waktu_pickup == "")
+                    <p class="text-uppercase text-sm">Bukti Pick Up Donasi</p>
+                    <form id="add-tanggal-form" action="{{ URL::route('ngo.addTimePickup', ['id' => $dataDonasi->id]) }}" method="post" role="form">
+                    <div class="form-group">
+                        <label for="WaktuPickup" class="form-control-label">Tanggal & Waktu Pick Up</label>
+                        <input class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="datetime-local" id="datepicker" name="WaktuPembuatan" value="{{ old('WaktuPembuatan') }}" required>
+                    </div>
+                    <button type="submit" class="btn btn-success btn-sm ms-auto col-12">Submit</button>
+                    </form>
+                    @endif
                 @endif
               </div>
             </div>
@@ -268,7 +275,7 @@
       </div>
     </div>
   </div>
-  <!-- Form Modal -->
+  <!-- Edit Form Modal -->
   <div id="formModal" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -327,6 +334,70 @@
     </div>
   </div>
   <!-- End Form Modal -->
+  <!-- Modal Add Donasi-->
+ <div id="modalAddPickup" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" class="text-uppercase text-sm">Form Data Donasi</h5>
+        </div>
+        <div class="modal-body">
+          <form id="add-pickup-form" action="{{ $dataDonasi->id }}" method="post" enctype="multipart/form-data" role="form">
+            <div class="row">
+              <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label for="example-text-input" class="form-control-label">Nama Makanan/Minuman</label>
+                  <input id="nama" name="nama" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group">
+                  <label for="deskripsiDonasi" class="form-control-label">Deskripsi</label>
+                  <input id="deskripsi" name="deskripsi" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group">
+                  <label for="donatur_donasiFoto" class="form-control-label">Foto Makanan/Minuman</label>
+                  {{-- <img class="img-preview mb-3" height="30%" width="30%"> --}}
+                  {{-- <input class="form-control" type="file" id="donasiFoto" name="photo" value="{{ old('donasiFoto') }}"> --}}
+                  <input class="form-control" type="file" id="donasiFoto" name="photo">
+                  {{-- @error('donasiFoto')
+                  <p class="text-danger">{{ $message }}</p>
+                  @enderror --}}
+                </div>
+                <div class="form-group">
+                  <label for="WaktuExpired" class="form-control-label">Perkiraan Tanggal Expired</label>
+                  {{-- <input id="expired" name="expired" class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="datetime-local" id="datepicker" name="WaktuPembuatan" value="" required> --}}
+                  <input id="expired" name="expired" class="form-control datepicker" placeholder="Silahkan Pilih Tanggal" type="datetime-local" value="" required>
+                </div>
+              </div>
+              <div class="form-group col-md-6">
+                <div class="form-group">
+                  <label for="kategoriDonasi">Kategori</label>
+                  <select id="kategori" name="kategori" class="form-control">
+                    @foreach($kategori as $category)
+                    <option value="{{$category->id}}">{{$category->nama}}</option>
+                    @endforeach
+                  </select>
+                </div>
+                <div class="form-group">
+                  <label for="kuantitasDonasi" class="form-control-label">Kuantitas</label>
+                  <input id="kuantitas" name="kuantitas" class="form-control" type="text" value="">
+                </div>
+                <div class="form-group">
+                  <label for="satuanDonasi">Satuan</label>
+                  <select id="satuan" name="satuan" class="form-control" id="satuanDonasi">
+                    @foreach($satuan as $metric)
+                    <option value="{{$metric->id}}">{{$metric->nama}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div>
+            </div>
+            <button type="submit" id="action" value="" class="confirm btn btn-primary btn-sm ms-auto">Simpan</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- End Modal Add Donasi -->
   <!-- custom script -->
   <script>
     $(document).on('click', '.open-modal', function(event) {
@@ -402,6 +473,73 @@
             text: "Update Data Gagal!",
             type: 'error',
             showConfirmButton: false,
+          });
+          setTimeout(function() {
+            Swal.close();
+          }, 2000);
+        }
+      })
+    });
+
+    $('#add-pickup-form').on('submit', function(event) {
+      event.preventDefault();
+      var id = $(this).attr('action');
+      let route_url = "{{ URL::route('ngo.tambahPickup', ':id') }}"
+      route_url = route_url.replace(':id', id);
+
+      let dataForm = new FormData($(this)[0]);
+
+      Swal.fire({
+        title: "Apakah data yang anda masukan benar?",
+        showCancelButton: true,
+        confirmButtonText: "Ya",
+        cancelButtonText: "Batal",
+        confirmButtonColor: "#28a745",
+        cancelButtonColor: "#dc3545",
+        focusConfirm: true,
+        focusCancel: false
+      }).then(result => {
+        if (result.value == true) {
+          $.ajax({
+            url: route_url,
+            type: "POST",
+            data: dataForm,
+            contentType: false,
+            cache: false,
+            processData: false,
+            success: function(data) {
+              Swal.fire({
+                title: 'Berhasil!',
+                type: "success",
+                text: data.message,
+                showConfirmButton: false,
+              });
+              setTimeout(function() {
+                Swal.close();
+                // window.location.href = data.route;
+              }, 2000);
+            },
+
+            error: (data) => {
+              if (data.status == "failed") {
+                Swal.fire({
+                  title: 'Perhatian!',
+                  text: data.message,
+                  icon: 'error',
+                  confirmButtonText: 'Oke'
+                });
+                setTimeout(function() {
+                  Swal.close();
+                }, 2000);
+              }
+            }
+          });
+        } else {
+          Swal.fire({
+            title: 'Perhatian!',
+            text: "Update Data Gagal!",
+            icon: 'error',
+            confirmButtonText: 'Oke'
           });
           setTimeout(function() {
             Swal.close();

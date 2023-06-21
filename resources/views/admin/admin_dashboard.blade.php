@@ -68,7 +68,7 @@
     </div>
     <div class="col-xl-12 col-sm-6 mt-4">
       <div class="card">
-        <div class="card-body p-3">
+        <div class="card-body p-4">
           <div class="row">
             <div class="col-8">
               <div class="numbers">

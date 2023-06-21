@@ -74,12 +74,12 @@
               },
 
               error: (data) => {
-                if (data.status == "failed") {
+                if (data.responseJSON.status == "failed") {
                   Swal.fire({
                     title: 'Perhatian!',
-                    text: data.message,
-                    icon: 'error',
-                    confirmButtonText: 'Oke'
+                    text: data.responseJSON.message,
+                    type: 'error',
+                    showConfirmButton: false
                   });
                   setTimeout(function() {
                     Swal.close();
@@ -91,8 +91,8 @@
             Swal.fire({
               title: 'Perhatian!',
               text: "Tambah Data Gagal!",
-              icon: 'error',
-              confirmButtonText: 'Oke'
+              type: 'error',
+              showConfirmButton: false
             });
             setTimeout(function() {
               Swal.close();

@@ -65,6 +65,7 @@ Route::group(['prefix' => 'food-bank',  'middleware' => ['auth']], function () {
         Route::put('/donasi-approve/{id}', [NgoController::class, 'approveDonasi'])->name('donasiApprove');
         Route::put('/donasi-cancel/{id}', [NgoController::class, 'cancelDonasi'])->name('donasiCancel');
         Route::post('/edit-pickup/{id}', [NgoController::class, 'editPickup'])->name('editPickup');
+        Route::post('/add-pickup/{id}', [NgoController::class, 'tambahPickup'])->name('tambahPickup');
         Route::post('/waktu-pickup/{id}', [NgoController::class, 'addTimePickup'])->name('addTimePickup');
         Route::delete('/delete-pickup/{id}', [NgoController::class, 'deletePickup'])->name('deletePickup');
         Route::post('/report-donasi/{id}', [NgoController::class, 'reportDonasi'])->name('reportDonasi');
